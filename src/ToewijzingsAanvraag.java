@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
  *
  * @author Masscho Victor, Dragnev Boris
  */
-public class ToewijzingsAanvraag {
+public class ToewijzingsAanvraag implements Serializable {
     private static final long serialVersionUID = 8420;
     private final int toewijzingsAanvraagNummer;
     private final String rijksregisterNummerStudent;
@@ -97,5 +98,10 @@ public class ToewijzingsAanvraag {
         return Objects.hash(serialVersionUID, toewijzingsAanvraagNummer, 
                             rijksregisterNummerStudent, aanmeldingsTijdstip,
                             status, voorkeur, heeftBroerOfZus);
+    }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(this.getToewijzingsAanvraagNummer());
     }
 }

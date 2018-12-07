@@ -198,7 +198,7 @@ public class Algoritme {
     public boolean schoolIsAfgewezen(int schoolID, int aanvraagnummer)  {
         try {
             ArrayList<ToewijzingsAanvraag> afgewezenStudenten
-                    = laadAfgewezenStudenten();
+                        = laadAfgewezenStudenten();
             for(ToewijzingsAanvraag ta : afgewezenStudenten) {
                 if(ta.getVoorkeur() == schoolID
                         && ta.getToewijzingsAanvraagNummer() == aanvraagnummer)

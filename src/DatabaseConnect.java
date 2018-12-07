@@ -440,10 +440,10 @@ public class DatabaseConnect  {
                     = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
                     + "toewijzingsaanvraagnummer, status, "
                     + "student_rijksregisternummer, aanmeldingstijdstip, "
-                    + "broer_zus, voorkeur) "
+                    + "broer_zus, voorkeurschool) "
                     + "VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
                     + "status = VALUES(status), broer_zus = VALUES(broer_zus), "
-                    + "voorkeur = VALUES(voorkeur)");
+                    + "voorkeurschool = VALUES(voorkeurschool)");
                     ps.setInt(1, ta.getToewijzingsAanvraagNummer());
                     ps.setString(2, ta.getStatus().toString());
                     ps.setString(3, ta.getRijksregisterNummerStudent());
@@ -481,10 +481,10 @@ public class DatabaseConnect  {
                 = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
                 + "toewijzingsaanvraagnummer, status, "
                 + "student_rijksregisternummer, aanmeldingstijdstip, "
-                + "broer_zus, voorkeur) "
+                + "broer_zus, voorkeurschool) "
                 + "VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
                 + "status = VALUES(status), broer_zus = VALUES(broer_zus), "
-                + "voorkeur = VALUES(voorkeur)");
+                + "voorkeurschool = VALUES(voorkeurschool)");
                 ps.setInt(1, ta.getToewijzingsAanvraagNummer());
                 ps.setString(2, ta.getStatus().toString());
                 ps.setString(3, ta.getRijksregisterNummerStudent());
