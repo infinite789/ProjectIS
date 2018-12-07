@@ -31,7 +31,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,4,-82,0,0,4,13"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,4,-18,0,0,4,13"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -450,20 +450,29 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="AlgemeneTekstOuders" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="PersoonlijkeJlabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="PersoonlijkeJlabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="AlgemeneTekstOuders" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                               <Component id="PersoonlijkeJlabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
-                              <Component id="AlgemeneTekstOuders" min="-2" pref="220" max="-2" attributes="0"/>
-                              <EmptySpace pref="789" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="AlgemeneTekstOuders" min="-2" pref="218" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="889" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -471,13 +480,24 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="AlgemeneTekstOuders">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;Sinds een aantal jaren komt de vraag naar plaatsen voor het basisonderwijs&lt;br/&gt; &#xa;niet overeen met het aanbod. Recent ziet men ook hetzelfde probleem bij&lt;br/&gt; &#xa;plaatsen voor het middelbaar onderwijs. Beide problemen manifesteren&lt;br/&gt;&#xa;zich voornamelijk in de grotere steden. Bijgevolg hebben we een online&lt;br/&gt; &#xa;informatiesysteem ontwikkeld om de centrale toewijzing van kinderen aan&lt;br/&gt;&#xa;scholen te regelen. &lt;br/&gt;&#xa;&lt;br/&gt;&#xa;De werking van ons informatiesysteem is grotendeels gebaseerd op de tijd&lt;br/&gt; &#xa;van aanmelding in het systeem, de school die geprefereerd wordt en of er&lt;br/&gt; &#xa;al dan niet broers of zussen reeds op die school zitten. &lt;br/&gt;&#xa;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;Sinds een aantal jaren komt de vraag naar plaatsen voor het basisonderwijs&lt;br/&gt; &#xa;niet overeen met het aanbod. Recent ziet men ook hetzelfde probleem bij&lt;br/&gt; &#xa;plaatsen voor het middelbaar onderwijs. Beide problemen manifesteren&lt;br/&gt;&#xa;zich voornamelijk in de grotere steden. Bijgevolg hebben we een online&lt;br/&gt; &#xa;informatiesysteem ontwikkeld om de centrale toewijzing van kinderen aan&lt;br/&gt;&#xa;scholen te regelen. &lt;br/&gt;&#xa;&lt;br/&gt;&#xa;De werking van ons informatiesysteem is grotendeels gebaseerd op de tijd&lt;br/&gt; &#xa;van aanmelding in het systeem, de school die geprefereerd wordt en of er&lt;br/&gt; &#xa;al dan niet broers of zussen reeds op die school zitten. &lt;br/&gt;&#xa;&lt;br/&gt;&#xa;In het volgende tabblad kan u uw aanmeldingsformulier invullen en&lt;br/&gt;&#xa;vervolgens ook een voorkeursformulier. &#xa;&lt;/html&gt;"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="PersoonlijkeJlabel">
                       <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Lucida Grande" size="16" style="0"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="jLabel4"/>
                       </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="jButton1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Volgende"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -887,7 +907,7 @@
                               <Component id="indienenKnopVFT" min="-2" max="-2" attributes="0"/>
                               <Component id="boodschapLabelVFT" min="-2" pref="60" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="732" max="32767" attributes="0"/>
+                          <EmptySpace pref="796" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1046,7 +1066,7 @@
                           <Component id="verwijderLinkLabelART" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                           <Component id="boodschapLabelART" min="-2" pref="15" max="-2" attributes="0"/>
-                          <EmptySpace pref="775" max="32767" attributes="0"/>
+                          <EmptySpace pref="839" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1220,7 +1240,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="uitloggenLinkLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="1110" max="32767" attributes="0"/>
+                          <EmptySpace pref="1174" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1275,7 +1295,7 @@
                           <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                           <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="731" max="32767" attributes="0"/>
+                      <EmptySpace pref="795" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

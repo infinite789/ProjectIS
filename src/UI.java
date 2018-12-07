@@ -125,6 +125,7 @@ public class UI extends javax.swing.JFrame  {
         jPanel4 = new javax.swing.JPanel();
         AlgemeneTekstOuders = new javax.swing.JLabel();
         PersoonlijkeJlabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         AanmeldingsFormulierTab = new javax.swing.JPanel();
         indienenKnopAFT = new javax.swing.JButton();
         gegevensStudentAFT = new javax.swing.JPanel();
@@ -438,26 +439,41 @@ public class UI extends javax.swing.JFrame  {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        AlgemeneTekstOuders.setText("<html>Sinds een aantal jaren komt de vraag naar plaatsen voor het basisonderwijs<br/> \nniet overeen met het aanbod. Recent ziet men ook hetzelfde probleem bij<br/> \nplaatsen voor het middelbaar onderwijs. Beide problemen manifesteren<br/>\nzich voornamelijk in de grotere steden. Bijgevolg hebben we een online<br/> \ninformatiesysteem ontwikkeld om de centrale toewijzing van kinderen aan<br/>\nscholen te regelen. <br/>\n<br/>\nDe werking van ons informatiesysteem is grotendeels gebaseerd op de tijd<br/> \nvan aanmelding in het systeem, de school die geprefereerd wordt en of er<br/> \nal dan niet broers of zussen reeds op die school zitten. <br/>\n</html>");
+        AlgemeneTekstOuders.setText("<html>Sinds een aantal jaren komt de vraag naar plaatsen voor het basisonderwijs<br/> \nniet overeen met het aanbod. Recent ziet men ook hetzelfde probleem bij<br/> \nplaatsen voor het middelbaar onderwijs. Beide problemen manifesteren<br/>\nzich voornamelijk in de grotere steden. Bijgevolg hebben we een online<br/> \ninformatiesysteem ontwikkeld om de centrale toewijzing van kinderen aan<br/>\nscholen te regelen. <br/>\n<br/>\nDe werking van ons informatiesysteem is grotendeels gebaseerd op de tijd<br/> \nvan aanmelding in het systeem, de school die geprefereerd wordt en of er<br/> \nal dan niet broers of zussen reeds op die school zitten. <br/>\n<br/>\nIn het volgende tabblad kan u uw aanmeldingsformulier invullen en<br/>\nvervolgens ook een voorkeursformulier. \n</html>");
 
+        PersoonlijkeJlabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         PersoonlijkeJlabel.setText("jLabel4");
+
+        jButton1.setText("Volgende");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(AlgemeneTekstOuders)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(PersoonlijkeJlabel)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(PersoonlijkeJlabel)
+                        .addComponent(AlgemeneTekstOuders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
                 .addComponent(PersoonlijkeJlabel)
-                .addGap(115, 115, 115)
-                .addComponent(AlgemeneTekstOuders, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(789, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(AlgemeneTekstOuders, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(889, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout HomeTabLayout = new javax.swing.GroupLayout(HomeTab);
@@ -787,7 +803,7 @@ public class UI extends javax.swing.JFrame  {
                 .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(indienenKnopVFT)
                     .addComponent(boodschapLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(732, Short.MAX_VALUE))
+                .addContainerGap(796, Short.MAX_VALUE))
         );
 
         FormulierScherm.addTab("Voorkeurformulier", VoorkeurFormulierTab);
@@ -912,7 +928,7 @@ public class UI extends javax.swing.JFrame  {
                 .addComponent(verwijderLinkLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
                 .addComponent(boodschapLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(775, Short.MAX_VALUE))
+                .addContainerGap(839, Short.MAX_VALUE))
         );
 
         FormulierScherm.addTab("Aanvragen raadplegen", ZoekAanvraagTab);
@@ -947,7 +963,7 @@ public class UI extends javax.swing.JFrame  {
             .addGroup(UitloggenTabLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(uitloggenLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1110, Short.MAX_VALUE))
+                .addContainerGap(1174, Short.MAX_VALUE))
         );
 
         FormulierScherm.addTab("Uitloggen", UitloggenTab);
@@ -1052,7 +1068,7 @@ public class UI extends javax.swing.JFrame  {
                 .addGroup(AdminSchermLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(731, Short.MAX_VALUE))
+                .addContainerGap(795, Short.MAX_VALUE))
         );
 
         MainPanel.add(AdminScherm, "card5");
@@ -1304,7 +1320,9 @@ public class UI extends javax.swing.JFrame  {
         InlogScherm.setVisible(false);
         FormulierScherm.setVisible(true);
         FormulierScherm.setSelectedComponent(HomeTab);
-        PersoonlijkeJlabel.setText("Hallo " + gebruiker.getVoornaam() + " " + gebruiker.getNaam() + ".");
+        PersoonlijkeJlabel.setText("Hallo " + gebruiker.getVoornaam() + " " 
+                                    + gebruiker.getNaam() + ".");
+        
         
     }//GEN-LAST:event_doorgaanKnopISActionPerformed
 
@@ -1528,6 +1546,10 @@ public class UI extends javax.swing.JFrame  {
         jList1.setModel(dlm);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        FormulierScherm.setSelectedComponent(AanmeldingsFormulierTab);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1618,6 +1640,7 @@ public class UI extends javax.swing.JFrame  {
     private javax.swing.JLabel infoLabelART;
     private javax.swing.JLabel infoLabelVFT;
     private javax.swing.JButton inlogKnopIS;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
