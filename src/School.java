@@ -22,7 +22,7 @@ public class School implements Serializable {
     
     public School(int ID, String naam, String adres, int plaatsen){
         this.ID = ID;
-        this.naam = naam;
+         this.naam = naam;
         this.adres = adres;
         this.plaatsen = plaatsen;
     }

@@ -29,15 +29,10 @@ public class DatabaseConnect  {
 
     private final int DEFAULT_KEY = 6001; //default key toewijzingsaanvragen
 
-    private final LocalDate EERSTE_DEADLINE = LocalDate.of(
+    private LocalDate huidigeDeadline = LocalDate.of(
             2018, Month.DECEMBER, 30
     ); //deadline eerste voorkeur
-    private final LocalDate TWEEDE_DEADLINE = LocalDate.of(
-            2019, Month.JANUARY, 10
-    ); //deadline tweede voorkeur
-    private final LocalDate DERDE_DEADLINE = LocalDate.of(
-            2019, Month.JANUARY, 20
-    ); //deadline derde voorkeur
+    
 
     /*
      * Default constructor
@@ -162,7 +157,7 @@ public class DatabaseConnect  {
                         = rs.getTimestamp("aanmeldingstijdstip");
                 LocalDateTime aanmeldingstijdstip = ts.toLocalDateTime();
                 boolean heeftBroerOfZus = rs.getBoolean("broer_zus");
-                int voorkeur = rs.getInt("voorkeur");
+                int voorkeur = rs.getInt("voorkeurschool");
                 aanvragenHashMap.put(aanvraagnummer,
                         new ToewijzingsAanvraag(aanvraagnummer,
                                 rijksregisterNummerStudent,
