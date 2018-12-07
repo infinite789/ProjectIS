@@ -34,7 +34,6 @@ public class UI extends javax.swing.JFrame  {
     private final Cursor defaultCursor;
     private final Cursor handCursor;
     private DatabaseConnect dbconnect;
-    private Algoritme algoritme;
     private Ouder gebruiker;
     private DefaultTableModel dtm;
     private final String ADMIN_ACCOUNT = "admin";
@@ -51,7 +50,6 @@ public class UI extends javax.swing.JFrame  {
         this.dbconnect = new DatabaseConnect(); //connectie met de databank
         this.defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR); //default cursor
         this.handCursor = new Cursor(Cursor.HAND_CURSOR); //hand cursor
-        this.algoritme = new Algoritme();
         InlogScherm.getRootPane().setDefaultButton(inlogKnopIS);
         /*
          * Scholen toevoegen aan de tabel onder de 'Voorkeurformulier'-tab
@@ -1097,11 +1095,11 @@ public class UI extends javax.swing.JFrame  {
             int aanvraagnummer = Integer.parseInt(aanvraagnummerVeldVFT.getText());
             String rnstudent = studentenDropBoxVFT.getSelectedItem().toString();
             int schoolID = (int)scholenTabel.getValueAt(scholenTabel.getSelectedRow(), 3);
-            if (algoritme.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
+            if (dbconnect.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
 
 
             } else if(dbconnect.indienenVoorkeur(aanvraagnummer, rnstudent, schoolID)
-                     && !algoritme.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
+                     && !dbconnect.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
                 boodschapLabelVFT.setForeground(Color.green);
                 boodschapLabelVFT.setText("<html>U heeft uw voorkeur succesvol ingediend! "
                                + "<br/>Je kan je aanvragen raadplegen onder 'Aanvragen'.</html>");
@@ -1305,11 +1303,6 @@ public class UI extends javax.swing.JFrame  {
             InlogScherm.setVisible(false);
             ActiveerScherm.setVisible(false);
             FormulierScherm.setVisible(false);
-            try {
-                algoritme = new Algoritme();
-            } catch (Exception ex) {
-                System.out.println("Error: " + ex);
-            }
         }
     }//GEN-LAST:event_inlogKnopISActionPerformed
 
@@ -1406,7 +1399,7 @@ public class UI extends javax.swing.JFrame  {
             eersteVoorkeurLabelOut.setText(voorkeur);
             if(ta.getVoorkeur() == 0) 
                 eersteVoorkeurLabelOut.setText("Je kan je voorkeur "
-                                         + "aanpassen vóór " + algoritme.getHuidigeDeadline());
+                                         + "aanpassen vóór " + dbconnect.getHuidigeDeadline());
         }
         
     }//GEN-LAST:event_studentenDropBoxARTItemStateChanged
@@ -1477,7 +1470,7 @@ public class UI extends javax.swing.JFrame  {
 
     private void exporteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exporteerKnopAdminActionPerformed
         try {
-            algoritme.exporteerWachtLijsten();
+            dbconnect.exporteerWachtLijsten();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
                 AdminScherm, "Error: " + e, 
@@ -1517,7 +1510,7 @@ public class UI extends javax.swing.JFrame  {
 
     private void sorteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sorteerKnopAdminActionPerformed
         try {
-            algoritme.sorteerAlgoritme();
+            dbconnect.sorteerAlgoritme();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
                 AdminScherm, "Error: " + e, 
