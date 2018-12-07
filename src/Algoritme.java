@@ -28,7 +28,7 @@ public class Algoritme {
     
     private final LocalDateTime START_DATUM = LocalDateTime.of(
             2018, Month.DECEMBER, 1, 0, 0, 0
-    );//start inschrijvingen
+    );//start inschrijvingen 
     private LocalDateTime huidigeDeadline = LocalDateTime.of(
             2018, Month.DECEMBER, 30, 0, 0, 0
     );//dynamische deadline, die na elke 'sorteerronde' een andere waarde aanneemt 
