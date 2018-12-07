@@ -31,7 +31,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,3,42,0,0,3,-5"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,3,101,0,0,4,13"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -125,27 +125,16 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="gebrLabelAS">
               <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Gebruikersnaam:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="gebrVeldIS">
             </Component>
             <Component class="javax.swing.JPasswordField" name="passVeldIS">
-              <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="passLabelIS">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Wachtwoord:"/>
@@ -246,13 +235,8 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Ouder">
-                      <Color PropertyName="color" blue="0" green="0" red="0" type="rgb"/>
-                    </TitledBorder>
+                    <TitledBorder title="Ouder"/>
                   </Border>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
               </Properties>
 
@@ -330,83 +314,51 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="naamLabelAS">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Naam:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="voornaamLabelAS">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Voornaam:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="rijksnumLabelAS">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Rijksregisternummer:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="emailLabelAS">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="E-mail:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="adresLabelAS">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Adres:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="rijksnumVeldAS">
-                  <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
-                  </Properties>
                   <Events>
                     <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="rijksnumVeldASKeyReleased"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="naamVeldAS">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="voornaamVeldAS">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="emailVeldAS">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="adresVeldAS">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                 </Component>
@@ -434,11 +386,6 @@
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="boodschapLabelAS">
-              <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -446,9 +393,6 @@
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
           </Properties>
           <Events>
@@ -469,13 +413,8 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Student">
-                      <Color PropertyName="color" blue="0" green="0" red="0" type="rgb"/>
-                    </TitledBorder>
+                    <TitledBorder title="Student"/>
                   </Border>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -492,7 +431,7 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                           <Component id="waarschuwingLabelAFT" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="724" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="719" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
@@ -539,13 +478,8 @@
                     </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Student">
-                          <Color PropertyName="color" blue="0" green="0" red="0" type="rgb"/>
-                        </TitledBorder>
+                        <TitledBorder title="Student"/>
                       </Border>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
                     </Property>
                   </Properties>
 
@@ -558,7 +492,7 @@
                                   <Component id="naamStudentLabelAFT" alignment="0" max="32767" attributes="0"/>
                                   <Component id="voornaamStudentLabelAFT" alignment="1" max="32767" attributes="0"/>
                                   <Component id="telnumLabelAFT" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="rijksnumStudentLabelAFT" alignment="0" pref="106" max="32767" attributes="0"/>
+                                  <Component id="rijksnumStudentLabelAFT" alignment="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -602,33 +536,21 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="naamStudentLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Naam:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="voornaamStudentLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Voornaam:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="rijksnumStudentLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Rijksregisternummer:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="telnumLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Telefoonnummer:"/>
                       </Properties>
                     </Component>
@@ -644,9 +566,6 @@
                     </Component>
                     <Component class="javax.swing.JTextField" name="telnumVeldAFT">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
@@ -672,13 +591,8 @@
                     </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Ouder">
-                          <Color PropertyName="color" blue="0" green="0" red="0" type="rgb"/>
-                        </TitledBorder>
+                        <TitledBorder title="Ouder"/>
                       </Border>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
                     </Property>
                   </Properties>
 
@@ -744,81 +658,51 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="naamOuderLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Naam:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="voornaamOuderLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Voornaam:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="rijksnumOuderLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Rijksregisternummer:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="emailLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="E-mail:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="adresLabelAFT">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Adres:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="rijksnumOuderVeldAFT">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="naamOuderVeldAFT">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="voornaamOuderVeldAFT">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="emailVeldAFT">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="adresVeldAFT">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
@@ -837,9 +721,6 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="11" style="2"/>
                     </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Alle aanvragen dienen v&#xf3;&#xf3;r 15 juli ingediend te worden!"/>
                   </Properties>
                 </Component>
@@ -852,13 +733,8 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="School">
-                      <Color PropertyName="color" blue="0" green="0" red="0" type="rgb"/>
-                    </TitledBorder>
+                    <TitledBorder title="School"/>
                   </Border>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -890,7 +766,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="zoekwoordVeld" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="scholenScrollPane" alignment="0" pref="980" max="32767" attributes="0"/>
+                              <Component id="scholenScrollPane" alignment="0" pref="992" max="32767" attributes="0"/>
                               <Component id="selectieBoodschapLabel" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Component id="infoLabelVFT" min="-2" pref="359" max="-2" attributes="0"/>
@@ -934,7 +810,7 @@
                               <Component id="indienenKnopVFT" min="-2" max="-2" attributes="0"/>
                               <Component id="boodschapLabelVFT" min="-2" pref="60" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="382" max="32767" attributes="0"/>
+                          <EmptySpace pref="403" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -942,18 +818,10 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="zoekwoordLabel">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Zoekwoord:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="zoekwoordVeld">
-                  <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
-                  </Properties>
                   <Events>
                     <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="zoekwoordVeldKeyReleased"/>
                   </Events>
@@ -978,9 +846,6 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="rijksnumStudentLabelVFT">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Rijksregisternummer (kind):"/>
                   </Properties>
                 </Component>
@@ -988,9 +853,6 @@
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="11" style="2"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="&lt;html&gt;Deze formulier past uw keuze aan voor de lopende periode.&lt;br/&gt; U kunt uw eerste voorkeur aanpassen v&#xf3;&#xf3;r 15 juli.&lt;/html&gt;"/>
                   </Properties>
@@ -1004,9 +866,6 @@
                   <SubComponents>
                     <Component class="javax.swing.JTable" name="scholenTabel">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="4" rowCount="0">
                             <Column editable="false" title="Naam" type="java.lang.String"/>
@@ -1039,9 +898,6 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="aanvraagNummerLabelVFT">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Toewijzingsaanvraagnummer:"/>
                   </Properties>
                 </Component>
@@ -1072,7 +928,7 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="29" pref="171" max="32767" attributes="0"/>
+                                  <EmptySpace min="29" pref="173" max="32767" attributes="0"/>
                                   <Component id="boodschapLabelART" min="-2" pref="700" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
@@ -1084,7 +940,7 @@
                                           <Component id="studentenDropBoxART" max="32767" attributes="0"/>
                                       </Group>
                                       <Component id="gegevensPanelART" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="infoLabelART" alignment="0" pref="859" max="32767" attributes="0"/>
+                                      <Component id="infoLabelART" alignment="0" pref="867" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -1113,7 +969,7 @@
                           <Component id="verwijderLinkLabelART" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                           <Component id="boodschapLabelART" min="-2" pref="15" max="-2" attributes="0"/>
-                          <EmptySpace pref="396" max="32767" attributes="0"/>
+                          <EmptySpace pref="446" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1121,9 +977,6 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="rijksnumStudentLabelART">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Rijksregisternummer (kind): "/>
                   </Properties>
                 </Component>
@@ -1131,9 +984,6 @@
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="11" style="2"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="&lt;html&gt;Je kan je aanvragen onderaan raadplegen door het rijksregisternummer van uw kind in te&#xa; &lt;br/&gt;geven. Mocht u niet tevreden zijn met uw opgegeven voorkeur, kunt u deze nog aanpassen&#xa;&lt;br/&gt;door opnieuw de &apos;Voorkeurformulier&apos; in te vullen.&#xa;&lt;br/&gt;(Let op: u kan enkel de voorkeur voor de lopende periode aanpassen!)&lt;/html&gt;"/>
                   </Properties>
@@ -1145,13 +995,8 @@
                     </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Uw gegevens">
-                          <Color PropertyName="color" blue="0" green="0" red="0" type="rgb"/>
-                        </TitledBorder>
+                        <TitledBorder title="Uw gegevens"/>
                       </Border>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
                     </Property>
                   </Properties>
 
@@ -1168,7 +1013,7 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="aanvraagnummerLabelOut" pref="705" max="32767" attributes="0"/>
+                                  <Component id="aanvraagnummerLabelOut" pref="682" max="32767" attributes="0"/>
                                   <Component id="statusLabelOut" max="32767" attributes="0"/>
                                   <Component id="tijdstipLabelOut" max="32767" attributes="0"/>
                                   <Component id="eersteVoorkeurLabelOut" max="32767" attributes="0"/>
@@ -1208,9 +1053,6 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="eersteVoorkeurLabel">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Voorkeurschool:"/>
                       </Properties>
                     </Component>
@@ -1224,25 +1066,16 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="aanvraagnummerLabelART">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Aanvraagnummer:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="statusLabel">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Status:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="tijdstipLabel">
                       <Properties>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" red="0" type="rgb"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" value="Tijdstip van aanmelding:"/>
                       </Properties>
                     </Component>
@@ -1278,11 +1111,6 @@
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="boodschapLabelART">
-                  <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" red="0" type="rgb"/>
-                    </Property>
-                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -1306,7 +1134,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="uitloggenLinkLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="935" max="32767" attributes="0"/>
+                          <EmptySpace pref="919" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1315,7 +1143,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="uitloggenLinkLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="742" max="32767" attributes="0"/>
+                          <EmptySpace pref="781" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1339,8 +1167,8 @@
             <Container class="javax.swing.JPanel" name="jPanel2">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Hom">
-                    <Property name="tabTitle" type="java.lang.String" value="Hom"/>
+                  <JTabbedPaneConstraints tabName="Home">
+                    <Property name="tabTitle" type="java.lang.String" value="Home"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -1351,16 +1179,18 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="947" max="32767" attributes="0"/>
+                          <EmptySpace pref="949" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                          <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="729" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1368,6 +1198,36 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="jLabel2">
                 </Component>
+                <Container class="javax.swing.JPanel" name="jPanel4">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                  </Properties>
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel3" alignment="0" pref="1016" max="32767" attributes="0"/>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel3" min="-2" pref="220" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="591" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JLabel" name="jLabel3">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;Sinds een aantal jaren komt de vraag naar plaatsen voor het basisonderwijs niet overeen met het aanbod. Recent ziet men ook hetzelfde probleem bij plaatsen voor het middelbaar onderwijs. Beide problemen manifesteren zich voornamelijk in de grotere steden. Bijgevolg hebben we een online informatiesysteem ontwikkeld om de centrale toewijzing van kinderen aan scholen te regelen.&#xa;De werking van ons informatiesysteem is grotendeels gebaseerd op de tijd van aanmelding in het systeem, de school die geprefereerd wordt en of er al dan niet broers of zussen reeds op die school zitten. &#xa;&lt;/html&gt;"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -1404,7 +1264,7 @@
                           <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                           <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="343" max="32767" attributes="0"/>
+                      <EmptySpace pref="402" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

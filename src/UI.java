@@ -176,6 +176,8 @@ public class UI extends javax.swing.JFrame  {
         uitloggenLinkLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         AdminScherm = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         exporteerKnopAdmin = new javax.swing.JButton();
@@ -204,13 +206,9 @@ public class UI extends javax.swing.JFrame  {
 
         InlogScherm.setBackground(new java.awt.Color(255, 255, 255));
 
-        gebrLabelAS.setForeground(new java.awt.Color(0, 0, 0));
         gebrLabelAS.setText("Gebruikersnaam:");
 
-        passVeldIS.setForeground(new java.awt.Color(0, 0, 0));
-
         passLabelIS.setBackground(new java.awt.Color(0, 0, 0));
-        passLabelIS.setForeground(new java.awt.Color(0, 0, 0));
         passLabelIS.setText("Wachtwoord:");
 
         inlogKnopIS.setText("Inloggen");
@@ -297,41 +295,30 @@ public class UI extends javax.swing.JFrame  {
         ActiveerScherm.setPreferredSize(new java.awt.Dimension(980, 676));
 
         gegevensOuderAS.setBackground(new java.awt.Color(255, 255, 255));
-        gegevensOuderAS.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ouder", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(0, 0, 0))); // NOI18N
-        gegevensOuderAS.setForeground(new java.awt.Color(0, 0, 0));
+        gegevensOuderAS.setBorder(javax.swing.BorderFactory.createTitledBorder("Ouder"));
 
-        naamLabelAS.setForeground(new java.awt.Color(0, 0, 0));
         naamLabelAS.setText("Naam:");
 
-        voornaamLabelAS.setForeground(new java.awt.Color(0, 0, 0));
         voornaamLabelAS.setText("Voornaam:");
 
-        rijksnumLabelAS.setForeground(new java.awt.Color(0, 0, 0));
         rijksnumLabelAS.setText("Rijksregisternummer:");
 
-        emailLabelAS.setForeground(new java.awt.Color(0, 0, 0));
         emailLabelAS.setText("E-mail:");
 
-        adresLabelAS.setForeground(new java.awt.Color(0, 0, 0));
         adresLabelAS.setText("Adres:");
 
-        rijksnumVeldAS.setBackground(new java.awt.Color(255, 255, 255));
         rijksnumVeldAS.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 rijksnumVeldASKeyReleased(evt);
             }
         });
 
-        naamVeldAS.setBackground(new java.awt.Color(255, 255, 255));
         naamVeldAS.setFocusable(false);
 
-        voornaamVeldAS.setBackground(new java.awt.Color(255, 255, 255));
         voornaamVeldAS.setFocusable(false);
 
-        emailVeldAS.setBackground(new java.awt.Color(255, 255, 255));
         emailVeldAS.setFocusable(false);
 
-        adresVeldAS.setBackground(new java.awt.Color(255, 255, 255));
         adresVeldAS.setFocusable(false);
 
         javax.swing.GroupLayout gegevensOuderASLayout = new javax.swing.GroupLayout(gegevensOuderAS);
@@ -410,8 +397,6 @@ public class UI extends javax.swing.JFrame  {
             }
         });
 
-        boodschapLabelAS.setForeground(new java.awt.Color(0, 0, 0));
-
         javax.swing.GroupLayout ActiveerSchermLayout = new javax.swing.GroupLayout(ActiveerScherm);
         ActiveerScherm.setLayout(ActiveerSchermLayout);
         ActiveerSchermLayout.setHorizontalGroup(
@@ -444,7 +429,6 @@ public class UI extends javax.swing.JFrame  {
         MainPanel.add(ActiveerScherm, "card4");
 
         FormulierScherm.setBackground(new java.awt.Color(255, 255, 255));
-        FormulierScherm.setForeground(new java.awt.Color(0, 0, 0));
         FormulierScherm.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 FormulierSchermStateChanged(evt);
@@ -452,8 +436,7 @@ public class UI extends javax.swing.JFrame  {
         });
 
         AanmeldingsFormulierTab.setBackground(new java.awt.Color(255, 255, 255));
-        AanmeldingsFormulierTab.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(0, 0, 0))); // NOI18N
-        AanmeldingsFormulierTab.setForeground(new java.awt.Color(0, 0, 0));
+        AanmeldingsFormulierTab.setBorder(javax.swing.BorderFactory.createTitledBorder("Student"));
 
         indienenKnopAFT.setText("Indienen");
         indienenKnopAFT.addActionListener(new java.awt.event.ActionListener() {
@@ -463,26 +446,20 @@ public class UI extends javax.swing.JFrame  {
         });
 
         gegevensStudentAFT.setBackground(new java.awt.Color(255, 255, 255));
-        gegevensStudentAFT.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(0, 0, 0))); // NOI18N
-        gegevensStudentAFT.setForeground(new java.awt.Color(0, 0, 0));
+        gegevensStudentAFT.setBorder(javax.swing.BorderFactory.createTitledBorder("Student"));
 
-        naamStudentLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         naamStudentLabelAFT.setText("Naam:");
 
-        voornaamStudentLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         voornaamStudentLabelAFT.setText("Voornaam:");
 
-        rijksnumStudentLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         rijksnumStudentLabelAFT.setText("Rijksregisternummer:");
 
-        telnumLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         telnumLabelAFT.setText("Telefoonnummer:");
 
         naamStudentVeldAFT.setFocusable(false);
 
         voornaamStudentVeldAFT.setFocusable(false);
 
-        telnumVeldAFT.setBackground(new java.awt.Color(255, 255, 255));
         telnumVeldAFT.setFocusable(false);
 
         studentenDropBoxAFT.setModel(new DefaultComboBoxModel());
@@ -502,7 +479,7 @@ public class UI extends javax.swing.JFrame  {
                     .addComponent(naamStudentLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(voornaamStudentLabelAFT, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(telnumLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rijksnumStudentLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                    .addComponent(rijksnumStudentLabelAFT, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(gegevensStudentAFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(studentenDropBoxAFT, 0, 220, Short.MAX_VALUE)
@@ -534,37 +511,26 @@ public class UI extends javax.swing.JFrame  {
         );
 
         gegevensOuderAFT.setBackground(new java.awt.Color(255, 255, 255));
-        gegevensOuderAFT.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ouder", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(0, 0, 0))); // NOI18N
-        gegevensOuderAFT.setForeground(new java.awt.Color(0, 0, 0));
+        gegevensOuderAFT.setBorder(javax.swing.BorderFactory.createTitledBorder("Ouder"));
 
-        naamOuderLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         naamOuderLabelAFT.setText("Naam:");
 
-        voornaamOuderLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         voornaamOuderLabelAFT.setText("Voornaam:");
 
-        rijksnumOuderLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         rijksnumOuderLabelAFT.setText("Rijksregisternummer:");
 
-        emailLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         emailLabelAFT.setText("E-mail:");
 
-        adresLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         adresLabelAFT.setText("Adres:");
 
-        rijksnumOuderVeldAFT.setBackground(new java.awt.Color(255, 255, 255));
         rijksnumOuderVeldAFT.setFocusable(false);
 
-        naamOuderVeldAFT.setBackground(new java.awt.Color(255, 255, 255));
         naamOuderVeldAFT.setFocusable(false);
 
-        voornaamOuderVeldAFT.setBackground(new java.awt.Color(255, 255, 255));
         voornaamOuderVeldAFT.setFocusable(false);
 
-        emailVeldAFT.setBackground(new java.awt.Color(255, 255, 255));
         emailVeldAFT.setFocusable(false);
 
-        adresVeldAFT.setBackground(new java.awt.Color(255, 255, 255));
         adresVeldAFT.setFocusable(false);
 
         javax.swing.GroupLayout gegevensOuderAFTLayout = new javax.swing.GroupLayout(gegevensOuderAFT);
@@ -578,7 +544,7 @@ public class UI extends javax.swing.JFrame  {
                         .addComponent(emailLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(naamOuderLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(voornaamOuderLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rijksnumOuderLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                        .addComponent(rijksnumOuderLabelAFT, javax.swing.GroupLayout.PREFERRED_SIZE, 106, Short.MAX_VALUE))
                     .addComponent(adresLabelAFT, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(gegevensOuderAFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -619,7 +585,6 @@ public class UI extends javax.swing.JFrame  {
         boodschapLabelAFT.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         waarschuwingLabelAFT.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-        waarschuwingLabelAFT.setForeground(new java.awt.Color(0, 0, 0));
         waarschuwingLabelAFT.setText("Alle aanvragen dienen vóór 15 juli ingediend te worden!");
 
         javax.swing.GroupLayout AanmeldingsFormulierTabLayout = new javax.swing.GroupLayout(AanmeldingsFormulierTab);
@@ -629,7 +594,7 @@ public class UI extends javax.swing.JFrame  {
             .addGroup(AanmeldingsFormulierTabLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(waarschuwingLabelAFT)
-                .addGap(0, 724, Short.MAX_VALUE))
+                .addGap(0, 719, Short.MAX_VALUE))
             .addGroup(AanmeldingsFormulierTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(AanmeldingsFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -657,13 +622,10 @@ public class UI extends javax.swing.JFrame  {
         FormulierScherm.addTab("Aanmeldingsformulier", AanmeldingsFormulierTab);
 
         VoorkeurFormulierTab.setBackground(new java.awt.Color(255, 255, 255));
-        VoorkeurFormulierTab.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "School", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(0, 0, 0))); // NOI18N
-        VoorkeurFormulierTab.setForeground(new java.awt.Color(0, 0, 0));
+        VoorkeurFormulierTab.setBorder(javax.swing.BorderFactory.createTitledBorder("School"));
 
-        zoekwoordLabel.setForeground(new java.awt.Color(0, 0, 0));
         zoekwoordLabel.setText("Zoekwoord:");
 
-        zoekwoordVeld.setBackground(new java.awt.Color(255, 255, 255));
         zoekwoordVeld.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 zoekwoordVeldKeyReleased(evt);
@@ -682,14 +644,11 @@ public class UI extends javax.swing.JFrame  {
         selectieBoodschapLabel.setToolTipText("");
         selectieBoodschapLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        rijksnumStudentLabelVFT.setForeground(new java.awt.Color(0, 0, 0));
         rijksnumStudentLabelVFT.setText("Rijksregisternummer (kind):");
 
         infoLabelVFT.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-        infoLabelVFT.setForeground(new java.awt.Color(0, 0, 0));
         infoLabelVFT.setText("<html>Deze formulier past uw keuze aan voor de lopende periode.<br/> U kunt uw eerste voorkeur aanpassen vóór 15 juli.</html>");
 
-        scholenTabel.setBackground(new java.awt.Color(255, 255, 255));
         scholenTabel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -724,7 +683,6 @@ public class UI extends javax.swing.JFrame  {
             }
         });
 
-        aanvraagNummerLabelVFT.setForeground(new java.awt.Color(0, 0, 0));
         aanvraagNummerLabelVFT.setText("Toewijzingsaanvraagnummer:");
 
         aanvraagnummerVeldVFT.setFocusable(false);
@@ -748,7 +706,7 @@ public class UI extends javax.swing.JFrame  {
                         .addComponent(zoekwoordLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(zoekwoordVeld))
-                    .addComponent(scholenScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
+                    .addComponent(scholenScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
                     .addComponent(selectieBoodschapLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(VoorkeurFormulierTabLayout.createSequentialGroup()
                         .addComponent(infoLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -783,34 +741,27 @@ public class UI extends javax.swing.JFrame  {
                 .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(indienenKnopVFT)
                     .addComponent(boodschapLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(382, Short.MAX_VALUE))
+                .addContainerGap(403, Short.MAX_VALUE))
         );
 
         FormulierScherm.addTab("Voorkeurformulier", VoorkeurFormulierTab);
 
         ZoekAanvraagTab.setBackground(new java.awt.Color(255, 255, 255));
 
-        rijksnumStudentLabelART.setForeground(new java.awt.Color(0, 0, 0));
         rijksnumStudentLabelART.setText("Rijksregisternummer (kind): ");
 
         infoLabelART.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-        infoLabelART.setForeground(new java.awt.Color(0, 0, 0));
         infoLabelART.setText("<html>Je kan je aanvragen onderaan raadplegen door het rijksregisternummer van uw kind in te\n <br/>geven. Mocht u niet tevreden zijn met uw opgegeven voorkeur, kunt u deze nog aanpassen\n<br/>door opnieuw de 'Voorkeurformulier' in te vullen.\n<br/>(Let op: u kan enkel de voorkeur voor de lopende periode aanpassen!)</html>");
 
         gegevensPanelART.setBackground(new java.awt.Color(255, 255, 255));
-        gegevensPanelART.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Uw gegevens", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(0, 0, 0))); // NOI18N
-        gegevensPanelART.setForeground(new java.awt.Color(0, 0, 0));
+        gegevensPanelART.setBorder(javax.swing.BorderFactory.createTitledBorder("Uw gegevens"));
 
-        eersteVoorkeurLabel.setForeground(new java.awt.Color(0, 0, 0));
         eersteVoorkeurLabel.setText("Voorkeurschool:");
 
-        aanvraagnummerLabelART.setForeground(new java.awt.Color(0, 0, 0));
         aanvraagnummerLabelART.setText("Aanvraagnummer:");
 
-        statusLabel.setForeground(new java.awt.Color(0, 0, 0));
         statusLabel.setText("Status:");
 
-        tijdstipLabel.setForeground(new java.awt.Color(0, 0, 0));
         tijdstipLabel.setText("Tijdstip van aanmelding:");
 
         javax.swing.GroupLayout gegevensPanelARTLayout = new javax.swing.GroupLayout(gegevensPanelART);
@@ -826,7 +777,7 @@ public class UI extends javax.swing.JFrame  {
                     .addComponent(statusLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(aanvraagnummerLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
+                    .addComponent(aanvraagnummerLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
                     .addComponent(statusLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tijdstipLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(eersteVoorkeurLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -876,8 +827,6 @@ public class UI extends javax.swing.JFrame  {
             }
         });
 
-        boodschapLabelART.setForeground(new java.awt.Color(0, 0, 0));
-
         javax.swing.GroupLayout ZoekAanvraagTabLayout = new javax.swing.GroupLayout(ZoekAanvraagTab);
         ZoekAanvraagTab.setLayout(ZoekAanvraagTabLayout);
         ZoekAanvraagTabLayout.setHorizontalGroup(
@@ -885,7 +834,7 @@ public class UI extends javax.swing.JFrame  {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ZoekAanvraagTabLayout.createSequentialGroup()
                 .addGroup(ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
-                        .addGap(29, 171, Short.MAX_VALUE)
+                        .addGap(29, 173, Short.MAX_VALUE)
                         .addComponent(boodschapLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
                         .addContainerGap()
@@ -895,7 +844,7 @@ public class UI extends javax.swing.JFrame  {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(studentenDropBoxART, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(gegevensPanelART, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(infoLabelART, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE))))
+                            .addComponent(infoLabelART, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE))))
                 .addGap(143, 143, 143))
             .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
@@ -917,7 +866,7 @@ public class UI extends javax.swing.JFrame  {
                 .addComponent(verwijderLinkLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
                 .addComponent(boodschapLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(396, Short.MAX_VALUE))
+                .addContainerGap(446, Short.MAX_VALUE))
         );
 
         FormulierScherm.addTab("Aanvragen raadplegen", ZoekAanvraagTab);
@@ -945,17 +894,34 @@ public class UI extends javax.swing.JFrame  {
             .addGroup(UitloggenTabLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(uitloggenLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(935, Short.MAX_VALUE))
+                .addContainerGap(919, Short.MAX_VALUE))
         );
         UitloggenTabLayout.setVerticalGroup(
             UitloggenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(UitloggenTabLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(uitloggenLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(742, Short.MAX_VALUE))
+                .addContainerGap(781, Short.MAX_VALUE))
         );
 
         FormulierScherm.addTab("Uitloggen", UitloggenTab);
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel3.setText("<html>Sinds een aantal jaren komt de vraag naar plaatsen voor het basisonderwijs niet overeen met het aanbod. Recent ziet men ook hetzelfde probleem bij plaatsen voor het middelbaar onderwijs. Beide problemen manifesteren zich voornamelijk in de grotere steden. Bijgevolg hebben we een online informatiesysteem ontwikkeld om de centrale toewijzing van kinderen aan scholen te regelen.\nDe werking van ons informatiesysteem is grotendeels gebaseerd op de tijd van aanmelding in het systeem, de school die geprefereerd wordt en of er al dan niet broers of zussen reeds op die school zitten. \n</html>");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1016, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 591, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -964,17 +930,19 @@ public class UI extends javax.swing.JFrame  {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(jLabel2)
-                .addContainerGap(947, Short.MAX_VALUE))
+                .addContainerGap(949, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(54, 54, 54)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(729, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        FormulierScherm.addTab("Hom", jPanel2);
+        FormulierScherm.addTab("Home", jPanel2);
 
         MainPanel.add(FormulierScherm, "card2");
 
@@ -1076,7 +1044,7 @@ public class UI extends javax.swing.JFrame  {
                 .addGroup(AdminSchermLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(343, Short.MAX_VALUE))
+                .addContainerGap(402, Short.MAX_VALUE))
         );
 
         MainPanel.add(AdminScherm, "card5");
@@ -1640,10 +1608,12 @@ public class UI extends javax.swing.JFrame  {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel naamLabelAS;
