@@ -18,7 +18,7 @@ public class School implements Serializable {
     private final int ID;
     private final String naam;
     private final String adres;
-    private final int plaatsen;
+    private int plaatsen;
     
     public School(int ID, String naam, String adres, int plaatsen){
         this.ID = ID;
@@ -41,6 +41,10 @@ public class School implements Serializable {
 
     public int getPlaatsen() {
         return plaatsen;
+    }
+
+    public void setPlaatsen(int plaatsen) {
+        this.plaatsen = plaatsen;
     }
     
     @Override
