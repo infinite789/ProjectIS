@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -34,14 +33,15 @@ public class DatabaseConnect  {
     private HashMap<Integer, ToewijzingsAanvraag> toewijzingsaanvragen;
     private final ArrayList<Integer> verwijderdeKeys; 
     private Ouder ingelogdeOuder;
-
-    private final int DEFAULT_KEY = 6001; //default key toewijzingsaanvragen
-    private final LocalDateTime START_DATUM = LocalDateTime.of(
-            2018, Month.DECEMBER, 15, 0, 0, 0
-    );
     private LocalDateTime huidigeDeadline = LocalDateTime.of(
             2018, Month.DECEMBER, 30, 0, 0, 0
     ); //deadline eerste voorkeur
+    
+    private final LocalDateTime START_DATUM = LocalDateTime.of(
+            2018, Month.DECEMBER, 30, 0, 0, 0
+    ); //deadline eerste voorkeur
+    private final int DEFAULT_KEY = 6001; //default key toewijzingsaanvragen
+    
     
 
     /*
@@ -59,12 +59,6 @@ public class DatabaseConnect  {
         this.verwijderdeKeys = new ArrayList<>();
     }
 
-    /*
-     * Constructor met een object als argument van het type Algoritme
-     * Maakt slechts verbinding met de databank
-     * Bij gebruik altijd de connectie erna afbreken!
-     */
-    
     /*
      * Methode voor het maken van verbinding met de databank 
      */
@@ -90,7 +84,7 @@ public class DatabaseConnect  {
             System.out.println("Error: " + ex);
         }
     }
-    
+
     /*
      * Methode voor het ophalen van de tabel 'ouders' uit de databank 
      */
@@ -499,39 +493,6 @@ public class DatabaseConnect  {
         }
     }
     
-    /*
-     * Methode voor het opslaan van de towijzingsaanvragen 
-     * De methode verwerkt de aangepaste gegevens in de databank
-     * Eerst connectie openen voor het gebruiken van de methoden 
-     * door getConnection() op te roepen en afsluiten met 
-     * closeConnection()
-     */
-    public void bewaarToewijzingsAanvragen(ArrayList<ToewijzingsAanvraag> lta) {
-        try {
-            for (ToewijzingsAanvraag ta : lta) {
-                PreparedStatement ps
-                = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
-                + "toewijzingsaanvraagnummer, status, "
-                + "student_rijksregisternummer, aanmeldingstijdstip, "
-                + "broer_zus, voorkeurschool) "
-                + "VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
-                + "status = VALUES(status), broer_zus = VALUES(broer_zus), "
-                + "voorkeurschool = VALUES(voorkeurschool)");
-                ps.setInt(1, ta.getToewijzingsAanvraagNummer());
-                ps.setString(2, ta.getStatus().toString());
-                ps.setString(3, ta.getRijksregisterNummerStudent());
-                DateTimeFormatter df
-                    = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                ps.setString(4, df.format(ta.getAanmeldingsTijdstip()));
-                ps.setInt(6, ta.getVoorkeur());
-                ps.setBoolean(5, ta.heeftHeeftBroerOfZus());
-                ps.execute();
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
-    }
-        
     public void exporteerWachtLijsten() throws ToewijzingException {
         for(School s : scholen.values()) {
             String bestandPath = "./lijsten/s" + s.getNaam().substring(0, 5)
@@ -704,6 +665,7 @@ public class DatabaseConnect  {
     public LocalDateTime getHuidigeDeadline() {
         return this.huidigeDeadline;
     }
+    
     /*
      * Methode voor het overschrijven van de lokale gegevens naar
      * de databank
