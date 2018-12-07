@@ -211,12 +211,6 @@ public class UI extends javax.swing.JFrame  {
 
         gebrLabelAS.setText("Gebruikersnaam:");
 
-        passVeldIS.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                passVeld(evt);
-            }
-        });
-
         passLabelIS.setBackground(new java.awt.Color(0, 0, 0));
         passLabelIS.setText("Wachtwoord:");
 
@@ -1557,10 +1551,6 @@ public class UI extends javax.swing.JFrame  {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         FormulierScherm.setSelectedComponent(AanmeldingsFormulierTab);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void passVeld(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passVeld
-       
-    }//GEN-LAST:event_passVeld
 
     /**
      * @param args the command line arguments
