@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.time.format.DateTimeFormatter;
@@ -51,7 +52,7 @@ public class UI extends javax.swing.JFrame  {
         this.defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR); //default cursor
         this.handCursor = new Cursor(Cursor.HAND_CURSOR); //hand cursor
         this.algoritme = new Algoritme();
-        
+        InlogScherm.getRootPane().setDefaultButton(inlogKnopIS);
         /*
          * Scholen toevoegen aan de tabel onder de 'Voorkeurformulier'-tab
          */
@@ -209,6 +210,12 @@ public class UI extends javax.swing.JFrame  {
         InlogScherm.setBackground(new java.awt.Color(255, 255, 255));
 
         gebrLabelAS.setText("Gebruikersnaam:");
+
+        passVeldIS.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                passVeld(evt);
+            }
+        });
 
         passLabelIS.setBackground(new java.awt.Color(0, 0, 0));
         passLabelIS.setText("Wachtwoord:");
@@ -1259,6 +1266,7 @@ public class UI extends javax.swing.JFrame  {
             boodschapLabelIS.setText("U bent ingelolgd.");
             boodschapLabelIS.setForeground(Color.green);
             doorgaanKnopIS.setEnabled(true);
+            InlogScherm.getRootPane().setDefaultButton(doorgaanKnopIS);
             
             /* 
              * Gegevens van ouder automatisch aanvullen in de 
@@ -1549,6 +1557,10 @@ public class UI extends javax.swing.JFrame  {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         FormulierScherm.setSelectedComponent(AanmeldingsFormulierTab);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void passVeld(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passVeld
+       
+    }//GEN-LAST:event_passVeld
 
     /**
      * @param args the command line arguments
