@@ -32,9 +32,9 @@ public class UI extends javax.swing.JFrame  {
     
     private final Cursor defaultCursor;
     private final Cursor handCursor;
-    private DatabaseConnect dbconnect;
+    private Algoritme algoritme;
     private Ouder gebruiker;
-    private DefaultTableModel dtm;
+    private final DefaultTableModel dtm;
     private final String ADMIN_ACCOUNT = "admin";
     private final String ADMIN_WACHTWOORD = "admin";
     
@@ -45,16 +45,16 @@ public class UI extends javax.swing.JFrame  {
     public UI() throws Exception {
         initComponents(); //componenten van NetBeans GuiBuilder initializeren
         
-        getContentPane().setBackground(Color.white); //wit achtergrond
-        this.dbconnect = new DatabaseConnect(); //connectie met de databank
+        getContentPane().setBackground(Color.white); //wit achtergrond van de Pane
         this.defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR); //default cursor
         this.handCursor = new Cursor(Cursor.HAND_CURSOR); //hand cursor
+        this.algoritme = new Algoritme();
         InlogScherm.getRootPane().setDefaultButton(inlogKnopIS);
         /*
          * Scholen toevoegen aan de tabel onder de 'Voorkeurformulier'-tab
          */
         this.dtm = (DefaultTableModel)scholenTabel.getModel();
-        for (School s : dbconnect.getScholenArray()) {
+        for (School s : algoritme.getScholenArray()) {
             Object[] o = new Object[4];
             o[0] = s.getNaam();
             o[1] = s.getAdres();
@@ -1094,17 +1094,23 @@ public class UI extends javax.swing.JFrame  {
             int aanvraagnummer = Integer.parseInt(aanvraagnummerVeldVFT.getText());
             String rnstudent = studentenDropBoxVFT.getSelectedItem().toString();
             int schoolID = (int)scholenTabel.getValueAt(scholenTabel.getSelectedRow(), 3);
-            if (dbconnect.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
-
-
-            } else if(dbconnect.indienenVoorkeur(aanvraagnummer, rnstudent, schoolID)
-                     && !dbconnect.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
-                boodschapLabelVFT.setForeground(Color.green);
-                boodschapLabelVFT.setText("<html>U heeft uw voorkeur succesvol ingediend! "
-                               + "<br/>Je kan je aanvragen raadplegen onder 'Aanvragen'.</html>");
-            }  else {
+            if (algoritme.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
                 boodschapLabelVFT.setForeground(Color.red);
-                boodschapLabelVFT.setText("Fout!");
+                boodschapLabelVFT.setText("<html>U werd al afgewezen voor deze school! "
+                               + "<br/>Gelieve een andere school te selecteren.</html>");
+            } else try {
+                if(algoritme.indienenVoorkeur(aanvraagnummer, rnstudent, schoolID)
+                        && !algoritme.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
+                    boodschapLabelVFT.setForeground(Color.green);
+                    boodschapLabelVFT.setText("<html>U heeft uw voorkeur succesvol ingediend! "
+                            + "<br/>Je kan je aanvragen raadplegen onder 'Aanvragen'.</html>");
+                }  else {
+                    boodschapLabelVFT.setForeground(Color.red);
+                    boodschapLabelVFT.setText("Fout!");
+                }
+            } catch (ToewijzingException ex) {
+                boodschapLabelVFT.setForeground(Color.red);
+                boodschapLabelVFT.setText("U heeft al voor deze school gekozen!");
             }
         }
     }//GEN-LAST:event_indienenKnopVFTActionPerformed
@@ -1119,7 +1125,7 @@ public class UI extends javax.swing.JFrame  {
             boodschapLabelAFT.setForeground(Color.red);
         }
         else {
-            Student s = dbconnect.getStudent(
+            Student s = algoritme.getStudent(
                 studentenDropBoxAFT.getSelectedItem().toString()
             );
             String rnkind;
@@ -1129,7 +1135,7 @@ public class UI extends javax.swing.JFrame  {
                 rnkind = "";
             String rnouder = rijksnumOuderVeldAFT.getText().replaceAll("@\"[^\\d]\"","");
             try {
-                if(dbconnect.aanvragen(rnkind, rnouder)){
+                if(algoritme.aanvragen(rnkind, rnouder)){
                     boodschapLabelAFT.setForeground(Color.green);
                     boodschapLabelAFT.setText("<html>U heef zich succesvol aangemeld! "
                         + "<br/> Je kan je aanvragen raadplegen onder 'Aanvragen'.</html>");
@@ -1219,7 +1225,7 @@ public class UI extends javax.swing.JFrame  {
     private void activeerKnopASActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activeerKnopASActionPerformed
         try { 
             String rnouder = rijksnumVeldAS.getText();
-            if(dbconnect.activeren(rnouder)) {
+            if(algoritme.activeren(rnouder)) {
                 boodschapLabelAS.setText("<html>Account succesvol aangemaakt. U ontangt van ons "
                                 + "<br/>binnenkort een email met uw login gegevens.</html>");
                 boodschapLabelAS.setForeground(Color.green);
@@ -1253,7 +1259,7 @@ public class UI extends javax.swing.JFrame  {
         char[] passArray = passVeldIS.getPassword();
         String wachtwoord = String.valueOf(passArray)
                            .replaceAll("[^A-Za-z0-9]+", "");
-        if(dbconnect.inloggen(gebrnaam, passArray)) {
+        if(algoritme.inloggen(gebrnaam, passArray)) {
             boodschapLabelIS.setText("U bent ingelolgd.");
             boodschapLabelIS.setForeground(Color.green);
             doorgaanKnopIS.setEnabled(true);
@@ -1263,7 +1269,7 @@ public class UI extends javax.swing.JFrame  {
              * Gegevens van ouder automatisch aanvullen in de 
              * 'Aanmeldingsformulier'-tab
              */
-            gebruiker = dbconnect.getOuder(gebrnaam, passArray);
+            gebruiker = algoritme.getOuder(gebrnaam, passArray);
             naamOuderVeldAFT.setText(gebruiker.getNaam());
             voornaamOuderVeldAFT.setText(gebruiker.getVoornaam());
             emailVeldAFT.setText(gebruiker.getEmail());
@@ -1275,17 +1281,17 @@ public class UI extends javax.swing.JFrame  {
              * 'Aanvragen raadplegen'-tab en in 'Aanmeldigsformulier'-tab
              */
             studentenDropBoxAFT.insertItemAt("", 0);
-            for (Student s : dbconnect.getStudentenVanOuder(
+            for (Student s : algoritme.getStudentenVanOuder(
                     gebruiker.getRijksregisterNummerOuder())) {
                 studentenDropBoxAFT.addItem(s.getRijksregisterNummerStudent());
             }
             studentenDropBoxART.insertItemAt("", 0);
-            for (Student s : dbconnect.getStudentenVanOuder(
+            for (Student s : algoritme.getStudentenVanOuder(
                     gebruiker.getRijksregisterNummerOuder())) {
                 studentenDropBoxART.addItem(s.getRijksregisterNummerStudent());
             }
             studentenDropBoxVFT.insertItemAt("", 0);
-            for (Student s : dbconnect.getStudentenVanOuder(
+            for (Student s : algoritme.getStudentenVanOuder(
                     gebruiker.getRijksregisterNummerOuder())) {
                 studentenDropBoxVFT.addItem(s.getRijksregisterNummerStudent());
             }
@@ -1325,7 +1331,7 @@ public class UI extends javax.swing.JFrame  {
      */
     private void onClose(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_onClose
         try {
-            dbconnect.bewarenEnAfsluiten();
+            algoritme.bewarenEnAfsluiten();
         } catch(Exception e) {
             System.out.println("Error: " + e);
         }
@@ -1337,7 +1343,7 @@ public class UI extends javax.swing.JFrame  {
      */
     private void rijksnumVeldASKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rijksnumVeldASKeyReleased
         String rnouder = rijksnumVeldAS.getText();
-        Ouder o = dbconnect.getOuder(rnouder);
+        Ouder o = algoritme.getOuder(rnouder);
         if(o != null) {
             naamVeldAS.setText(o.getVoornaam());
             voornaamVeldAS.setText(o.getNaam());
@@ -1353,7 +1359,7 @@ public class UI extends javax.swing.JFrame  {
     private void studentenDropBoxAFTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentenDropBoxAFTItemStateChanged
         Student s = null;
         if(studentenDropBoxAFT.getItemCount() > 0) {
-            s = dbconnect.getStudent(
+            s = algoritme.getStudent(
                     studentenDropBoxAFT.getSelectedItem().toString()
             );
         }
@@ -1375,12 +1381,16 @@ public class UI extends javax.swing.JFrame  {
      */
     private void studentenDropBoxARTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentenDropBoxARTItemStateChanged
         ToewijzingsAanvraag ta = null;
-        if(studentenDropBoxART.getItemCount() > 0) {
-            ta = dbconnect.getAanvraag(
-                        studentenDropBoxART.getSelectedItem().toString()
-            );
-        }
-        if(ta == null) {
+        if(studentenDropBoxART.getItemCount() > 0)
+            ta = algoritme.getAanvraag(studentenDropBoxART.getSelectedItem().toString());
+        if(ta == null && studentenDropBoxART.getSelectedIndex() > 0) {
+            aanvraagnummerLabelOut.setText("");
+            statusLabelOut.setText("");
+            tijdstipLabelOut.setText("");
+            eersteVoorkeurLabelOut.setText("");
+            boodschapLabelART.setText("De aanvraag werd niet gevonden!");
+            boodschapLabelART.setForeground(Color.red);
+        } else if (ta == null || studentenDropBoxART.getSelectedIndex() == 0) {
             aanvraagnummerLabelOut.setText("");
             statusLabelOut.setText("");
             tijdstipLabelOut.setText("");
@@ -1394,11 +1404,12 @@ public class UI extends javax.swing.JFrame  {
                     = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String date = df.format(ta.getAanmeldingsTijdstip());
             tijdstipLabelOut.setText(date);
-            String voorkeur = dbconnect.getSchool(ta.getVoorkeur());
-            eersteVoorkeurLabelOut.setText(voorkeur);
-            if(ta.getVoorkeur() == 0) 
+            int voorkeur = ta.getVoorkeur();
+            if(voorkeur == 0)
                 eersteVoorkeurLabelOut.setText("Je kan je voorkeur "
-                                         + "aanpassen vóór " + dbconnect.getHuidigeDeadline());
+                                         + "aanpassen vóór " + algoritme.getHuidigeDeadline());
+            else
+                eersteVoorkeurLabelOut.setText(algoritme.getSchool(voorkeur).toString());
         }
         
     }//GEN-LAST:event_studentenDropBoxARTItemStateChanged
@@ -1410,7 +1421,7 @@ public class UI extends javax.swing.JFrame  {
     private void studentenDropBoxVFTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentenDropBoxVFTItemStateChanged
         ToewijzingsAanvraag ta = null;
         if(studentenDropBoxVFT.getItemCount() > 0) {
-            ta = dbconnect.getAanvraag(
+            ta = algoritme.getAanvraag(
                 studentenDropBoxVFT.getSelectedItem().toString()
             );
         } 
@@ -1460,7 +1471,7 @@ public class UI extends javax.swing.JFrame  {
      */
     private void verwijderLinkLabelARTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verwijderLinkLabelARTMouseClicked
         String rnkind = studentenDropBoxART.getSelectedItem().toString();
-        if(dbconnect.verwijderAanvraag(rnkind)) {
+        if(algoritme.verwijderAanvraag(rnkind)) {
             studentenDropBoxART.setSelectedIndex(0);
             boodschapLabelART.setText("Aanvraag verwijderd!");
             boodschapLabelART.setForeground(Color.red);
@@ -1469,7 +1480,7 @@ public class UI extends javax.swing.JFrame  {
 
     private void exporteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exporteerKnopAdminActionPerformed
         try {
-            dbconnect.exporteerWachtLijsten();
+            algoritme.exporteerWachtLijsten();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
                 AdminScherm, "Error: " + e, 
@@ -1488,7 +1499,7 @@ public class UI extends javax.swing.JFrame  {
 
     private void uitloggenLinkLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uitloggenLinkLabelMouseClicked
         try {
-            dbconnect.bewarenEnAfsluiten();
+            algoritme.bewarenEnAfsluiten();
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
@@ -1500,7 +1511,7 @@ public class UI extends javax.swing.JFrame  {
         studentenDropBoxAFT.removeAllItems();
         studentenDropBoxART.removeAllItems();
         try {
-            this.dbconnect = new DatabaseConnect();
+            this.algoritme = new Algoritme();
         } catch (Exception ex) {
             System.out.println("Error: " + ex);
         }
@@ -1509,7 +1520,7 @@ public class UI extends javax.swing.JFrame  {
 
     private void sorteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sorteerKnopAdminActionPerformed
         try {
-            dbconnect.sorteerAlgoritme();
+            algoritme.sorteerAlgoritme();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
                 AdminScherm, "Error: " + e, 

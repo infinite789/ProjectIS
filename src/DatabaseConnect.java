@@ -1,15 +1,8 @@
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,8 +18,6 @@ import java.util.stream.Collectors;
 public class DatabaseConnect  {
 
     private Connection con;
-    private Statement st;
-    private ResultSet rs;
     private HashMap<String, Ouder> ouders;
     private HashMap<String, Student> studenten;
     private HashMap<Integer, School> scholen;
@@ -36,38 +27,61 @@ public class DatabaseConnect  {
 
     private final int DEFAULT_KEY = 6001; //default key toewijzingsaanvragen
     
-    private final LocalDateTime START_DATUM = LocalDateTime.of(
-            2018, Month.DECEMBER, 1, 0, 0, 0
-    );//start inschrijvingen 
-    
-    private final LocalDateTime huidigeDeadline = LocalDateTime.of(
-            2018, Month.DECEMBER, 30, 0, 0, 0
-    ); //deadline eerste voorkeur
-    
-
     /*
      * Default constructor
      * Maakt connectie met de databank en kopieert de gegevens in lokale
      * HashMap objecten
      */
-    public DatabaseConnect() throws Exception {
-        con = getConnection();
-        this.ouders = getOuders();
-        this.studenten = getStudenten();
-        this.scholen = getScholen();
-        this.toewijzingsaanvragen = getToewijzingsAanvragen();
-        con.close();
+
+    /**
+     *
+     */
+
+    public DatabaseConnect() {
+        getConnection();
+        this.ouders = laadOuders();
+        this.studenten = laadStudenten();
+        this.scholen = laadScholen();
+        this.toewijzingsaanvragen = laadToewijzingsAanvragen();
+        for(School s : scholen.values()) {
+            laadWachtLijst(s);
+        }
+        closeConnection();
         this.verwijderdeKeys = new ArrayList<>();
+    }
+
+    public HashMap<String, Ouder> getOuders() {
+        return ouders;
+    }
+
+    public HashMap<String, Student> getStudenten() {
+        return studenten;
+    }
+
+    public HashMap<Integer, School> getScholen() {
+        return scholen;
+    }
+
+    public HashMap<Integer, ToewijzingsAanvraag> getToewijzingsaanvragen() {
+        return toewijzingsaanvragen;
+    }
+
+    public ArrayList<Integer> getVerwijderdeKeys() {
+        return verwijderdeKeys;
+    }
+
+    public Ouder getIngelogdeOuder() {
+        return ingelogdeOuder;
     }
      
     /*
      * Methode voor het ophalen van de tabel 'ouders' uit de databank 
      */
-    public HashMap<String, Ouder> getOuders() {
+    public final HashMap<String, Ouder> laadOuders() {
         HashMap<String, Ouder> oudersHashMap = new HashMap<>();
         try {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM ouders");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM ouders");
             while (rs.next()) {
                 String rijksregisterNummerOuder
                         = rs.getString("ouder_rijksregisternummer");
@@ -81,7 +95,6 @@ public class DatabaseConnect  {
                         new Ouder(rijksregisterNummerOuder, naam, voornaam,
                                 email, adres, gebruikersnaam, wachtwoord));
             }
-            this.ouders = oudersHashMap;
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
@@ -91,11 +104,11 @@ public class DatabaseConnect  {
     /*
      * Methode voor het ophalen van de tabel 'studenten' uit de databank 
      */
-    public HashMap<String, Student> getStudenten() {
+    public final HashMap<String, Student> laadStudenten() {
         HashMap<String, Student> studentenHashMap = new HashMap<>();
         try {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM studenten");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM studenten");
             while (rs.next()) {
                 String rijksregisterNummerOuder
                         = rs.getString("ouder_rijksregisternummer");
@@ -110,7 +123,6 @@ public class DatabaseConnect  {
                                 rijksregisterNummerOuder, naam, voornaam,
                                 telefoonnummer, huidigeSchool));
             }
-            this.studenten = studentenHashMap;
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
@@ -120,19 +132,19 @@ public class DatabaseConnect  {
     /*
      * Methode voor het ophalen van de tabel 'scholen' uit de databank 
      */
-    public HashMap<Integer, School> getScholen() {
+    public final HashMap<Integer, School> laadScholen() {
         HashMap<Integer, School> scholenHashMap = new HashMap<>();
         try {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM scholen");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM scholen");
             while (rs.next()) {
                 int id = rs.getInt("ID");
                 String naam = rs.getString("school_naam");
                 String adres = rs.getString("school_adres");
                 int capaciteit = rs.getInt("capaciteit");
-                scholenHashMap.put(id, new School(id, naam, adres, capaciteit));
+                scholenHashMap.put(id, new School(id, naam, 
+                                   adres, capaciteit, new ArrayList<>()));
             }
-            this.scholen = scholenHashMap;
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
@@ -143,35 +155,71 @@ public class DatabaseConnect  {
      * Methode voor het ophalen van de tabel 'toewijzingsaanvragen' uit de 
      * databank 
      */
-    public HashMap<Integer, ToewijzingsAanvraag> getToewijzingsAanvragen() {
+    public final HashMap<Integer, ToewijzingsAanvraag> laadToewijzingsAanvragen() {
         HashMap<Integer, ToewijzingsAanvraag> aanvragenHashMap = new HashMap<>();
         try {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen");
             while (rs.next()) {
                 int aanvraagnummer = rs.getInt("toewijzingsaanvraagnummer");
-                Status status
-                        = Status.valueOf(rs.getString("status"));
+                Status status = Status.valueOf(rs.getString("status"));
                 String rijksregisterNummerStudent
                         = rs.getString("student_rijksregisternummer");
-                Timestamp ts
-                        = rs.getTimestamp("aanmeldingstijdstip");
+                Timestamp ts = rs.getTimestamp("aanmeldingstijdstip");
                 LocalDateTime aanmeldingstijdstip = ts.toLocalDateTime();
                 boolean heeftBroerOfZus = rs.getBoolean("broer_zus");
                 int voorkeur = rs.getInt("voorkeurschool");
+                String afgewezenScholenCsv = rs.getString("afgewezen_scholen");
+                String[] afgSchArray = afgewezenScholenCsv.split(";");
+                ArrayList<School> als = new ArrayList<>();
+                for(String str : afgSchArray)
+                    if(!str.equals(""))
+                        als.add(getSchool(Integer.parseInt(str)));
                 aanvragenHashMap.put(aanvraagnummer,
-                        new ToewijzingsAanvraag(aanvraagnummer,
-                                rijksregisterNummerStudent,
-                                aanmeldingstijdstip, heeftBroerOfZus,
-                                status, voorkeur));
+                    new ToewijzingsAanvraag(aanvraagnummer,
+                    rijksregisterNummerStudent,aanmeldingstijdstip, 
+                    heeftBroerOfZus, status, voorkeur, als)
+                );
             }
-            this.toewijzingsaanvragen = aanvragenHashMap;
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
         return aanvragenHashMap;
     }
 
+    /*
+     * Methode voor het ophalen van een wachtlijst van de School meegegeven
+     * als argument 
+     */
+    public final void laadWachtLijst(School s) {
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
+                    + "WHERE voorkeurschool = " + s.getID());
+            while (rs.next()) {
+                int aanvraagnummer = rs.getInt("toewijzingsaanvraagnummer");
+                Status status = Status.valueOf(rs.getString("status"));
+                String rijksregisterNummerStudent
+                        = rs.getString("student_rijksregisternummer");
+                Timestamp ts = rs.getTimestamp("aanmeldingstijdstip");
+                LocalDateTime aanmeldingstijdstip = ts.toLocalDateTime();
+                boolean heeftBroerOfZus = rs.getBoolean("broer_zus");
+                int voorkeur = rs.getInt("voorkeurschool");
+                String afgewezenScholenCsv = rs.getString("afgewezen_scholen");
+                String[] afgScholenArray = afgewezenScholenCsv.split(";");
+                ArrayList<School> als = new ArrayList<>();
+                for(String str : afgScholenArray) 
+                    if(!str.equals(""))
+                        als.add(scholen.get(Integer.parseInt(str)));
+                s.getWachtLijst().add(new ToewijzingsAanvraag(aanvraagnummer,
+                    rijksregisterNummerStudent,aanmeldingstijdstip, 
+                    heeftBroerOfZus, status, voorkeur, als));
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+    
     /*
      * Methode voor het controleren van de inloggegevens 
      */
@@ -322,23 +370,22 @@ public class DatabaseConnect  {
      * De methode past zijn gedrag door de datum te vergelelijken
      * met de deadlines voor het indienen 
      */
-    public boolean indienenVoorkeur(int aanvraagnummer, String rnstudent,
-                                    int school) {
-        boolean geldig = false;
-        LocalDate dt = LocalDate.now();
+    public boolean indienenVoorkeur (int aanvraagnummer, String rnstudent, int schoolID) 
+    throws ToewijzingException {
         ToewijzingsAanvraag ta = toewijzingsaanvragen.get(aanvraagnummer);
-        if (ta == null) {
-            return false;
-        }
-        ta.setVoorkeur(school);
+        if(schoolID == ta.getVoorkeur())
+            throw new ToewijzingException("U heeft al voor deze school gekozen!");
+        if(ta.getVoorkeur() != 0)
+            scholen.get(ta.getVoorkeur()).getWachtLijst().remove(ta);
+        ta.setVoorkeur(schoolID);
         ta.setStatus(Status.INGEDIEND);
-        if (heeftBroerOfZus(rnstudent, school)) {
+        scholen.get(schoolID).getWachtLijst().add(ta);
+        if (heeftBroerOfZus(rnstudent, schoolID)) {
             ta.setHeeftBroerOfZus(true);
         } else {
             ta.setHeeftBroerOfZus(false);
         }
         return true;
-
     }
 
     /*
@@ -381,13 +428,13 @@ public class DatabaseConnect  {
      * Methode voor het ophalen van een school op basis van
      * zijn ID
      */
-    public String getSchool(int ID) {
+    public School getSchool(int ID) {
         for (School s : scholen.values()) {
             if (s.getID() == ID) {
-                return s.getNaam();
+                return s;
             }
         }
-        return "";
+        return null;
     }
 
     /*
@@ -424,6 +471,20 @@ public class DatabaseConnect  {
         }
     }
 
+    public void bewaarScholen() {
+        try {
+            for(School s : scholen.values()) {
+                PreparedStatement ps
+                = con.prepareStatement("UPDATE scholen SET "
+                + "wachtlijst = ? WHERE id = ?");
+                ps.setString(1, s.csvFormatLijst());
+                ps.setInt(2, s.getID());
+                ps.execute();
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
     
     /*
      * Methode voor het opslaan van de towijzingsaanvragen 
@@ -441,18 +502,20 @@ public class DatabaseConnect  {
                     = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
                     + "toewijzingsaanvraagnummer, status, "
                     + "student_rijksregisternummer, aanmeldingstijdstip, "
-                    + "broer_zus, voorkeurschool) "
-                    + "VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
+                    + "broer_zus, voorkeurschool, afgewezen_scholen) "
+                    + "VALUES(?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
                     + "status = VALUES(status), broer_zus = VALUES(broer_zus), "
-                    + "voorkeurschool = VALUES(voorkeurschool)");
+                    + "voorkeurschool = VALUES(voorkeurschool), "
+                    + "afgewezen_scholen = VALUES(afgewezen_scholen)");
                     ps.setInt(1, ta.getToewijzingsAanvraagNummer());
                     ps.setString(2, ta.getStatus().toString());
                     ps.setString(3, ta.getRijksregisterNummerStudent());
                     DateTimeFormatter df
                         = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     ps.setString(4, df.format(ta.getAanmeldingsTijdstip()));
-                    ps.setInt(6, ta.getVoorkeur());
                     ps.setBoolean(5, ta.heeftHeeftBroerOfZus());
+                    ps.setInt(6, ta.getVoorkeur());
+                    ps.setString(7, ta.csvFormatLijst());
                     ps.execute();
                 }
             }
@@ -508,6 +571,7 @@ public class DatabaseConnect  {
     public void bewarenEnAfsluiten() throws Exception {
         con = getConnection();
         bewaarOuders();
+        bewaarScholen();
         bewaarToewijzingsAanvragen();
         con.close();
     }
@@ -515,7 +579,7 @@ public class DatabaseConnect  {
     /*
      * Methode voor het maken van verbinding met de databank 
      */
-    public Connection getConnection() {
+    public final Connection getConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = (Connection) DriverManager.getConnection(
@@ -530,186 +594,11 @@ public class DatabaseConnect  {
     /*
      * Methode voor het afsluiten van de verbinding met de databank
      */
-    public void closeConnection() {
+    public final void closeConnection() {
         try {
             con.close();
         } catch (SQLException ex) {
             System.out.println("Error: " + ex);
         }
-    }
-    
-    public void exporteerWachtLijsten() throws ToewijzingException {
-        for(School s : scholen.values()) {
-            String bestandPath = "./lijsten/s" + s.getNaam().substring(0, 5)
-                                .replaceAll(" ", "").toLowerCase() + s.getID();
-            ObjectOutputStream output;
-            try {
-                File file = new File(bestandPath);
-                if(file.exists())
-                    throw new ToewijzingException("De wachtlijsten zijn al geëxporteerd!");
-                output = new ObjectOutputStream(new FileOutputStream(
-                        bestandPath
-                ));
-                output.writeObject(getWachtLijst(s.getID()));
-                output.close();
-            } catch (IOException e) {
-                throw new ToewijzingException("Fout bij exporteren: " + e);
-            }
-        }
-    }
-    
-    public ArrayList<ToewijzingsAanvraag> getWachtLijst(int schoolID) {
-            LocalDateTime now = LocalDateTime.now();
-            ArrayList<ToewijzingsAanvraag> wachtLijst = new ArrayList<>();
-            for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
-                if(ta.getVoorkeur() == schoolID) {
-                    wachtLijst.add(ta);
-                }
-            }
-            return wachtLijst;
-    }
-    public ArrayList<ToewijzingsAanvraag> wachtLijstLaden(School s) {
-        ArrayList<ToewijzingsAanvraag> wachtLijst = null;
-        try {
-            String bestandPath = "./lijsten/s" + s.getNaam().substring(0, 5)
-                                .replaceAll(" ", "").toLowerCase() + s.getID();
-            ObjectInputStream input;
-            input = new ObjectInputStream(new FileInputStream(bestandPath));
-            wachtLijst = (ArrayList)input.readObject();
-            input.close();
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex);
-        }
-        return wachtLijst;
-    }
-    
-    public void wachtLijstOpslaan(ArrayList<ToewijzingsAanvraag> lijst, String path) {
-        ObjectOutputStream output;
-        try {
-            output = new ObjectOutputStream(new FileOutputStream(
-                    path
-            ));
-            output.writeObject(lijst);
-            output.close();
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        } 
-    }
-    
-    public ArrayList<ToewijzingsAanvraag> sorteerWachtLijst(ArrayList<ToewijzingsAanvraag> wachtLijst) {
-        for(int i = 0; i < wachtLijst.size(); i++) {
-            ToewijzingsAanvraag lagerePref = wachtLijst.get(i);
-            ToewijzingsAanvraag hogerePref = null;
-            int lagePrefIndex = i;
-            for(int j = i+1; j < wachtLijst.size(); j++) {
-                long preferentie;
-                if(hogerePref == null) 
-                    preferentie = getPreferentie(wachtLijst.get(i));
-                else
-                    preferentie = getPreferentie(hogerePref);
-                long preferentie2 = getPreferentie(wachtLijst.get(j));
-                if(preferentie < preferentie2) {
-                    hogerePref = wachtLijst.get(j);
-                    lagePrefIndex = j;
-                }
-            }
-            if(hogerePref != null) {
-                wachtLijst.set(i, hogerePref);
-                wachtLijst.set(lagePrefIndex, lagerePref);
-            }
-        }  
-        return wachtLijst;
-    }
-    
-    public ArrayList<ToewijzingsAanvraag> laadAfgewezenStudenten() throws Exception {
-        ArrayList<ToewijzingsAanvraag> afgewezenStudenten;
-        File afgStBestand = new File("./lijsten/afgewezenStudenten");
-        if(afgStBestand.exists()){
-            ObjectInputStream input = new ObjectInputStream(
-                                      new FileInputStream(
-                        "./lijsten/afgewezenStudenten"
-            ));
-            afgewezenStudenten = (ArrayList)input.readObject();
-            input.close();
-        } else {
-            afgewezenStudenten = new ArrayList<>();
-        }
-        return afgewezenStudenten;
-    }
-    
-    public void sorteerAlgoritme() throws Exception {
-        LocalDateTime now = LocalDateTime.now();
-        ArrayList<ToewijzingsAanvraag> afgewezenStudenten;
-        afgewezenStudenten = laadAfgewezenStudenten();
-        File afgStBestand = new File("./lijsten/afgewezenStudenten");
-        for(School s : scholen.values()) {
-            String path = "./lijsten/s" + s.getNaam().substring(0, 5)
-                          .replaceAll(" ", "").toLowerCase() + s.getID();
-            ArrayList<ToewijzingsAanvraag> wachtLijst = wachtLijstLaden(s);
-            if(!afgStBestand.exists()) {
-                wachtLijst = sorteerWachtLijst(wachtLijst);
-            } else {
-                for(ToewijzingsAanvraag ta : afgewezenStudenten) {
-                    if(ta.getVoorkeur() == s.getID() 
-                       && afgewezenStudenten.remove(ta))
-                        wachtLijst.add(ta);
-                }
-                wachtLijst = sorteerWachtLijst(wachtLijst);
-            }
-            //studenten afwijzen indien de school vol zit
-            while(wachtLijst.size() > s.getPlaatsen()) {
-                ToewijzingsAanvraag ta = wachtLijst.get(wachtLijst.size()-1);
-                wachtLijst.remove(ta);
-                afgewezenStudenten.add(ta);
-            }
-            //wachtlijst van school schrijven naar bestand
-            wachtLijstOpslaan(wachtLijst, path);
-        }
-        wachtLijstOpslaan(afgewezenStudenten, "./lijsten/afgewezenStudenten");
-        updateStatus();
-    }
-    
-    public long getPreferentie(ToewijzingsAanvraag ta) {
-        long preferentie = huidigeDeadline.toEpochSecond(ZoneOffset.UTC)
-                         - ta.getAanmeldingsTijdstip().toEpochSecond(ZoneOffset.UTC);
-        long bonusPunten = huidigeDeadline.toEpochSecond(ZoneOffset.UTC)
-                         - START_DATUM.toEpochSecond(ZoneOffset.UTC);
-        if(ta.heeftHeeftBroerOfZus()) 
-            preferentie += bonusPunten;
-        return preferentie;
-                        
-    }
-    
-    public void updateStatus() {
-        getConnection();
-        ArrayList<ToewijzingsAanvraag> al = new ArrayList<>();
-        al.addAll(getToewijzingsAanvragen().values());
-        for (ToewijzingsAanvraag ta : al) {
-            if (ta.getStatus().equals(Status.INGEDIEND)) {
-                ta.setStatus(Status.VOORLOPIG);
-            }
-        }
-        bewaarToewijzingsAanvragen(al);
-        closeConnection();
-    }
-    
-    public boolean schoolIsAfgewezen(int schoolID, int aanvraagnummer)  {
-        try {
-            ArrayList<ToewijzingsAanvraag> afgewezenStudenten
-                        = laadAfgewezenStudenten();
-            for(ToewijzingsAanvraag ta : afgewezenStudenten) {
-                if(ta.getVoorkeur() == schoolID
-                        && ta.getToewijzingsAanvraagNummer() == aanvraagnummer)
-                    return true;
-            }
-            return false;
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex);
-            return false;
-        }
-    }
-    
-    public LocalDateTime getHuidigeDeadline() {
-        return this.huidigeDeadline;
     }
 }

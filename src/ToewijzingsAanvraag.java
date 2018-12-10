@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /*
@@ -21,6 +22,7 @@ public class ToewijzingsAanvraag implements Serializable {
     private boolean heeftBroerOfZus;
     private Status status;
     private Integer voorkeur;
+    private final ArrayList<School> afgewezenScholen;
     
     public ToewijzingsAanvraag(int nummer, String rnstudent) {
         this.toewijzingsAanvraagNummer = nummer;
@@ -29,21 +31,37 @@ public class ToewijzingsAanvraag implements Serializable {
         this.heeftBroerOfZus = false;
         this.status = Status.ONTWERP;
         this.voorkeur = 0;
+        this.afgewezenScholen = new ArrayList<>();
     }
     
     public ToewijzingsAanvraag(int nummer, String rnstudent,
                                 LocalDateTime tijdstip,
-                                boolean heeftBroerOfZus, 
-                                Status status,
-                                Integer voorkeur){
+                                boolean heeftBroerOfZus, Status status, 
+                                Integer voorkeur, ArrayList<School> afgewezenScholen){
         this.toewijzingsAanvraagNummer = nummer;
         this.rijksregisterNummerStudent = rnstudent;
         this.aanmeldingsTijdstip = tijdstip;
         this.heeftBroerOfZus = heeftBroerOfZus;
         this.status = status;
         this.voorkeur = voorkeur;
+        this.afgewezenScholen = afgewezenScholen;
     }
 
+    public ArrayList<School> getAfgewezenScholen() {
+        return afgewezenScholen;
+    }
+
+    public String csvFormatLijst() {
+        String csvLijst = "";
+        for(School s : afgewezenScholen) {
+            csvLijst += s.getID()+ ";";
+        }
+        if(csvLijst.equals(""))
+            return csvLijst;
+        else
+            return csvLijst.substring(0, csvLijst.length()-1);
+    }
+    
     public int getVoorkeur() {
         return voorkeur;
     }

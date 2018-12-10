@@ -1,5 +1,6 @@
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /*
@@ -19,12 +20,15 @@ public class School implements Serializable {
     private final String naam;
     private final String adres;
     private int plaatsen;
+    private ArrayList<ToewijzingsAanvraag> wachtLijst;
     
-    public School(int ID, String naam, String adres, int plaatsen){
+    public School(int ID, String naam, String adres,
+                  int plaatsen, ArrayList<ToewijzingsAanvraag> wachtLijst){
         this.ID = ID;
          this.naam = naam;
         this.adres = adres;
         this.plaatsen = plaatsen;
+        this.wachtLijst = wachtLijst;
     }
 
     public int getID() {
@@ -47,6 +51,25 @@ public class School implements Serializable {
         this.plaatsen = plaatsen;
     }
     
+    public ArrayList<ToewijzingsAanvraag> getWachtLijst() {
+        return this.wachtLijst;
+    }
+     
+    public void setWachtLijst(ArrayList<ToewijzingsAanvraag> wachtLijst) {
+        this.wachtLijst = wachtLijst;
+    }
+    
+    public String csvFormatLijst() {
+        String csvLijst = "";
+        for(ToewijzingsAanvraag ta : wachtLijst) {
+            csvLijst += ta.getToewijzingsAanvraagNummer() + ";";
+        }
+        if(csvLijst.equals(""))
+            return csvLijst;
+        else
+            return csvLijst.substring(0, csvLijst.length()-1);
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if(obj == null || obj.getClass() != this.getClass()) return false;
@@ -58,5 +81,9 @@ public class School implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(serialVersionUID, naam, adres, ID, plaatsen);
+    }
+    
+    public String toString() {
+        return this.getNaam() + "";
     }
 }
