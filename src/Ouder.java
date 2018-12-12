@@ -3,7 +3,7 @@ import java.util.Objects;
 
 /**
  *
- * @author Masscho Victor, Boris Dragnev
+ * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
 public class Ouder implements Serializable {
     private final static long serialVersionUID = 453;

@@ -1,10 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultComboBoxModel;
@@ -26,7 +23,7 @@ import javax.swing.table.TableRowSorter;
  * en onder de 'Aanvragen raadplegen'-tab wordt informatie gegeven
  * over de lopende aanvragen
  *
- * @author Masscho Victor, Dragnev Boris
+ * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
 public class UI extends javax.swing.JFrame  {
   
@@ -1520,21 +1517,11 @@ public class UI extends javax.swing.JFrame  {
     }//GEN-LAST:event_sorteerKnopAdminActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String bestandPath = "./lijsten/" + jTextField1.getText();
-        ObjectInputStream input;
-        ArrayList<ToewijzingsAanvraag> wachtLijst = null;
-        try {
-            input = new ObjectInputStream(new FileInputStream(bestandPath));
-            wachtLijst = (ArrayList)input.readObject();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(
-                    AdminScherm, "Error: " + ex,
-                    "Exception error ", JOptionPane.ERROR_MESSAGE
-            );
-        }
+        int schoolID = Integer.parseInt(jTextField1.getText());
+        School s = algoritme.getSchool(schoolID);
         DefaultListModel dlm = new DefaultListModel();
         int i = 1;
-        for(ToewijzingsAanvraag ta : wachtLijst) {
+        for(ToewijzingsAanvraag ta : s.getWachtLijst()) {
             dlm.addElement("(" + i + ") " + ta.toString());
             i++;
         }

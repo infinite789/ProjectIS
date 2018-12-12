@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Masscho Victor, aangevuld door Dragnev Boris
+ * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
 public class Algoritme extends DatabaseConnect {
 

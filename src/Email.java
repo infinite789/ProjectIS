@@ -2,6 +2,10 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+/**
+ *
+ * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
+ */
 public class Email {
     
     public void sendFromGMail(String email, String pass, String[] to, String subject, String body) {

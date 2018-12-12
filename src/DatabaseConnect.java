@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /*
  * Klasse voor bewerking met de gegevens afkomstig uit de databank
  *
- * @author Masscho Victor, Dragnev Boris
+ * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
 public class DatabaseConnect  {
 

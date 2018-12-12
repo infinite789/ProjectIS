@@ -12,7 +12,7 @@ import java.util.Objects;
 
 /**
  *
- * @author Masscho Victor, Dragnev Boris
+ * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
 public class School implements Serializable {
     private static final long serialVersionUID = 1032;

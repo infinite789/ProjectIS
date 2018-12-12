@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-import java.io.Serializable;
 
 /**
  *
- * @author Masscho Victor, Dragnev Boris
+ * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
-public enum Status implements Serializable {
+public enum Status {
     ONTWERP,INGEDIEND,VOORLOPIG,DEFINITIEF;
 }
