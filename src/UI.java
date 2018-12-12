@@ -1281,12 +1281,16 @@ public class UI extends javax.swing.JFrame  {
             studentenDropBoxAFT.insertItemAt("", 0);
             studentenDropBoxART.insertItemAt("", 0);
             studentenDropBoxVFT.insertItemAt("", 0);           
-            for (Student s : algoritme.getStudentenVanOuder(
-                    gebruiker.getRijksregisterNummerOuder())) {
-                studentenDropBoxAFT.addItem(s.getRijksregisterNummerStudent());
-                studentenDropBoxART.addItem(s.getRijksregisterNummerStudent());
-                studentenDropBoxVFT.addItem(s.getRijksregisterNummerStudent());            
-            }
+            algoritme.getStudentenVanOuder(
+                    gebruiker.getRijksregisterNummerOuder()).stream().map((s) -> {
+                      studentenDropBoxAFT.addItem(s.getRijksregisterNummerStudent());
+            return s;
+          }).map((s) -> {
+            studentenDropBoxART.addItem(s.getRijksregisterNummerStudent());
+            return s;
+          }).forEachOrdered((s) -> {
+            studentenDropBoxVFT.addItem(s.getRijksregisterNummerStudent());
+          });
         } 
         //inloggen als administrator
         if(algoritme.inloggen(gebrnaam, passArray) == 1) {
@@ -1467,7 +1471,7 @@ public class UI extends javax.swing.JFrame  {
     private void exporteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exporteerKnopAdminActionPerformed
         try {
             algoritme.exporteerWachtLijsten();
-        } catch (Exception e) {
+        } catch (ToewijzingException e) {
             JOptionPane.showMessageDialog(
                 AdminScherm, "Error: " + e, 
                 "Exception error ", JOptionPane.ERROR_MESSAGE

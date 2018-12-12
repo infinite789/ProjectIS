@@ -97,7 +97,7 @@ public class DatabaseConnect  {
                         new Ouder(rijksregisterNummerOuder, naam, voornaam,
                                 email, straat, gemeente, gebruikersnaam, wachtwoord));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error: " + e);
         }
         return oudersHashMap;
@@ -125,7 +125,7 @@ public class DatabaseConnect  {
                                 rijksregisterNummerOuder, naam, voornaam,
                                 telefoonnummer, huidigeSchool));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error: " + e);
         }
         return studentenHashMap;
@@ -147,7 +147,7 @@ public class DatabaseConnect  {
                 scholenHashMap.put(id, new School(id, naam, 
                                    adres, capaciteit, new ArrayList<>()));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error: " + e);
         }
         return scholenHashMap;
@@ -183,7 +183,7 @@ public class DatabaseConnect  {
                     heeftBroerOfZus, status, voorkeur, als)
                 );
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException | SQLException e) {
             System.out.println("Error: " + e);
         }
         return aanvragenHashMap;
@@ -217,7 +217,7 @@ public class DatabaseConnect  {
                     rijksregisterNummerStudent,aanmeldingstijdstip, 
                     heeftBroerOfZus, status, voorkeur, als));
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException | SQLException e) {
             System.out.println("Error: " + e);
         }
     }
@@ -269,23 +269,20 @@ public class DatabaseConnect  {
             String[] ontvangers = {ingelogdeOuder.getEmail()};
             Email email = new Email();
             ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
-            executor.execute(new Runnable() {
-              @Override
-              public void run() {
-                try {
-                  email.sendFromGMail(
-                    "klantendienstsct@gmail.com", "centraletoewijzing", ontvangers, 
-                    "Inloggegevens voor de dienst centrale toewijzing",
-                    "Beste " + ingelogdeOuder.getVoornaam() + ", \n"
-                  + "\nJe kan vanaf nu inloggen op onze website met de volgende gegevens:\n"
-                  + "\nGebruikersnaam: " + ingelogdeOuder.getGebruikersnaam()
-                  + "\nWachtwoord: " + ingelogdeOuder.getWachtwoord() + "\n"
-                  + "\nMet vriendelijke groeten,\n"
-                  + "\nDienst Centrale Toewijzing"
-                  + "\nSecundair onderwijs");
-                } catch (Exception e) {
-                  System.out.println("Error: " + e);
-                }
+            executor.execute(() -> {
+              try {
+                email.sendFromGMail(
+                        "klantendienstsct@gmail.com", "centraletoewijzing", ontvangers,
+                        "Inloggegevens voor de dienst centrale toewijzing",
+                        "Beste " + ingelogdeOuder.getVoornaam() + ", \n"
+                                + "\nJe kan vanaf nu inloggen op onze website met de volgende gegevens:\n"
+                                + "\nGebruikersnaam: " + ingelogdeOuder.getGebruikersnaam()
+                                + "\nWachtwoord: " + ingelogdeOuder.getWachtwoord() + "\n"
+                                        + "\nMet vriendelijke groeten,\n"
+                                        + "\nDienst Centrale Toewijzing"
+                                        + "\nSecundair onderwijs");
+              } catch (Exception e) {
+                System.out.println("Error: " + e);
               }
             });
         }
@@ -497,7 +494,7 @@ public class DatabaseConnect  {
             + "WHERE ouder_rijksregisternummer = '"
             + o.getRijksregisterNummerOuder() + "'");
             ps.execute();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error: " + e);
         }
     }
@@ -512,7 +509,7 @@ public class DatabaseConnect  {
                 ps.setInt(2, s.getID());
                 ps.execute();
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error: " + e);
         }
     }
@@ -557,7 +554,7 @@ public class DatabaseConnect  {
                 ps.setInt(1, verwijderdeKeys.get(i));
                 ps.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error: " + e);
         }
     }
@@ -584,7 +581,7 @@ public class DatabaseConnect  {
             con = (Connection) DriverManager.getConnection(
                       "jdbc:mysql://157.193.43.67:3306/BINFG22", "BINFG22",
                       "oKdxQaoh");
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("Error: " + ex);
         }
         return con;
