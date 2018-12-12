@@ -87,7 +87,7 @@ public class Algoritme extends DatabaseConnect {
         }
     }
 
-    public ArrayList<ToewijzingsAanvraag> sorteerWachtLijst(ArrayList<ToewijzingsAanvraag> wachtLijst) {
+    public void sorteerWachtLijst(ArrayList<ToewijzingsAanvraag> wachtLijst) {
         for (int i = 0; i < wachtLijst.size(); i++) {
             ToewijzingsAanvraag lagerePref = wachtLijst.get(i);
             ToewijzingsAanvraag hogerePref = null;
@@ -110,7 +110,6 @@ public class Algoritme extends DatabaseConnect {
                 wachtLijst.set(lagePrefIndex, lagerePref);
             }
         }
-        return wachtLijst;
     }
 
     public ArrayList<ToewijzingsAanvraag> laadAfgewezenStudenten() throws Exception {
@@ -130,36 +129,27 @@ public class Algoritme extends DatabaseConnect {
     }
 
     public void sorteerAlgoritme() throws Exception {
-        LocalDateTime now = LocalDateTime.now();
-        ArrayList<ToewijzingsAanvraag> afgewezenStudenten;
-        afgewezenStudenten = laadAfgewezenStudenten();
-        File afgStBestand = new File("./lijsten/afgewezenStudenten");
+      int afgewezenStudenten = 0;
         for (School s : getScholen().values()) {
-            String path = "./lijsten/s" + s.getNaam().substring(0, 5)
+          String bestandPath = "./lijsten/s" + s.getNaam().substring(0, 5)
                     .replaceAll(" ", "").toLowerCase() + s.getID();
-            ArrayList<ToewijzingsAanvraag> wachtLijst = wachtLijstLaden(s);
-            if (!afgStBestand.exists()) {
-                wachtLijst = sorteerWachtLijst(wachtLijst);
-            } else {
-                for (ToewijzingsAanvraag ta : afgewezenStudenten) {
-                    if (ta.getVoorkeur() == s.getID()
-                            && afgewezenStudenten.remove(ta)) {
-                        wachtLijst.add(ta);
-                    }
-                }
-                wachtLijst = sorteerWachtLijst(wachtLijst);
-            }
-            //studenten afwijzen indien de school vol zit
-            while (wachtLijst.size() > s.getPlaatsen()) {
-                ToewijzingsAanvraag ta = wachtLijst.get(wachtLijst.size() - 1);
-                wachtLijst.remove(ta);
-                afgewezenStudenten.add(ta);
-            }
-            //wachtlijst van school schrijven naar bestand
-            wachtLijstOpslaan(wachtLijst, path);
+          ArrayList<ToewijzingsAanvraag> wachtLijst = s.getWachtLijst();
+          sorteerWachtLijst(wachtLijst);
+          //studenten afwijzen indien de school vol zit
+          while (wachtLijst.size() > s.getPlaatsen()) {
+              ToewijzingsAanvraag ta = wachtLijst.get(wachtLijst.size() - 1);
+              wachtLijst.remove(ta);
+              getAanvraag(String.valueOf(ta.getToewijzingsAanvraagNummer())).setStatus(Status.ONTWERP);
+              ta.getAfgewezenScholen().add(s);
+              afgewezenStudenten++;
+          }
+          //wachtlijst van school schrijven naar bestand
+          wachtLijstOpslaan(wachtLijst, bestandPath);
         }
-        wachtLijstOpslaan(afgewezenStudenten, "./lijsten/afgewezenStudenten");
-        updateStatus();
+        if(afgewezenStudenten > 0)
+          updateStatus(Status.VOORLOPIG);
+        else
+          updateStatus(Status.DEFINITIEF);
     }
 
     public long getPreferentie(ToewijzingsAanvraag ta) {
@@ -174,16 +164,16 @@ public class Algoritme extends DatabaseConnect {
 
     }
 
-    public void updateStatus() {
+    public void updateStatus(Status s) {
         getConnection();
-        ArrayList<ToewijzingsAanvraag> al = new ArrayList<>();
-        al.addAll(getToewijzingsaanvragen().values());
-        for (ToewijzingsAanvraag ta : al) {
-            if (ta.getStatus().equals(Status.INGEDIEND)) {
-                ta.setStatus(Status.VOORLOPIG);
+        for (ToewijzingsAanvraag ta : getToewijzingsaanvragen().values()) {
+            if (ta.getStatus().equals(Status.INGEDIEND) && s.equals(Status.VOORLOPIG)) {
+              ta.setStatus(s);
+            } else if (!ta.getStatus().equals(Status.ONTWERP) && s.equals(Status.DEFINITIEF)){
+              ta.setStatus(s);
             }
         }
-        bewaarToewijzingsAanvragen(al);
+        bewaarToewijzingsAanvragen();
         closeConnection();
     }
 

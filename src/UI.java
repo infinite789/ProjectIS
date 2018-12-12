@@ -29,25 +29,18 @@ import javax.swing.table.TableRowSorter;
  * @author Masscho Victor, Dragnev Boris
  */
 public class UI extends javax.swing.JFrame  {
-    
-    private final Cursor defaultCursor;
-    private final Cursor handCursor;
+  
     private Algoritme algoritme;
     private Ouder gebruiker;
     private final DefaultTableModel dtm;
-    private final String ADMIN_ACCOUNT = "admin";
-    private final String ADMIN_WACHTWOORD = "admin";
     
     /**
      * Creates new form FormulierUI
      * @throws java.lang.Exception
      */
-    public UI() throws Exception {
+    public UI() throws Exception {       
         initComponents(); //componenten van NetBeans GuiBuilder initializeren
-        
         getContentPane().setBackground(Color.white); //wit achtergrond van de Pane
-        this.defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR); //default cursor
-        this.handCursor = new Cursor(Cursor.HAND_CURSOR); //hand cursor
         this.algoritme = new Algoritme();
         InlogScherm.getRootPane().setDefaultButton(inlogKnopIS);
         /*
@@ -1164,7 +1157,7 @@ public class UI extends javax.swing.JFrame  {
      * aanmeldingsscherm
      */
     private void activeerLinkLabelISMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activeerLinkLabelISMouseEntered
-        setCursor(handCursor);
+        setCursor(Cursor.HAND_CURSOR);
     }//GEN-LAST:event_activeerLinkLabelISMouseEntered
     
     /*
@@ -1172,7 +1165,7 @@ public class UI extends javax.swing.JFrame  {
      * aanmeldingsscherm
      */
     private void activeerLinkLabelISMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activeerLinkLabelISMouseExited
-        setCursor(defaultCursor);
+        setCursor(Cursor.DEFAULT_CURSOR);
     }//GEN-LAST:event_activeerLinkLabelISMouseExited
     
     /*
@@ -1195,7 +1188,7 @@ public class UI extends javax.swing.JFrame  {
      * aanmeldingsscherm
      */
     private void terugLinkLabelASMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_terugLinkLabelASMouseEntered
-        setCursor(handCursor);
+        setCursor(Cursor.HAND_CURSOR);
     }//GEN-LAST:event_terugLinkLabelASMouseEntered
 
     /*
@@ -1203,7 +1196,7 @@ public class UI extends javax.swing.JFrame  {
      * activeerscherm
      */
     private void terugLinkLabelASMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_terugLinkLabelASMouseExited
-        setCursor(defaultCursor);
+        setCursor(Cursor.DEFAULT_CURSOR);
     }//GEN-LAST:event_terugLinkLabelASMouseExited
 
     /*
@@ -1257,9 +1250,14 @@ public class UI extends javax.swing.JFrame  {
          */
         String gebrnaam = gebrVeldIS.getText();
         char[] passArray = passVeldIS.getPassword();
-        String wachtwoord = String.valueOf(passArray)
-                           .replaceAll("[^A-Za-z0-9]+", "");
-        if(algoritme.inloggen(gebrnaam, passArray)) {
+        //inloggen met verkeerde gegevens
+        if(algoritme.inloggen(gebrnaam, passArray) == -1) {
+            boodschapLabelIS.setText("Verkeerde gegevens.");
+            boodschapLabelIS.setForeground(Color.red);
+            doorgaanKnopIS.setEnabled(false);
+        }
+        //inloggen als ouder
+        if(algoritme.inloggen(gebrnaam, passArray) == 0) {
             boodschapLabelIS.setText("U bent ingelolgd.");
             boodschapLabelIS.setForeground(Color.green);
             doorgaanKnopIS.setEnabled(true);
@@ -1273,7 +1271,7 @@ public class UI extends javax.swing.JFrame  {
             naamOuderVeldAFT.setText(gebruiker.getNaam());
             voornaamOuderVeldAFT.setText(gebruiker.getVoornaam());
             emailVeldAFT.setText(gebruiker.getEmail());
-            adresVeldAFT.setText(gebruiker.getAdres());
+            adresVeldAFT.setText(gebruiker.getStraat() + ", " + gebruiker.getGemeente());
             rijksnumOuderVeldAFT.setText(gebruiker.getRijksregisterNummerOuder());
             
             /* 
@@ -1281,29 +1279,17 @@ public class UI extends javax.swing.JFrame  {
              * 'Aanvragen raadplegen'-tab en in 'Aanmeldigsformulier'-tab
              */
             studentenDropBoxAFT.insertItemAt("", 0);
+            studentenDropBoxART.insertItemAt("", 0);
+            studentenDropBoxVFT.insertItemAt("", 0);           
             for (Student s : algoritme.getStudentenVanOuder(
                     gebruiker.getRijksregisterNummerOuder())) {
                 studentenDropBoxAFT.addItem(s.getRijksregisterNummerStudent());
-            }
-            studentenDropBoxART.insertItemAt("", 0);
-            for (Student s : algoritme.getStudentenVanOuder(
-                    gebruiker.getRijksregisterNummerOuder())) {
                 studentenDropBoxART.addItem(s.getRijksregisterNummerStudent());
+                studentenDropBoxVFT.addItem(s.getRijksregisterNummerStudent());            
             }
-            studentenDropBoxVFT.insertItemAt("", 0);
-            for (Student s : algoritme.getStudentenVanOuder(
-                    gebruiker.getRijksregisterNummerOuder())) {
-                studentenDropBoxVFT.addItem(s.getRijksregisterNummerStudent());
-            }
-        } else {
-            boodschapLabelIS.setText("Verkeerde gegevens.");
-            boodschapLabelIS.setForeground(Color.red);
-            doorgaanKnopIS.setEnabled(false);
-        }
-        
+        } 
         //inloggen als administrator
-        if(gebrnaam.equals(ADMIN_ACCOUNT) 
-           && wachtwoord.equals(ADMIN_WACHTWOORD)) {
+        if(algoritme.inloggen(gebrnaam, passArray) == 1) {
             AdminScherm.setVisible(true);
             InlogScherm.setVisible(false);
             ActiveerScherm.setVisible(false);
@@ -1348,7 +1334,7 @@ public class UI extends javax.swing.JFrame  {
             naamVeldAS.setText(o.getVoornaam());
             voornaamVeldAS.setText(o.getNaam());
             emailVeldAS.setText(o.getEmail());
-            adresVeldAS.setText(o.getAdres());
+            adresVeldAS.setText(o.getStraat() + ", " + o.getGemeente());
         }
     }//GEN-LAST:event_rijksnumVeldASKeyReleased
 
@@ -1454,7 +1440,7 @@ public class UI extends javax.swing.JFrame  {
      * tab 'Aanvragen raadplegen'
      */
     private void verwijderLinkLabelARTMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verwijderLinkLabelARTMouseEntered
-        setCursor(handCursor);
+        setCursor(Cursor.HAND_CURSOR);
     }//GEN-LAST:event_verwijderLinkLabelARTMouseEntered
 
     /*
@@ -1462,7 +1448,7 @@ public class UI extends javax.swing.JFrame  {
      * tab 'Aanvragen raadplegen'
      */
     private void verwijderLinkLabelARTMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verwijderLinkLabelARTMouseExited
-        setCursor(defaultCursor);
+        setCursor(Cursor.DEFAULT_CURSOR);
     }//GEN-LAST:event_verwijderLinkLabelARTMouseExited
 
     /*
@@ -1490,11 +1476,11 @@ public class UI extends javax.swing.JFrame  {
     }//GEN-LAST:event_exporteerKnopAdminActionPerformed
 
     private void uitloggenLinkLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uitloggenLinkLabelMouseEntered
-        setCursor(handCursor);
+        setCursor(Cursor.HAND_CURSOR);
     }//GEN-LAST:event_uitloggenLinkLabelMouseEntered
 
     private void uitloggenLinkLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uitloggenLinkLabelMouseExited
-        setCursor(defaultCursor);
+        setCursor(Cursor.DEFAULT_CURSOR);
     }//GEN-LAST:event_uitloggenLinkLabelMouseExited
 
     private void uitloggenLinkLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uitloggenLinkLabelMouseClicked

@@ -11,20 +11,30 @@ public class Ouder implements Serializable {
     private final String naam;
     private final String voornaam;
     private final String email;
-    private final String adres;
+    private final String straat;
+    private final String gemeente;
     private final String gebruikersnaam;
     private String wachtwoord;
     
-    public Ouder(String rijksregisterNummerOuder, String naam,
-                 String voornaam, String email, String adres,
+    public Ouder(String rijksregisterNummerOuder, String naam, String voornaam, 
+                 String email, String straat, String gemeente,
                  String gebruikersnaam, String wachtwoord) {
         this.rijksregisterNummerOuder = rijksregisterNummerOuder;
         this.naam = naam;
         this.voornaam = voornaam;
         this.email = email;
-        this.adres = adres;
+        this.straat = straat;
+        this.gemeente = gemeente;
         this.gebruikersnaam = gebruikersnaam;
         this.wachtwoord = wachtwoord;
+    }
+
+    public String getStraat() {
+      return straat;
+    }
+
+    public String getGemeente() {
+      return gemeente;
     }
     
     public String getGebruikersnaam() {
@@ -54,10 +64,6 @@ public class Ouder implements Serializable {
     public String getEmail() {
         return email;
     }
-
-    public String getAdres() {
-        return adres;
-    }
     
     @Override
     public boolean equals(Object obj) {
@@ -67,14 +73,15 @@ public class Ouder implements Serializable {
         return(o.getNaam().equals(this.getNaam()) 
                 && o.getVoornaam().equals(this.getVoornaam())
                 && o.getEmail().equals(this.getEmail())
-                && o.getAdres().equals(this.getAdres())
+                && o.getStraat().equals(this.getStraat())
+                && o.getGemeente().equals(this.getGemeente())
                 && o.getRijksregisterNummerOuder()
                    .equals(this.getRijksregisterNummerOuder()));
     }
         
     @Override
     public int hashCode() {
-        return Objects.hash(serialVersionUID, rijksregisterNummerOuder, naam,
-                            voornaam, email, adres, gebruikersnaam, wachtwoord);
+        return Objects.hash(serialVersionUID, rijksregisterNummerOuder, naam, voornaam,
+                            email, straat, gemeente, gebruikersnaam, wachtwoord);
     }
 }

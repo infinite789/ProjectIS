@@ -1,13 +1,14 @@
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /*
@@ -18,13 +19,17 @@ import java.util.stream.Collectors;
 public class DatabaseConnect  {
 
     private Connection con;
-    private HashMap<String, Ouder> ouders;
-    private HashMap<String, Student> studenten;
-    private HashMap<Integer, School> scholen;
-    private HashMap<Integer, ToewijzingsAanvraag> toewijzingsaanvragen;
+    private final HashMap<String, Ouder> ouders;
+    private final HashMap<String, Student> studenten;
+    private final HashMap<Integer, School> scholen;
+    private final HashMap<Integer, ToewijzingsAanvraag> toewijzingsaanvragen;
     private final ArrayList<Integer> verwijderdeKeys; 
     private Ouder ingelogdeOuder;
+    private boolean ingelogdAlsAdmin;
 
+    
+    private final String ADMIN_ACCOUNT = "admin";
+    private final String ADMIN_WACHTWOORD = "admin";
     private final int DEFAULT_KEY = 6001; //default key toewijzingsaanvragen
     
     /*
@@ -32,11 +37,6 @@ public class DatabaseConnect  {
      * Maakt connectie met de databank en kopieert de gegevens in lokale
      * HashMap objecten
      */
-
-    /**
-     *
-     */
-
     public DatabaseConnect() {
         getConnection();
         this.ouders = laadOuders();
@@ -48,6 +48,7 @@ public class DatabaseConnect  {
         }
         closeConnection();
         this.verwijderdeKeys = new ArrayList<>();
+        this.ingelogdAlsAdmin = false;
     }
 
     public HashMap<String, Ouder> getOuders() {
@@ -88,12 +89,13 @@ public class DatabaseConnect  {
                 String naam = rs.getString("ouder_naam");
                 String voornaam = rs.getString("ouder_voornaam");
                 String email = rs.getString("ouder_email");
-                String adres = rs.getString("ouder_adres");
+                String straat = rs.getString("adres_straat");
+                String gemeente = rs.getString("adres_gemeente");
                 String gebruikersnaam = rs.getString("gebruikersnaam");
                 String wachtwoord = rs.getString("wachtwoord");
                 oudersHashMap.put(rijksregisterNummerOuder,
                         new Ouder(rijksregisterNummerOuder, naam, voornaam,
-                                email, adres, gebruikersnaam, wachtwoord));
+                                email, straat, gemeente, gebruikersnaam, wachtwoord));
             }
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -221,11 +223,13 @@ public class DatabaseConnect  {
     }
     
     /*
-     * Methode voor het controleren van de inloggegevens 
+     * Methode voor het controleren van de inloggegevens, 
+     * retourneert -1 als de gegevens fout zijn, 0 als de ingelogde gebruiker
+     * een ouder is, 1 als de ingelogde gebruiker een administrator is
      */
-    public boolean inloggen(String gebrnaam, char[] wachtwoordCharArray) {
-        boolean ingelogd = false;
+    public int inloggen(String gebrnaam, char[] wachtwoordCharArray) {
         String wachtwoord = "";
+        int inlogStatus = -1;
         for (char c : wachtwoordCharArray) {
             wachtwoord += c;
         }
@@ -233,10 +237,15 @@ public class DatabaseConnect  {
             if (o.getGebruikersnaam().equals(gebrnaam)
                     && o.getWachtwoord().equals(wachtwoord)) {
                 ingelogdeOuder = o;
-                ingelogd = true;
+                inlogStatus = 0;
+                break;
             }
         }
-        return ingelogd;
+        if(gebrnaam.equals(ADMIN_ACCOUNT) && wachtwoord.equals(ADMIN_WACHTWOORD)) {
+          ingelogdAlsAdmin = true;
+          inlogStatus = 1;
+        } 
+        return inlogStatus;
     }
 
     /*
@@ -252,11 +261,33 @@ public class DatabaseConnect  {
                 .collect(Collectors.joining());
         if (ouders.get(rnouder).getWachtwoord().equals("")) {
             geactiveerd = true;
-            ingelogdeOuder = getOuder(rnouder);
-            ouders.get(rnouder).setWachtwoord(wachtwoord);
+            ingelogdeOuder = ouders.get(rnouder);
+            ingelogdeOuder.setWachtwoord(wachtwoord);
             con = getConnection();
-            bewaarOuders();
+            bewaarOuder(getOuder(rnouder));
             con.close();
+            String[] ontvangers = {ingelogdeOuder.getEmail()};
+            Email email = new Email();
+            ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+            executor.execute(new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  email.sendFromGMail(
+                    "klantendienstsct@gmail.com", "centraletoewijzing", ontvangers, 
+                    "Inloggegevens voor de dienst centrale toewijzing",
+                    "Beste " + ingelogdeOuder.getVoornaam() + ", \n"
+                  + "\nJe kan vanaf nu inloggen op onze website met de volgende gegevens:\n"
+                  + "\nGebruikersnaam: " + ingelogdeOuder.getGebruikersnaam()
+                  + "\nWachtwoord: " + ingelogdeOuder.getWachtwoord() + "\n"
+                  + "\nMet vriendelijke groeten,\n"
+                  + "\nDienst Centrale Toewijzing"
+                  + "\nSecundair onderwijs");
+                } catch (Exception e) {
+                  System.out.println("Error: " + e);
+                }
+              }
+            });
         }
         return geactiveerd;
     }
@@ -458,13 +489,13 @@ public class DatabaseConnect  {
      * op te roepen en erna moet die worden afgesloten met
      * closeConnection()
      */
-    public void bewaarOuders() {
+    public void bewaarOuder(Ouder o) {
         try {
             PreparedStatement ps
             = con.prepareStatement("UPDATE ouders SET "
             + "wachtwoord = '" + ingelogdeOuder.getWachtwoord() + "' "
             + "WHERE ouder_rijksregisternummer = '"
-            + ingelogdeOuder.getRijksregisterNummerOuder() + "'");
+            + o.getRijksregisterNummerOuder() + "'");
             ps.execute();
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -497,7 +528,7 @@ public class DatabaseConnect  {
         try {
             for (ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
                 Ouder o = getOuderVanStudent(ta.getRijksregisterNummerStudent());
-                if (o.equals(ingelogdeOuder)) {
+                if (o.equals(ingelogdeOuder) || ingelogdAlsAdmin == true) {
                     PreparedStatement ps
                     = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
                     + "toewijzingsaanvraagnummer, status, "
@@ -532,45 +563,13 @@ public class DatabaseConnect  {
     }
     
     /*
-     * Methode voor het opslaan van de towijzingsaanvragen 
-     * De methode verwerkt de aangepaste gegevens in de databank
-     * Eerst connectie openen voor het gebruiken van de methoden 
-     * door getConnection() op te roepen en afsluiten met 
-     * closeConnection()
-     */
-    public void bewaarToewijzingsAanvragen(ArrayList<ToewijzingsAanvraag> lta) {
-        try {
-            for (ToewijzingsAanvraag ta : lta) {
-                PreparedStatement ps
-                = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
-                + "toewijzingsaanvraagnummer, status, "
-                + "student_rijksregisternummer, aanmeldingstijdstip, "
-                + "broer_zus, voorkeurschool) "
-                + "VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
-                + "status = VALUES(status), broer_zus = VALUES(broer_zus), "
-                + "voorkeurschool = VALUES(voorkeurschool)");
-                ps.setInt(1, ta.getToewijzingsAanvraagNummer());
-                ps.setString(2, ta.getStatus().toString());
-                ps.setString(3, ta.getRijksregisterNummerStudent());
-                DateTimeFormatter df
-                    = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                ps.setString(4, df.format(ta.getAanmeldingsTijdstip()));
-                ps.setInt(6, ta.getVoorkeur());
-                ps.setBoolean(5, ta.heeftHeeftBroerOfZus());
-                ps.execute();
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
-    }
-    
-    /*
      * Methode voor het overschrijven van de lokale gegevens naar
      * de databank
      */
     public void bewarenEnAfsluiten() throws Exception {
         con = getConnection();
-        bewaarOuders();
+        if(ingelogdeOuder != null)
+          bewaarOuder(ingelogdeOuder);
         bewaarScholen();
         bewaarToewijzingsAanvragen();
         con.close();
