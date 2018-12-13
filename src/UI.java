@@ -1124,7 +1124,7 @@ public class UI extends javax.swing.JFrame  {
                     boodschapLabelVFT.setForeground(Color.red);
                     boodschapLabelVFT.setText("Fout!");
                 }
-            } catch (ToewijzingException ex) {
+            } catch (DBException ex) {
                 boodschapLabelVFT.setForeground(Color.red);
                 boodschapLabelVFT.setText("U heeft al voor deze school gekozen!");
             }
@@ -1274,7 +1274,7 @@ public class UI extends javax.swing.JFrame  {
         String gebrnaam = gebrVeldIS.getText();
         char[] passArray = passVeldIS.getPassword();
         //inloggen met verkeerde gegevens
-        if(main.inloggen(gebrnaam, passArray) == -1) {
+        if(main.i(gebrnaam, passArray) == -1) {
             boodschapLabelIS.setText("Verkeerde gegevens.");
             boodschapLabelIS.setForeground(Color.red);
             doorgaanKnopIS.setEnabled(false);

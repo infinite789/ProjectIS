@@ -38,7 +38,7 @@ public class Main {
   private boolean ingelogdAlsAdmin;
 
   private final String ADMIN_ACCOUNT = "admin";
-  private final String ADMIN_WACHTWOORD = "admin";
+  private final String ADMIN_PASS = "admin";
   private final int DEFAULT_KEY = 6001; //default key toewijzingsaanvragen
   private final String EMAIL_KLANTENDIENST = "klantendienstsct@gmail.com";
   private final String PASS_EMAIL = "centraletoewijzing";
@@ -61,6 +61,7 @@ public class Main {
     }
     this.verwijderdeKeys = new ArrayList<>();
     this.ingelogdAlsAdmin = false;
+    this.ingelogdeOuder = null;
   }
 
   public static void main(String[] args) throws Exception {
@@ -68,6 +69,22 @@ public class Main {
     ui.setVisible(true);
   }  
     
+  public boolean inloggen(String gebrnaam, char[] wachtwoord) {
+    String wwoord = "";
+    for(char c : wachtwoord) {
+      wwoord += c;
+    }
+    try {
+      ingelogdeOuder = DBOuder.getOuder(gebrnaam, wwoord);
+      if(gebrnaam.equals(ADMIN_ACCOUNT) && wwoord.equals(ADMIN_PASS)) {
+	ingelogdAlsAdmin = true;
+      }
+      return true;
+    } catch (DBException dbe) {
+      dbe.getMessage();
+      return false;
+    }
+  }
 
   /*
    * Methode voor het activeren van een account
@@ -81,7 +98,6 @@ public class Main {
             .mapToObj(i -> "" + chars.charAt(i))
             .collect(Collectors.joining());
     if (ouders.get(rnouder).getWachtwoord().equals("")) {
-      geactiveerd = true;
       ingelogdeOuder = ouders.get(rnouder);
       ingelogdeOuder.setWachtwoord(wachtwoord);
 
@@ -100,6 +116,7 @@ public class Main {
           e.getMessage();
         }
       });
+      geactiveerd = true;
     }
     return geactiveerd;
   }
@@ -246,7 +263,7 @@ public class Main {
     ta.setVoorkeur(schoolID);
     ta.setStatus(Status.INGEDIEND);
     scholen.get(schoolID).getWachtLijst().add(ta);
-    ta.setBroersOfZussen(heeftBroerOfZus(rnstudent, schoolID));
+    ta.setBroersOfZussen(heeftBroerOfZus(aanvraagnummer, rnstudent, schoolID));
     return true;
   }
 
@@ -384,8 +401,8 @@ public class Main {
 	while (wachtLijst.size() > s.getPlaatsen()) {
 	    ToewijzingsAanvraag ta = wachtLijst.get(wachtLijst.size() - 1);
 	    wachtLijst.remove(ta);
-	    getAanvraag(String.valueOf(ta.getToewijzingsAanvraagNummer())).setStatus(Status.ONTWERP);
 	    ta.getAfgewezenScholen().add(String.valueOf(s.getID()));
+	    ta.setStatus(Status.ONTWERP);
 	    afgewezenStudenten++;
 	}
 	//wachtlijst van school schrijven naar bestand
@@ -402,8 +419,8 @@ public class Main {
 	      - ta.getAanmeldingsTijdstip().toEpochSecond(ZoneOffset.UTC);
       long bonusPunten = huidigeDeadline.toEpochSecond(ZoneOffset.UTC)
 	      - START_DATUM.toEpochSecond(ZoneOffset.UTC);
-      if (ta.heeftHeeftBroerOfZus()) {
-	  preferentie += bonusPunten;
+      if (ta.getBroersOfZussen() > 0) {
+	  preferentie += bonusPunten*ta.getBroersOfZussen();
       }
       return preferentie;
 

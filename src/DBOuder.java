@@ -86,12 +86,12 @@ public class DBOuder {
    * retourneert -1 als de gegevens fout zijn, 0 als de ingelogde gebruiker
    * een ouder is, 1 als de ingelogde gebruiker een administrator is
    */
-  public Ouder getOuder(String gebrnaam, char[] wachtwoordCharArray) throws DBException {
+  public static Ouder getOuder(String gebrnaam, String wachtwoord) throws DBException {
     Connection con = null;
     try {
       con = DBConnect.getConnection();
       Statement st = con.createStatement();
-      ResultSet rs = st.executeQuery("SELECT * FROM ouders WHERE gebruikersnaam = " + gebrnaam + "AND wachtwoord = " + wchtwoord);
+      ResultSet rs = st.executeQuery("SELECT * FROM ouders WHERE gebruikersnaam = " + gebrnaam + "AND wachtwoord = " + wachtwoord);
       Ouder o = null;
       if(rs.next()) {
 	String rijksregisterNummerOuder = rs.getString("ouder_rijksregisternummer");
@@ -101,9 +101,9 @@ public class DBOuder {
 	String straat = rs.getString("adres_straat");
 	String gemeente = rs.getString("adres_gemeente");
 	String gebruikersnaam = rs.getString("gebruikersnaam");
-	String wachtwoord = rs.getString("wachtwoord");
+	String wwoord = rs.getString("wachtwoord");
 	o = new Ouder(rijksregisterNummerOuder, naam, voornaam,
-                      email, straat, gemeente, gebruikersnaam, wachtwoord);
+                      email, straat, gemeente, gebruikersnaam, wwoord);
       }
       DBConnect.closeConnection(con);
       return o;
@@ -116,4 +116,5 @@ public class DBOuder {
       DBConnect.closeConnection(con);
       throw new DBException(e);
     }  
+  }
 }
