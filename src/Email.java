@@ -1,51 +1,120 @@
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
 
+ 
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+ 
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+ 
 /**
+ * This utility class provides a functionality to send an HTML e-mail message
+ * with embedded images.
+ * @author www.codejava.net
  *
- * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
 public class Email {
+    private final String host = "smtp.gmail.com"; 
+    private final String port = "587";
+    private final String verzender;
+    private final String pass;
+    private final String ontvanger;
+    private String subject;
+    private StringBuffer body;
+    private Map<String, String> mapInlineImages;
+  
+    public Email(String voornaam, String gebrnaam, String wachtwoord, String verzender, String pass, String ontvangers, TypeBericht t) {
+      this.verzender = verzender;
+      this.pass = pass;
+      this.ontvanger = ontvangers;
+      if(t == TypeBericht.ACTIVATIE) {
+        this.subject = "Inloggegevens voor de dienst centrale toewijzing";
+        this.body = new StringBuffer("<html>Beste " + voornaam + ", <br>"
+                                + "<br>Je kan vanaf nu inloggen op onze website met de volgende gegevens:<br>"
+                                + "<br>Gebruikersnaam: " + gebrnaam 
+                                + "<br>Wachtwoord: " + wachtwoord + "<br>"
+                                        + "<br>Met vriendelijke groeten,<br><br>"
+                                        + "<br>Systeem Centrale Toewijzing"
+                                        + "<br>Klantendienst</html>");
+        
+        body.append("<img src=\"cid:image1\" width=\"30%\" height=\"30%\" /><br>");
+        // inline images
+        this.mapInlineImages = new HashMap<>();
+        mapInlineImages.put("image1", "./logo.png"); 
+      }
+      
+    }
     
-    public void sendFromGMail(String email, String pass, String[] to, String subject, String body) {
-        Properties props = System.getProperties();
-        String host = "smtp.gmail.com";
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.user", email);
-        props.put("mail.smtp.password", pass);
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-
-        Session session = Session.getDefaultInstance(props);
-        MimeMessage message = new MimeMessage(session);
-
-        try {
-            message.setFrom(new InternetAddress(email));
-            InternetAddress[] toAddress = new InternetAddress[to.length];
-
-            // To get the array of addresses
-            for( int i = 0; i < to.length; i++ ) {
-                toAddress[i] = new InternetAddress(to[i]);
+    public void send() throws AddressException, MessagingException {
+        // sets SMTP server properties
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", port);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.user", verzender);
+        properties.put("mail.password", pass);
+ 
+        // creates a new session with an authenticator
+        Authenticator auth = new Authenticator() {
+            public PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(verzender, pass);
             }
-
-            for( int i = 0; i < toAddress.length; i++) {
-                message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+        };
+        Session session = Session.getInstance(properties, auth);
+ 
+        // creates a new e-mail message
+        Message msg = new MimeMessage(session);
+ 
+        msg.setFrom(new InternetAddress(verzender));
+        InternetAddress[] toAddresses = { new InternetAddress(ontvanger) };
+        msg.setRecipients(Message.RecipientType.TO, toAddresses);
+        msg.setSubject(subject);
+        msg.setSentDate(new Date());
+ 
+        // creates message part
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setContent(body.toString(), "text/html");
+ 
+        // creates multi-part
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+ 
+        // adds inline image attachments
+        if (mapInlineImages != null && mapInlineImages.size() > 0) {
+            Set<String> setImageID = mapInlineImages.keySet();
+             
+            for (String contentId : setImageID) {
+                MimeBodyPart imagePart = new MimeBodyPart();
+                imagePart.setHeader("Content-ID", "<" + contentId + ">");
+                imagePart.setDisposition(MimeBodyPart.INLINE);
+                 
+                String imageFilePath = mapInlineImages.get(contentId);
+                try {
+                    imagePart.attachFile(imageFilePath);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+ 
+                multipart.addBodyPart(imagePart);
             }
-
-            message.setSubject(subject);
-            message.setText(body);
-            Transport transport = session.getTransport("smtp");
-            transport.connect(host, email, pass);
-            transport.sendMessage(message, message.getAllRecipients());
-            transport.close();
         }
-        catch (AddressException ae) {
-            ae.printStackTrace();
-        }
-        catch (MessagingException me) {
-            me.printStackTrace();
-        }
+ 
+        msg.setContent(multipart);
+ 
+        Transport.send(msg);
     }
 }

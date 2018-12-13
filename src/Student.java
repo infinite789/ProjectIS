@@ -19,11 +19,11 @@ public class Student implements Serializable {
    private final String naam;
    private final String voornaam; 
    private final String telefoonnummer;
-   private final Integer huidigeSchool;
+   private final int huidigeSchool;
    
     public Student(String rijksregisterNummerStudent, 
                    String rijksregisterNummerOuder, String naam, 
-                   String voornaam, String telefoonnummer, Integer huidigeSchool) {
+                   String voornaam, String telefoonnummer, int huidigeSchool) {
         this.rijksregisterNummerStudent = rijksregisterNummerStudent;
         this.rijksregisterNummerOuder = rijksregisterNummerOuder;
         this.naam = naam;
@@ -32,7 +32,7 @@ public class Student implements Serializable {
         this.huidigeSchool = huidigeSchool;
     }
 
-    public Integer getHuidigeSchool() {
+    public int getHuidigeSchool() {
         return huidigeSchool;
     }
 
@@ -61,7 +61,7 @@ public class Student implements Serializable {
         if(obj == null || obj.getClass() != this.getClass()) return false;
         Student s = (Student)obj;
         return s.getVoornaam().equals(this.getVoornaam()) 
-        && s.getHuidigeSchool().equals(this.huidigeSchool)
+        && s.getHuidigeSchool() == (this.huidigeSchool)
         && s.getNaam().equals(this.naam) 
         && s.getTelefoonnummer().equals(this.telefoonnummer)
         && s.getRijksregisterNummerOuder().equals(this.rijksregisterNummerOuder)

@@ -19,16 +19,16 @@ public class ToewijzingsAanvraag implements Serializable {
     private final int toewijzingsAanvraagNummer;
     private final String rijksregisterNummerStudent;
     private final LocalDateTime aanmeldingsTijdstip;
-    private boolean heeftBroerOfZus;
+    private int broersOfZussen;
     private Status status;
-    private Integer voorkeur;
-    private final ArrayList<School> afgewezenScholen;
+    private int voorkeur;
+    private final ArrayList<String> afgewezenScholen;
     
     public ToewijzingsAanvraag(int nummer, String rnstudent) {
         this.toewijzingsAanvraagNummer = nummer;
         this.rijksregisterNummerStudent = rnstudent;
         this.aanmeldingsTijdstip = LocalDateTime.now();
-        this.heeftBroerOfZus = false;
+        this.broersOfZussen = 0;
         this.status = Status.ONTWERP;
         this.voorkeur = 0;
         this.afgewezenScholen = new ArrayList<>();
@@ -36,25 +36,25 @@ public class ToewijzingsAanvraag implements Serializable {
     
     public ToewijzingsAanvraag(int nummer, String rnstudent,
                                 LocalDateTime tijdstip,
-                                boolean heeftBroerOfZus, Status status, 
-                                Integer voorkeur, ArrayList<School> afgewezenScholen){
+                                int broersOfZussen, Status status, 
+                                int voorkeur, ArrayList<String> afgewezenScholen){
         this.toewijzingsAanvraagNummer = nummer;
         this.rijksregisterNummerStudent = rnstudent;
         this.aanmeldingsTijdstip = tijdstip;
-        this.heeftBroerOfZus = heeftBroerOfZus;
+        this.broersOfZussen = broersOfZussen;
         this.status = status;
         this.voorkeur = voorkeur;
         this.afgewezenScholen = afgewezenScholen;
     }
 
-    public ArrayList<School> getAfgewezenScholen() {
+    public ArrayList<String> getAfgewezenScholen() {
         return afgewezenScholen;
     }
 
     public String csvFormatLijst() {
         String csvLijst = "";
-        for(School s : afgewezenScholen) {
-            csvLijst += s.getID()+ ";";
+        for(String str : afgewezenScholen) {
+            csvLijst += str + ";";
         }
         if(csvLijst.equals(""))
             return csvLijst;
@@ -62,11 +62,11 @@ public class ToewijzingsAanvraag implements Serializable {
             return csvLijst.substring(0, csvLijst.length()-1);
     }
     
-    public int getVoorkeur() {
+    public Integer getVoorkeur() {
         return voorkeur;
     }
 
-    public void setVoorkeur(int voorkeur) {
+    public void setVoorkeur(Integer voorkeur) {
         this.voorkeur = voorkeur;
     }
 
@@ -82,12 +82,12 @@ public class ToewijzingsAanvraag implements Serializable {
         return aanmeldingsTijdstip;
     }
 
-    public boolean heeftHeeftBroerOfZus() {
-        return heeftBroerOfZus;
+    public int getBroersOfZussen() {
+        return broersOfZussen;
     }
 
-    public void setHeeftBroerOfZus(boolean heeftBroerOfZus) {
-        this.heeftBroerOfZus = heeftBroerOfZus;
+    public void setBroersOfZussen(int broersOfZussen) {
+        this.broersOfZussen = broersOfZussen;
     }
 
     public Status getStatus() {
@@ -96,6 +96,10 @@ public class ToewijzingsAanvraag implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+    
+    public void incrementBroersOfZussen() {
+	this.broersOfZussen++;
     }
     
     @Override
@@ -108,14 +112,14 @@ public class ToewijzingsAanvraag implements Serializable {
                && ta.getStatus().equals(this.getStatus())
                && ta.getToewijzingsAanvraagNummer() == this.toewijzingsAanvraagNummer
                && ta.getVoorkeur() == this.voorkeur
-               && ta.heeftBroerOfZus == this.heeftBroerOfZus;
+               && ta.getBroersOfZussen() == this.broersOfZussen;
     }
     
     @Override
     public int hashCode() {
         return Objects.hash(serialVersionUID, toewijzingsAanvraagNummer, 
                             rijksregisterNummerStudent, aanmeldingsTijdstip,
-                            status, voorkeur, heeftBroerOfZus);
+                            status, voorkeur, broersOfZussen);
     }
     
     @Override
