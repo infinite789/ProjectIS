@@ -37,12 +37,12 @@ public class DBSchool {
       }
       for(School s : scholenHashMap.values()) {
 	rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
-              + "WHERE voorkeurschool = " + s.getID());
+                           + "WHERE voorkeurschool = " + s.getID());
 	while (rs.next()) {
 	  int aanvraagnummer = rs.getInt("toewijzingsaanvraagnummer");
 	  Status status = Status.valueOf(rs.getString("status"));
-	  String rijksregisterNummerStudent
-		  = rs.getString("student_rijksregisternummer");
+	  String rijksregisterNummerStudent = rs.getString("student_rijksregisternummer");
+          String rijksregisterNummerOuder = rs.getString("ouder_rijksregisternummer");
 	  Timestamp ts = rs.getTimestamp("aanmeldingstijdstip");
 	  LocalDateTime aanmeldingstijdstip = ts.toLocalDateTime();
 	  int broersOfZussen = rs.getInt("broer_zus");
@@ -56,7 +56,7 @@ public class DBSchool {
 	    }
 	  }
 	  s.getWachtLijst().add(new ToewijzingsAanvraag(aanvraagnummer,
-		  rijksregisterNummerStudent, aanmeldingstijdstip,
+		  rijksregisterNummerStudent, rijksregisterNummerOuder, aanmeldingstijdstip,
 		  broersOfZussen, status, voorkeur, als));
 	}
       }

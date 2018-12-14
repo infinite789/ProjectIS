@@ -119,6 +119,30 @@ public class UI extends javax.swing.JFrame  {
     AlgemeneTekstOuders = new javax.swing.JLabel();
     PersoonlijkeJlabel = new javax.swing.JLabel();
     jButton1 = new javax.swing.JButton();
+    AanmeldingsFormulierTab = new javax.swing.JPanel();
+    indienenKnopAFT = new javax.swing.JButton();
+    gegevensStudentAFT = new javax.swing.JPanel();
+    naamStudentLabelAFT = new javax.swing.JLabel();
+    voornaamStudentLabelAFT = new javax.swing.JLabel();
+    rijksnumStudentLabelAFT = new javax.swing.JLabel();
+    telnumLabelAFT = new javax.swing.JLabel();
+    naamStudentVeldAFT = new javax.swing.JTextField();
+    voornaamStudentVeldAFT = new javax.swing.JTextField();
+    telnumVeldAFT = new javax.swing.JTextField();
+    studentenDropBoxAFT = new javax.swing.JComboBox<>();
+    gegevensOuderAFT = new javax.swing.JPanel();
+    naamOuderLabelAFT = new javax.swing.JLabel();
+    voornaamOuderLabelAFT = new javax.swing.JLabel();
+    rijksnumOuderLabelAFT = new javax.swing.JLabel();
+    emailLabelAFT = new javax.swing.JLabel();
+    adresLabelAFT = new javax.swing.JLabel();
+    rijksnumOuderVeldAFT = new javax.swing.JTextField();
+    naamOuderVeldAFT = new javax.swing.JTextField();
+    voornaamOuderVeldAFT = new javax.swing.JTextField();
+    emailVeldAFT = new javax.swing.JTextField();
+    adresVeldAFT = new javax.swing.JTextField();
+    boodschapLabelAFT = new javax.swing.JLabel();
+    waarschuwingLabelAFT = new javax.swing.JLabel();
     VoorkeurFormulierTab = new javax.swing.JPanel();
     zoekwoordLabel = new javax.swing.JLabel();
     zoekwoordVeld = new javax.swing.JTextField();
@@ -149,30 +173,6 @@ public class UI extends javax.swing.JFrame  {
     boodschapLabelART = new javax.swing.JLabel();
     UitloggenTab = new javax.swing.JPanel();
     uitloggenLinkLabel = new javax.swing.JLabel();
-    AanmeldingsFormulierTab = new javax.swing.JPanel();
-    indienenKnopAFT = new javax.swing.JButton();
-    gegevensStudentAFT = new javax.swing.JPanel();
-    naamStudentLabelAFT = new javax.swing.JLabel();
-    voornaamStudentLabelAFT = new javax.swing.JLabel();
-    rijksnumStudentLabelAFT = new javax.swing.JLabel();
-    telnumLabelAFT = new javax.swing.JLabel();
-    naamStudentVeldAFT = new javax.swing.JTextField();
-    voornaamStudentVeldAFT = new javax.swing.JTextField();
-    telnumVeldAFT = new javax.swing.JTextField();
-    studentenDropBoxAFT = new javax.swing.JComboBox<>();
-    gegevensOuderAFT = new javax.swing.JPanel();
-    naamOuderLabelAFT = new javax.swing.JLabel();
-    voornaamOuderLabelAFT = new javax.swing.JLabel();
-    rijksnumOuderLabelAFT = new javax.swing.JLabel();
-    emailLabelAFT = new javax.swing.JLabel();
-    adresLabelAFT = new javax.swing.JLabel();
-    rijksnumOuderVeldAFT = new javax.swing.JTextField();
-    naamOuderVeldAFT = new javax.swing.JTextField();
-    voornaamOuderVeldAFT = new javax.swing.JTextField();
-    emailVeldAFT = new javax.swing.JTextField();
-    adresVeldAFT = new javax.swing.JTextField();
-    boodschapLabelAFT = new javax.swing.JLabel();
-    waarschuwingLabelAFT = new javax.swing.JLabel();
     AdminScherm = new javax.swing.JPanel();
     jPanel1 = new javax.swing.JPanel();
     exporteerKnopAdmin = new javax.swing.JButton();
@@ -512,290 +512,6 @@ public class UI extends javax.swing.JFrame  {
 
     FormulierScherm.addTab("Home", HomeTab);
 
-    VoorkeurFormulierTab.setBackground(new java.awt.Color(255, 255, 255));
-    VoorkeurFormulierTab.setBorder(javax.swing.BorderFactory.createTitledBorder("School"));
-
-    zoekwoordLabel.setText("Zoekwoord:");
-
-    zoekwoordVeld.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        zoekwoordVeldActionPerformed(evt);
-      }
-    });
-    zoekwoordVeld.addKeyListener(new java.awt.event.KeyAdapter() {
-      public void keyReleased(java.awt.event.KeyEvent evt) {
-        zoekwoordVeldKeyReleased(evt);
-      }
-    });
-
-    indienenKnopVFT.setText("Indienen");
-    indienenKnopVFT.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        indienenKnopVFTActionPerformed(evt);
-      }
-    });
-
-    selectieBoodschapLabel.setForeground(new java.awt.Color(255, 0, 0));
-    selectieBoodschapLabel.setText("Gelieve een school uit de bovenstaande lijst te selecteren.");
-    selectieBoodschapLabel.setToolTipText("");
-    selectieBoodschapLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-    rijksnumStudentLabelVFT.setText("Rijksregisternummer (kind):");
-
-    infoLabelVFT.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-    infoLabelVFT.setText("<html>Deze formulier past uw keuze aan voor de lopende periode.<br/> U kunt uw eerste voorkeur aanpassen vóór 15 juli.</html>");
-
-    scholenTabel.setModel(new javax.swing.table.DefaultTableModel(
-      new Object [][] {
-
-      },
-      new String [] {
-        "Naam", "Adres", "Capaciteit", "ID"
-      }
-    ) {
-      Class[] types = new Class [] {
-        java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
-      };
-      boolean[] canEdit = new boolean [] {
-        false, false, false, false
-      };
-
-      public Class getColumnClass(int columnIndex) {
-        return types [columnIndex];
-      }
-
-      public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return canEdit [columnIndex];
-      }
-    });
-    scholenScrollPane.setViewportView(scholenTabel);
-
-    boodschapLabelVFT.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-    studentenDropBoxVFT.setModel(new DefaultComboBoxModel());
-    studentenDropBoxVFT.addItemListener(new java.awt.event.ItemListener() {
-      public void itemStateChanged(java.awt.event.ItemEvent evt) {
-        studentenDropBoxVFTItemStateChanged(evt);
-      }
-    });
-
-    aanvraagNummerLabelVFT.setText("Toewijzingsaanvraagnummer:");
-
-    aanvraagnummerVeldVFT.setFocusable(false);
-
-    javax.swing.GroupLayout VoorkeurFormulierTabLayout = new javax.swing.GroupLayout(VoorkeurFormulierTab);
-    VoorkeurFormulierTab.setLayout(VoorkeurFormulierTabLayout);
-    VoorkeurFormulierTabLayout.setHorizontalGroup(
-      VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(VoorkeurFormulierTabLayout.createSequentialGroup()
-        .addContainerGap()
-        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(selectieBoodschapLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
-          .addComponent(infoLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addGroup(VoorkeurFormulierTabLayout.createSequentialGroup()
-            .addComponent(boodschapLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(indienenKnopVFT))
-          .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, VoorkeurFormulierTabLayout.createSequentialGroup()
-              .addComponent(rijksnumStudentLabelVFT)
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(studentenDropBoxVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, VoorkeurFormulierTabLayout.createSequentialGroup()
-              .addComponent(aanvraagNummerLabelVFT)
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-              .addComponent(aanvraagnummerVeldVFT))
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, VoorkeurFormulierTabLayout.createSequentialGroup()
-              .addComponent(zoekwoordLabel)
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-              .addComponent(zoekwoordVeld))
-            .addComponent(scholenScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE))))
-    );
-    VoorkeurFormulierTabLayout.setVerticalGroup(
-      VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(VoorkeurFormulierTabLayout.createSequentialGroup()
-        .addComponent(infoLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
-        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(rijksnumStudentLabelVFT)
-          .addComponent(studentenDropBoxVFT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(27, 27, 27)
-        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(aanvraagNummerLabelVFT)
-          .addComponent(aanvraagnummerVeldVFT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(22, 22, 22)
-        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(zoekwoordLabel)
-          .addComponent(zoekwoordVeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(18, 18, 18)
-        .addComponent(scholenScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(14, 14, 14)
-        .addComponent(selectieBoodschapLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(26, 26, 26)
-        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(indienenKnopVFT)
-          .addComponent(boodschapLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addContainerGap(368, Short.MAX_VALUE))
-    );
-
-    FormulierScherm.addTab("Voorkeurformulier", VoorkeurFormulierTab);
-
-    ZoekAanvraagTab.setBackground(new java.awt.Color(255, 255, 255));
-
-    rijksnumStudentLabelART.setText("Rijksregisternummer (kind): ");
-
-    infoLabelART.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-    infoLabelART.setText("<html>Je kan je aanvragen onderaan raadplegen door het rijksregisternummer van uw kind in te\n <br/>geven. Mocht u niet tevreden zijn met uw opgegeven voorkeur, kunt u deze nog aanpassen\n<br/>door opnieuw de 'Voorkeurformulier' in te vullen.\n<br/>(Let op: u kan enkel de voorkeur voor de lopende periode aanpassen!)</html>");
-
-    gegevensPanelART.setBackground(new java.awt.Color(255, 255, 255));
-    gegevensPanelART.setBorder(javax.swing.BorderFactory.createTitledBorder("Uw gegevens"));
-
-    eersteVoorkeurLabel.setText("Voorkeurschool:");
-
-    aanvraagnummerLabelART.setText("Aanvraagnummer:");
-
-    statusLabel.setText("Status:");
-
-    tijdstipLabel.setText("Tijdstip van aanmelding:");
-
-    javax.swing.GroupLayout gegevensPanelARTLayout = new javax.swing.GroupLayout(gegevensPanelART);
-    gegevensPanelART.setLayout(gegevensPanelARTLayout);
-    gegevensPanelARTLayout.setHorizontalGroup(
-      gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(gegevensPanelARTLayout.createSequentialGroup()
-        .addContainerGap()
-        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(aanvraagnummerLabelART)
-          .addComponent(tijdstipLabel)
-          .addComponent(eersteVoorkeurLabel)
-          .addComponent(statusLabel))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(aanvraagnummerLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(statusLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(tijdstipLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(eersteVoorkeurLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        .addContainerGap())
-    );
-    gegevensPanelARTLayout.setVerticalGroup(
-      gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(gegevensPanelARTLayout.createSequentialGroup()
-        .addContainerGap()
-        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(aanvraagnummerLabelART)
-          .addComponent(aanvraagnummerLabelOut, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(18, 18, 18)
-        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(statusLabel)
-          .addComponent(statusLabelOut, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(18, 18, 18)
-        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(tijdstipLabel)
-          .addComponent(tijdstipLabelOut, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(18, 18, 18)
-        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(eersteVoorkeurLabel)
-          .addComponent(eersteVoorkeurLabelOut, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-    );
-
-    studentenDropBoxART.setModel(new DefaultComboBoxModel());
-    studentenDropBoxART.addItemListener(new java.awt.event.ItemListener() {
-      public void itemStateChanged(java.awt.event.ItemEvent evt) {
-        studentenDropBoxARTItemStateChanged(evt);
-      }
-    });
-
-    verwijderLinkLabelART.setFont(new java.awt.Font("Dialog", 2, 11)); // NOI18N
-    verwijderLinkLabelART.setForeground(java.awt.Color.blue);
-    verwijderLinkLabelART.setText("<html><u>VERWIJDEREN</u></html>");
-    verwijderLinkLabelART.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseClicked(java.awt.event.MouseEvent evt) {
-        verwijderLinkLabelARTMouseClicked(evt);
-      }
-      public void mouseEntered(java.awt.event.MouseEvent evt) {
-        verwijderLinkLabelARTMouseEntered(evt);
-      }
-      public void mouseExited(java.awt.event.MouseEvent evt) {
-        verwijderLinkLabelARTMouseExited(evt);
-      }
-    });
-
-    javax.swing.GroupLayout ZoekAanvraagTabLayout = new javax.swing.GroupLayout(ZoekAanvraagTab);
-    ZoekAanvraagTab.setLayout(ZoekAanvraagTabLayout);
-    ZoekAanvraagTabLayout.setHorizontalGroup(
-      ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ZoekAanvraagTabLayout.createSequentialGroup()
-        .addGap(29, 91, Short.MAX_VALUE)
-        .addComponent(boodschapLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
-      .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
-        .addGap(28, 28, 28)
-        .addComponent(verwijderLinkLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-      .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
-        .addContainerGap()
-        .addGroup(ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-          .addComponent(infoLabelART, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
-          .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
-            .addComponent(rijksnumStudentLabelART)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(studentenDropBoxART, 0, 514, Short.MAX_VALUE))
-          .addComponent(gegevensPanelART, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-    );
-    ZoekAanvraagTabLayout.setVerticalGroup(
-      ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
-        .addContainerGap()
-        .addComponent(infoLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
-        .addGroup(ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(rijksnumStudentLabelART)
-          .addComponent(studentenDropBoxART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(18, 18, 18)
-        .addComponent(gegevensPanelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
-        .addComponent(verwijderLinkLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(51, 51, 51)
-        .addComponent(boodschapLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(382, Short.MAX_VALUE))
-    );
-
-    FormulierScherm.addTab("Aanvragen raadplegen", ZoekAanvraagTab);
-
-    UitloggenTab.setBackground(new java.awt.Color(255, 255, 255));
-
-    uitloggenLinkLabel.setForeground(java.awt.Color.blue);
-    uitloggenLinkLabel.setText("<html><u>Log me uit</u></html>");
-    uitloggenLinkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseClicked(java.awt.event.MouseEvent evt) {
-        uitloggenLinkLabelMouseClicked(evt);
-      }
-      public void mouseEntered(java.awt.event.MouseEvent evt) {
-        uitloggenLinkLabelMouseEntered(evt);
-      }
-      public void mouseExited(java.awt.event.MouseEvent evt) {
-        uitloggenLinkLabelMouseExited(evt);
-      }
-    });
-
-    javax.swing.GroupLayout UitloggenTabLayout = new javax.swing.GroupLayout(UitloggenTab);
-    UitloggenTab.setLayout(UitloggenTabLayout);
-    UitloggenTabLayout.setHorizontalGroup(
-      UitloggenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(UitloggenTabLayout.createSequentialGroup()
-        .addGap(30, 30, 30)
-        .addComponent(uitloggenLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(712, Short.MAX_VALUE))
-    );
-    UitloggenTabLayout.setVerticalGroup(
-      UitloggenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(UitloggenTabLayout.createSequentialGroup()
-        .addGap(26, 26, 26)
-        .addComponent(uitloggenLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(728, Short.MAX_VALUE))
-    );
-
-    FormulierScherm.addTab("Uitloggen", UitloggenTab);
-
     AanmeldingsFormulierTab.setBackground(new java.awt.Color(255, 255, 255));
     AanmeldingsFormulierTab.setBorder(javax.swing.BorderFactory.createTitledBorder("Student"));
 
@@ -840,14 +556,14 @@ public class UI extends javax.swing.JFrame  {
           .addComponent(naamStudentLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
           .addComponent(voornaamStudentLabelAFT, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
           .addComponent(telnumLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(rijksnumStudentLabelAFT, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+          .addComponent(rijksnumStudentLabelAFT))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addGroup(gegevensStudentAFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-          .addComponent(studentenDropBoxAFT, 0, 220, Short.MAX_VALUE)
-          .addComponent(voornaamStudentVeldAFT)
-          .addComponent(naamStudentVeldAFT)
-          .addComponent(telnumVeldAFT))
-        .addContainerGap(226, Short.MAX_VALUE))
+        .addGroup(gegevensStudentAFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(voornaamStudentVeldAFT, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(studentenDropBoxAFT, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(naamStudentVeldAFT, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(telnumVeldAFT, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addContainerGap(209, Short.MAX_VALUE))
     );
     gegevensStudentAFTLayout.setVerticalGroup(
       gegevensStudentAFTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -953,15 +669,17 @@ public class UI extends javax.swing.JFrame  {
     AanmeldingsFormulierTabLayout.setHorizontalGroup(
       AanmeldingsFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(AanmeldingsFormulierTabLayout.createSequentialGroup()
-        .addGap(12, 12, 12)
-        .addComponent(waarschuwingLabelAFT))
-      .addGroup(AanmeldingsFormulierTabLayout.createSequentialGroup()
-        .addContainerGap()
-        .addGroup(AanmeldingsFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-          .addComponent(gegevensStudentAFT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(indienenKnopAFT)
-          .addComponent(gegevensOuderAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(boodschapLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addGroup(AanmeldingsFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(AanmeldingsFormulierTabLayout.createSequentialGroup()
+            .addGap(12, 12, 12)
+            .addComponent(waarschuwingLabelAFT))
+          .addGroup(AanmeldingsFormulierTabLayout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(AanmeldingsFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+              .addComponent(gegevensStudentAFT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+              .addComponent(indienenKnopAFT)
+              .addComponent(gegevensOuderAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+              .addComponent(boodschapLabelAFT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         .addContainerGap())
     );
     AanmeldingsFormulierTabLayout.setVerticalGroup(
@@ -980,6 +698,294 @@ public class UI extends javax.swing.JFrame  {
     );
 
     FormulierScherm.addTab("Aanmeldingsformulier", AanmeldingsFormulierTab);
+
+    VoorkeurFormulierTab.setBackground(new java.awt.Color(255, 255, 255));
+    VoorkeurFormulierTab.setBorder(javax.swing.BorderFactory.createTitledBorder("School"));
+
+    zoekwoordLabel.setText("Zoekwoord:");
+
+    zoekwoordVeld.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        zoekwoordVeldActionPerformed(evt);
+      }
+    });
+    zoekwoordVeld.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyReleased(java.awt.event.KeyEvent evt) {
+        zoekwoordVeldKeyReleased(evt);
+      }
+    });
+
+    indienenKnopVFT.setText("Indienen");
+    indienenKnopVFT.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        indienenKnopVFTActionPerformed(evt);
+      }
+    });
+
+    selectieBoodschapLabel.setForeground(new java.awt.Color(255, 0, 0));
+    selectieBoodschapLabel.setText("Gelieve een school uit de bovenstaande lijst te selecteren.");
+    selectieBoodschapLabel.setToolTipText("");
+    selectieBoodschapLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+    rijksnumStudentLabelVFT.setText("Rijksregisternummer (kind):");
+
+    infoLabelVFT.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+    infoLabelVFT.setText("<html>Deze formulier past uw keuze aan voor de lopende periode.<br/> U kunt uw eerste voorkeur aanpassen vóór 15 juli.</html>");
+
+    scholenTabel.setModel(new javax.swing.table.DefaultTableModel(
+      new Object [][] {
+
+      },
+      new String [] {
+        "Naam", "Adres", "Capaciteit", "ID"
+      }
+    ) {
+      Class[] types = new Class [] {
+        java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+      };
+      boolean[] canEdit = new boolean [] {
+        false, false, false, false
+      };
+
+      public Class getColumnClass(int columnIndex) {
+        return types [columnIndex];
+      }
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+      }
+    });
+    scholenScrollPane.setViewportView(scholenTabel);
+
+    boodschapLabelVFT.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+    studentenDropBoxVFT.setModel(new DefaultComboBoxModel());
+    studentenDropBoxVFT.addItemListener(new java.awt.event.ItemListener() {
+      public void itemStateChanged(java.awt.event.ItemEvent evt) {
+        studentenDropBoxVFTItemStateChanged(evt);
+      }
+    });
+
+    aanvraagNummerLabelVFT.setText("Toewijzingsaanvraagnummer:");
+
+    aanvraagnummerVeldVFT.setFocusable(false);
+
+    javax.swing.GroupLayout VoorkeurFormulierTabLayout = new javax.swing.GroupLayout(VoorkeurFormulierTab);
+    VoorkeurFormulierTab.setLayout(VoorkeurFormulierTabLayout);
+    VoorkeurFormulierTabLayout.setHorizontalGroup(
+      VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(VoorkeurFormulierTabLayout.createSequentialGroup()
+        .addContainerGap()
+        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(selectieBoodschapLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
+          .addComponent(infoLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addGroup(VoorkeurFormulierTabLayout.createSequentialGroup()
+            .addComponent(boodschapLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(indienenKnopVFT))
+          .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, VoorkeurFormulierTabLayout.createSequentialGroup()
+              .addComponent(zoekwoordLabel)
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addComponent(zoekwoordVeld))
+            .addComponent(scholenScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, VoorkeurFormulierTabLayout.createSequentialGroup()
+              .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(aanvraagNummerLabelVFT)
+                .addComponent(rijksnumStudentLabelVFT))
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(studentenDropBoxVFT, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(aanvraagnummerVeldVFT))))))
+    );
+    VoorkeurFormulierTabLayout.setVerticalGroup(
+      VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(VoorkeurFormulierTabLayout.createSequentialGroup()
+        .addComponent(infoLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(18, 18, 18)
+        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(rijksnumStudentLabelVFT)
+          .addComponent(studentenDropBoxVFT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(27, 27, 27)
+        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(aanvraagNummerLabelVFT)
+          .addComponent(aanvraagnummerVeldVFT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(22, 22, 22)
+        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(zoekwoordLabel)
+          .addComponent(zoekwoordVeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(18, 18, 18)
+        .addComponent(scholenScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(selectieBoodschapLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(14, 14, 14)
+        .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(boodschapLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(indienenKnopVFT))
+        .addContainerGap(838, Short.MAX_VALUE))
+    );
+
+    FormulierScherm.addTab("Voorkeurformulier", VoorkeurFormulierTab);
+
+    ZoekAanvraagTab.setBackground(new java.awt.Color(255, 255, 255));
+
+    rijksnumStudentLabelART.setText("Rijksregisternummer (kind): ");
+
+    infoLabelART.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+    infoLabelART.setText("<html>Je kan je aanvragen onderaan raadplegen door het rijksregisternummer van uw kind in te\n <br/>geven. Mocht u niet tevreden zijn met uw opgegeven voorkeur, kunt u deze nog aanpassen\n<br/>door opnieuw de 'Voorkeurformulier' in te vullen.\n<br/>(Let op: u kan enkel de voorkeur voor de lopende periode aanpassen!)</html>");
+
+    gegevensPanelART.setBackground(new java.awt.Color(255, 255, 255));
+    gegevensPanelART.setBorder(javax.swing.BorderFactory.createTitledBorder("Uw gegevens"));
+
+    eersteVoorkeurLabel.setText("Voorkeurschool:");
+
+    aanvraagnummerLabelART.setText("Aanvraagnummer:");
+
+    statusLabel.setText("Status:");
+
+    tijdstipLabel.setText("Tijdstip van aanmelding:");
+
+    javax.swing.GroupLayout gegevensPanelARTLayout = new javax.swing.GroupLayout(gegevensPanelART);
+    gegevensPanelART.setLayout(gegevensPanelARTLayout);
+    gegevensPanelARTLayout.setHorizontalGroup(
+      gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(gegevensPanelARTLayout.createSequentialGroup()
+        .addContainerGap()
+        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(aanvraagnummerLabelART)
+          .addComponent(tijdstipLabel)
+          .addComponent(eersteVoorkeurLabel)
+          .addComponent(statusLabel))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(aanvraagnummerLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(statusLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(tijdstipLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(eersteVoorkeurLabelOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addContainerGap())
+    );
+    gegevensPanelARTLayout.setVerticalGroup(
+      gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(gegevensPanelARTLayout.createSequentialGroup()
+        .addContainerGap()
+        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(aanvraagnummerLabelART)
+          .addComponent(aanvraagnummerLabelOut, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(18, 18, 18)
+        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(statusLabel)
+          .addComponent(statusLabelOut, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(18, 18, 18)
+        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(tijdstipLabel)
+          .addComponent(tijdstipLabelOut, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(18, 18, 18)
+        .addGroup(gegevensPanelARTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(eersteVoorkeurLabel)
+          .addComponent(eersteVoorkeurLabelOut, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+
+    studentenDropBoxART.setModel(new DefaultComboBoxModel());
+    studentenDropBoxART.addItemListener(new java.awt.event.ItemListener() {
+      public void itemStateChanged(java.awt.event.ItemEvent evt) {
+        studentenDropBoxARTItemStateChanged(evt);
+      }
+    });
+
+    verwijderLinkLabelART.setFont(new java.awt.Font("Dialog", 2, 11)); // NOI18N
+    verwijderLinkLabelART.setForeground(java.awt.Color.blue);
+    verwijderLinkLabelART.setText("<html><u>VERWIJDEREN</u></html>");
+    verwijderLinkLabelART.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        verwijderLinkLabelARTMouseClicked(evt);
+      }
+      public void mouseEntered(java.awt.event.MouseEvent evt) {
+        verwijderLinkLabelARTMouseEntered(evt);
+      }
+      public void mouseExited(java.awt.event.MouseEvent evt) {
+        verwijderLinkLabelARTMouseExited(evt);
+      }
+    });
+
+    boodschapLabelART.setText("boodschapLabelART");
+
+    javax.swing.GroupLayout ZoekAanvraagTabLayout = new javax.swing.GroupLayout(ZoekAanvraagTab);
+    ZoekAanvraagTab.setLayout(ZoekAanvraagTabLayout);
+    ZoekAanvraagTabLayout.setHorizontalGroup(
+      ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
+        .addGroup(ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+          .addComponent(boodschapLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addGroup(ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
+              .addContainerGap()
+              .addGroup(ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(infoLabelART, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
+                .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
+                  .addComponent(rijksnumStudentLabelART)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(studentenDropBoxART, 0, 514, Short.MAX_VALUE))
+                .addComponent(gegevensPanelART, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
+              .addGap(26, 26, 26)
+              .addComponent(verwijderLinkLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        .addContainerGap(120, Short.MAX_VALUE))
+    );
+    ZoekAanvraagTabLayout.setVerticalGroup(
+      ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(ZoekAanvraagTabLayout.createSequentialGroup()
+        .addContainerGap()
+        .addComponent(infoLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(18, 18, 18)
+        .addGroup(ZoekAanvraagTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(rijksnumStudentLabelART)
+          .addComponent(studentenDropBoxART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(18, 18, 18)
+        .addComponent(gegevensPanelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(verwijderLinkLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(boodschapLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(883, Short.MAX_VALUE))
+    );
+
+    FormulierScherm.addTab("Aanvragen raadplegen", ZoekAanvraagTab);
+
+    UitloggenTab.setBackground(new java.awt.Color(255, 255, 255));
+
+    uitloggenLinkLabel.setForeground(java.awt.Color.blue);
+    uitloggenLinkLabel.setText("<html><u>Log me uit</u></html>");
+    uitloggenLinkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        uitloggenLinkLabelMouseClicked(evt);
+      }
+      public void mouseEntered(java.awt.event.MouseEvent evt) {
+        uitloggenLinkLabelMouseEntered(evt);
+      }
+      public void mouseExited(java.awt.event.MouseEvent evt) {
+        uitloggenLinkLabelMouseExited(evt);
+      }
+    });
+
+    javax.swing.GroupLayout UitloggenTabLayout = new javax.swing.GroupLayout(UitloggenTab);
+    UitloggenTab.setLayout(UitloggenTabLayout);
+    UitloggenTabLayout.setHorizontalGroup(
+      UitloggenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(UitloggenTabLayout.createSequentialGroup()
+        .addGap(30, 30, 30)
+        .addComponent(uitloggenLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(712, Short.MAX_VALUE))
+    );
+    UitloggenTabLayout.setVerticalGroup(
+      UitloggenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(UitloggenTabLayout.createSequentialGroup()
+        .addGap(26, 26, 26)
+        .addComponent(uitloggenLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(1178, Short.MAX_VALUE))
+    );
+
+    FormulierScherm.addTab("Uitloggen", UitloggenTab);
 
     MainPanel.add(FormulierScherm, "card2");
 
@@ -1108,14 +1114,14 @@ public class UI extends javax.swing.JFrame  {
             boodschapLabelVFT.setText("Maak een selectie!");
         } else {
             int aanvraagnummer = Integer.parseInt(aanvraagnummerVeldVFT.getText());
-            String rnstudent = studentenDropBoxVFT.getSelectedItem().toString();
+            Student student = main.getStudent(studentenDropBoxVFT.getSelectedItem().toString());
             int schoolID = (int)scholenTabel.getValueAt(scholenTabel.getSelectedRow(), 3);
             if (main.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
                 boodschapLabelVFT.setForeground(Color.red);
                 boodschapLabelVFT.setText("<html>U werd al afgewezen voor deze school! "
                                + "<br/>Gelieve een andere school te selecteren.</html>");
             } else try {
-                if(main.indienenVoorkeur(aanvraagnummer, rnstudent, schoolID)
+                if(main.indienenVoorkeur(aanvraagnummer, student, schoolID)
                         && !main.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
                     boodschapLabelVFT.setForeground(Color.green);
                     boodschapLabelVFT.setText("<html>U heeft uw voorkeur succesvol ingediend! "
@@ -1136,33 +1142,24 @@ public class UI extends javax.swing.JFrame  {
      * 'Aanmeldingsformulier'
      */
     private void indienenKnopAFTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indienenKnopAFTActionPerformed
-        if(naamStudentVeldAFT.getText().equals("")){
-            boodschapLabelAFT.setText("Maak een selectie!");
+      if(naamStudentVeldAFT.getText().equals("")){
+        boodschapLabelAFT.setText("Maak een selectie!");
+        boodschapLabelAFT.setForeground(Color.red);
+      }
+      else {
+        Student s = main.getStudent(studentenDropBoxAFT.getSelectedItem().toString());
+        ToewijzingsAanvraag ta = new ToewijzingsAanvraag(main.keyNieuweAanvraag(), 
+                                                         s.getRijksregisterNummer(), 
+                                                         s.getRijksregisterNummerOuder());
+        if(main.addAanvraag(ta)){
+            boodschapLabelAFT.setForeground(Color.green);
+            boodschapLabelAFT.setText("<html>U heef zich succesvol aangemeld! "
+                + "<br/> Je kan je aanvragen raadplegen onder 'Aanvragen'.</html>");
+        } else {
+            boodschapLabelAFT.setText("U heeft al een aanvraag gedaan.");
             boodschapLabelAFT.setForeground(Color.red);
         }
-        else {
-            Student s = main.getStudent(
-                studentenDropBoxAFT.getSelectedItem().toString()
-            );
-            String rnkind;
-            if (s != null)
-                rnkind = s.getRijksregisterNummerStudent();
-            else
-                rnkind = "";
-            String rnouder = rijksnumOuderVeldAFT.getText().replaceAll("@\"[^\\d]\"","");
-            try {
-                if(main.aanvragen(rnkind, rnouder)){
-                    boodschapLabelAFT.setForeground(Color.green);
-                    boodschapLabelAFT.setText("<html>U heef zich succesvol aangemeld! "
-                        + "<br/> Je kan je aanvragen raadplegen onder 'Aanvragen'.</html>");
-                } else {
-                    boodschapLabelAFT.setText("U heeft al een aanvraag gedaan.");
-                    boodschapLabelAFT.setForeground(Color.red);
-                }
-            } catch(Exception e){
-                System.out.println("Error: " + e);
-            }
-        }
+      }
     }//GEN-LAST:event_indienenKnopAFTActionPerformed
 
     /*
@@ -1239,20 +1236,19 @@ public class UI extends javax.swing.JFrame  {
      * activeerscherm
      */
     private void activeerKnopASActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activeerKnopASActionPerformed
-        try { 
+       
             String rnouder = rijksnumVeldAS.getText();
             if(main.activeren(rnouder)) {
                 boodschapLabelAS.setText("<html>Account succesvol aangemaakt. U ontangt van ons "
                                 + "<br/>binnenkort een email met uw login gegevens.</html>");
                 boodschapLabelAS.setForeground(Color.green);
+            } else if (naamVeldAS.getText().equals("")) {
+                boodschapLabelAS.setText("<html>U moet eerst een rijksregisternummer ingeven!</html>");
+                boodschapLabelAS.setForeground(Color.red);
             } else { 
-                boodschapLabelAS.setText("<html>U heeft al een account aangemaakt "
-                            + "<br/>of u gebruikt verkeerde gegevens</html>");
+                boodschapLabelAS.setText("<html>U heeft al een account aangemaakt!</html>");
                 boodschapLabelAS.setForeground(Color.red);
             }  
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
     }//GEN-LAST:event_activeerKnopASActionPerformed
     
     /*
@@ -1274,54 +1270,51 @@ public class UI extends javax.swing.JFrame  {
         String gebrnaam = gebrVeldIS.getText();
         char[] passArray = passVeldIS.getPassword();
         //inloggen met verkeerde gegevens
-        if(main.i(gebrnaam, passArray) == -1) {
-            boodschapLabelIS.setText("Verkeerde gegevens.");
-            boodschapLabelIS.setForeground(Color.red);
-            doorgaanKnopIS.setEnabled(false);
-        }
-        //inloggen als ouder
-        if(main.inloggen(gebrnaam, passArray) == 0) {
-            boodschapLabelIS.setText("U bent ingelolgd.");
-            boodschapLabelIS.setForeground(Color.green);
-            doorgaanKnopIS.setEnabled(true);
-            InlogScherm.getRootPane().setDefaultButton(doorgaanKnopIS);
-            
-            /* 
-             * Gegevens van ouder automatisch aanvullen in de 
-             * 'Aanmeldingsformulier'-tab
-             */
-            gebruiker = main.getOuder(gebrnaam, passArray);
-            naamOuderVeldAFT.setText(gebruiker.getNaam());
-            voornaamOuderVeldAFT.setText(gebruiker.getVoornaam());
-            emailVeldAFT.setText(gebruiker.getEmail());
-            adresVeldAFT.setText(gebruiker.getStraat() + ", " + gebruiker.getGemeente());
-            rijksnumOuderVeldAFT.setText(gebruiker.getRijksregisterNummerOuder());
-            
-            /* 
-             * Dropbox items toevoegen in 'Voorkeurformulier'-tab en 
-             * 'Aanvragen raadplegen'-tab en in 'Aanmeldigsformulier'-tab
-             */
-            studentenDropBoxAFT.insertItemAt("", 0);
-            studentenDropBoxART.insertItemAt("", 0);
-            studentenDropBoxVFT.insertItemAt("", 0);           
-            main.getStudentenVanOuder(
-                    gebruiker.getRijksregisterNummerOuder()).stream().map((s) -> {
-                      studentenDropBoxAFT.addItem(s.getRijksregisterNummerStudent());
-            return s;
-          }).map((s) -> {
-            studentenDropBoxART.addItem(s.getRijksregisterNummerStudent());
-            return s;
-          }).forEachOrdered((s) -> {
-            studentenDropBoxVFT.addItem(s.getRijksregisterNummerStudent());
-          });
-        } 
-        //inloggen als administrator
-        if(main.inloggen(gebrnaam, passArray) == 1) {
-            AdminScherm.setVisible(true);
-            InlogScherm.setVisible(false);
-            ActiveerScherm.setVisible(false);
-            FormulierScherm.setVisible(false);
-        }
+	TypeGebruiker type = main.inloggen(gebrnaam, passArray);
+	switch(type) {
+	  case ADMIN: boodschapLabelIS.setText("Ingelogd als administrator.");
+		      boodschapLabelIS.setForeground(Color.green);
+		      doorgaanKnopIS.setEnabled(true);
+		      InlogScherm.getRootPane().setDefaultButton(doorgaanKnopIS);
+		      break;
+	  case OUDER: boodschapLabelIS.setText("U bent ingelolgd.");
+		      boodschapLabelIS.setForeground(Color.green);
+		      doorgaanKnopIS.setEnabled(true);
+		      InlogScherm.getRootPane().setDefaultButton(doorgaanKnopIS);
+
+		      /* 
+		       * Gegevens van ouder automatisch aanvullen in de 
+		       * 'Aanmeldingsformulier'-tab
+		       */
+		      gebruiker = main.getOuder(gebrnaam, passArray);
+		      naamOuderVeldAFT.setText(gebruiker.getNaam());
+		      voornaamOuderVeldAFT.setText(gebruiker.getVoornaam());
+		      emailVeldAFT.setText(gebruiker.getEmail());
+		      adresVeldAFT.setText(gebruiker.getStraat() + ", " + gebruiker.getGemeente());
+		      rijksnumOuderVeldAFT.setText(gebruiker.getRijksregisterNummer());
+
+		      /* 
+		       * Dropbox items toevoegen in 'Voorkeurformulier'-tab en 
+		       * 'Aanvragen raadplegen'-tab en in 'Aanmeldigsformulier'-tab
+		       */
+		      studentenDropBoxAFT.insertItemAt("", 0);
+		      studentenDropBoxART.insertItemAt("", 0);
+		      studentenDropBoxVFT.insertItemAt("", 0);           
+		      main.getStudentenVanOuder(gebruiker.getRijksregisterNummer()).stream().map((s) -> {
+			  studentenDropBoxAFT.addItem(s.getRijksregisterNummer());
+			  return s;
+		      }).map((s) -> {
+			  studentenDropBoxART.addItem(s.getRijksregisterNummer());
+			  return s;
+		      }).forEachOrdered((s) -> {
+			  studentenDropBoxVFT.addItem(s.getRijksregisterNummer());
+		      });
+		      break;
+	    default:  boodschapLabelIS.setText("Verkeerde gegevens.");
+		      boodschapLabelIS.setForeground(Color.red);
+		      doorgaanKnopIS.setEnabled(false);	
+		      break;
+	}
     }//GEN-LAST:event_inlogKnopISActionPerformed
 
     /*
@@ -1329,25 +1322,26 @@ public class UI extends javax.swing.JFrame  {
      * aanmeldingsscherm
      */
     private void doorgaanKnopISActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doorgaanKnopISActionPerformed
-        ActiveerScherm.setVisible(false);
-        InlogScherm.setVisible(false);
-        FormulierScherm.setVisible(true);
-        FormulierScherm.setSelectedComponent(HomeTab);
-        PersoonlijkeJlabel.setText("Hallo " + gebruiker.getVoornaam() + " " 
-                                    + gebruiker.getNaam() + ".");
-        
-        
+        if(gebruiker == null) {
+	  AdminScherm.setVisible(true);
+	  InlogScherm.setVisible(false);
+	  ActiveerScherm.setVisible(false);
+	  FormulierScherm.setVisible(false);
+	} else {
+	  ActiveerScherm.setVisible(false);
+	  InlogScherm.setVisible(false);
+	  FormulierScherm.setVisible(true);
+	  FormulierScherm.setSelectedComponent(HomeTab);
+	  PersoonlijkeJlabel.setText("Hallo " + gebruiker.getVoornaam() + " " 
+				      + gebruiker.getNaam() + ".");
+	}
     }//GEN-LAST:event_doorgaanKnopISActionPerformed
 
     /*
      * Methode dat de actie bepaalt bij afsluiten
      */
     private void onClose(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_onClose
-        try {
-            main.bewarenEnAfsluiten();
-        } catch(Exception e) {
-            System.out.println("Error: " + e);
-        }
+      
     }//GEN-LAST:event_onClose
     
     /*
@@ -1362,6 +1356,11 @@ public class UI extends javax.swing.JFrame  {
             voornaamVeldAS.setText(o.getNaam());
             emailVeldAS.setText(o.getEmail());
             adresVeldAS.setText(o.getStraat() + ", " + o.getGemeente());
+        } else {
+          naamVeldAS.setText("");
+          voornaamVeldAS.setText("");
+          emailVeldAS.setText("");
+          adresVeldAS.setText("");
         }
     }//GEN-LAST:event_rijksnumVeldASKeyReleased
 
@@ -1395,7 +1394,7 @@ public class UI extends javax.swing.JFrame  {
     private void studentenDropBoxARTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentenDropBoxARTItemStateChanged
         ToewijzingsAanvraag ta = null;
         if(studentenDropBoxART.getItemCount() > 0)
-            ta = main.getAanvraag(studentenDropBoxART.getSelectedItem().toString());
+            ta = main.getToewijzingsAanvraag(studentenDropBoxART.getSelectedItem().toString());
         if(ta == null && studentenDropBoxART.getSelectedIndex() > 0) {
             aanvraagnummerLabelOut.setText("");
             statusLabelOut.setText("");
@@ -1434,7 +1433,7 @@ public class UI extends javax.swing.JFrame  {
     private void studentenDropBoxVFTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentenDropBoxVFTItemStateChanged
         ToewijzingsAanvraag ta = null;
         if(studentenDropBoxVFT.getItemCount() > 0) {
-            ta = main.getAanvraag(
+            ta = main.getToewijzingsAanvraag(
                 studentenDropBoxVFT.getSelectedItem().toString()
             );
         } 
@@ -1483,8 +1482,8 @@ public class UI extends javax.swing.JFrame  {
      * 'Aanvragen raadplegen'
      */
     private void verwijderLinkLabelARTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verwijderLinkLabelARTMouseClicked
-        String rnkind = studentenDropBoxART.getSelectedItem().toString();
-        if(main.verwijderAanvraag(rnkind)) {
+        int aanvraagnummer = Integer.parseInt(aanvraagnummerLabelOut.getText());
+        if(main.verwijderAanvraag(aanvraagnummer)) {
             studentenDropBoxART.setSelectedIndex(0);
             boodschapLabelART.setText("Aanvraag verwijderd!");
             boodschapLabelART.setForeground(Color.red);
@@ -1492,14 +1491,7 @@ public class UI extends javax.swing.JFrame  {
     }//GEN-LAST:event_verwijderLinkLabelARTMouseClicked
 
     private void exporteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exporteerKnopAdminActionPerformed
-        try {
-            main.exporteerWachtLijsten();
-        } catch (ToewijzingException e) {
-            JOptionPane.showMessageDialog(
-                AdminScherm, "Error: " + e, 
-                "Exception error ", JOptionPane.ERROR_MESSAGE
-            );
-        }
+           
     }//GEN-LAST:event_exporteerKnopAdminActionPerformed
 
     private void uitloggenLinkLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uitloggenLinkLabelMouseEntered
@@ -1511,35 +1503,20 @@ public class UI extends javax.swing.JFrame  {
     }//GEN-LAST:event_uitloggenLinkLabelMouseExited
 
     private void uitloggenLinkLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uitloggenLinkLabelMouseClicked
-        try {
-            main.bewarenEnAfsluiten();
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
         InlogScherm.setVisible(true);
+        doorgaanKnopIS.setEnabled(false);
         gebrVeldIS.setText("");
         passVeldIS.setText("");
         boodschapLabelIS.setText("");
         studentenDropBoxVFT.removeAllItems();
         studentenDropBoxAFT.removeAllItems();
         studentenDropBoxART.removeAllItems();
-        try {
-            this.main = new Main();
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex);
-        }
+        this.main = new Main();
         this.gebruiker = null;
     }//GEN-LAST:event_uitloggenLinkLabelMouseClicked
 
     private void sorteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sorteerKnopAdminActionPerformed
-        try {
-            main.sorteerAlgoritme();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(
-                AdminScherm, "Error: " + e, 
-                "Exception error ", JOptionPane.ERROR_MESSAGE
-            );
-        }
+        main.sorteerAlgoritme();
     }//GEN-LAST:event_sorteerKnopAdminActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

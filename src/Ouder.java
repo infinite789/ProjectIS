@@ -1,27 +1,20 @@
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
-public class Ouder implements Serializable {
-    private final static long serialVersionUID = 453;
-    private final String rijksregisterNummerOuder;
-    private final String naam;
-    private final String voornaam;
+public class Ouder extends Persoon {
     private final String email;
     private final String straat;
     private final String gemeente;
     private final String gebruikersnaam;
     private String wachtwoord;
     
-    public Ouder(String rijksregisterNummerOuder, String naam, String voornaam, 
+    public Ouder(String rijksregisternummer, String naam, String voornaam, 
                  String email, String straat, String gemeente,
                  String gebruikersnaam, String wachtwoord) {
-        this.rijksregisterNummerOuder = rijksregisterNummerOuder;
-        this.naam = naam;
-        this.voornaam = voornaam;
+        super(rijksregisternummer, naam, voornaam);
         this.email = email;
         this.straat = straat;
         this.gemeente = gemeente;
@@ -45,20 +38,8 @@ public class Ouder implements Serializable {
         return wachtwoord;
     }
 
-    public String getRijksregisterNummerOuder() {
-        return rijksregisterNummerOuder;
-    }
-
     public void setWachtwoord(String wachtwoord) {
         this.wachtwoord = wachtwoord;
-    }
-
-    public String getNaam() {
-        return naam;
-    }
-
-    public String getVoornaam() {
-        return voornaam;
     }
 
     public String getEmail() {
@@ -75,13 +56,11 @@ public class Ouder implements Serializable {
                 && o.getEmail().equals(this.getEmail())
                 && o.getStraat().equals(this.getStraat())
                 && o.getGemeente().equals(this.getGemeente())
-                && o.getRijksregisterNummerOuder()
-                   .equals(this.getRijksregisterNummerOuder()));
+                && o.getRijksregisterNummer().equals(this.getRijksregisterNummer()));
     }
         
     @Override
     public int hashCode() {
-        return Objects.hash(serialVersionUID, rijksregisterNummerOuder, naam, voornaam,
-                            email, straat, gemeente, gebruikersnaam, wachtwoord);
+        return super.hashCode() + Objects.hash(email,straat,gemeente,gebruikersnaam,wachtwoord);
     }
 }

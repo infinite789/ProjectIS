@@ -67,7 +67,7 @@ public class DBOuder {
       PreparedStatement ps = con.prepareStatement("UPDATE ouders SET " 
                            + "wachtwoord = '" + o.getWachtwoord() + "' "
                            + "WHERE ouder_rijksregisternummer = '"
-                           + o.getRijksregisterNummerOuder() + "'");
+                           + o.getRijksregisterNummer()+ "'");
       ps.execute(); 
       DBConnect.closeConnection(con);
     } catch (DBException dbe) {
@@ -86,12 +86,13 @@ public class DBOuder {
    * retourneert -1 als de gegevens fout zijn, 0 als de ingelogde gebruiker
    * een ouder is, 1 als de ingelogde gebruiker een administrator is
    */
-  public static Ouder getOuder(String gebrnaam, String wachtwoord) throws DBException {
+  public static Ouder getOuder(String rnouder) throws DBException {
     Connection con = null;
     try {
       con = DBConnect.getConnection();
       Statement st = con.createStatement();
-      ResultSet rs = st.executeQuery("SELECT * FROM ouders WHERE gebruikersnaam = " + gebrnaam + "AND wachtwoord = " + wachtwoord);
+      ResultSet rs = st.executeQuery("SELECT * FROM ouders "
+				   + "WHERE ouder_rijksregisternummer = '" + rnouder + "';");
       Ouder o = null;
       if(rs.next()) {
 	String rijksregisterNummerOuder = rs.getString("ouder_rijksregisternummer");

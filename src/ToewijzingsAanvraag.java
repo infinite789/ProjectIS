@@ -18,15 +18,17 @@ public class ToewijzingsAanvraag implements Serializable {
     private static final long serialVersionUID = 8420;
     private final int toewijzingsAanvraagNummer;
     private final String rijksregisterNummerStudent;
+    private final String rijksregisterNummerOuder;
     private final LocalDateTime aanmeldingsTijdstip;
     private int broersOfZussen;
     private Status status;
     private int voorkeur;
     private final ArrayList<String> afgewezenScholen;
     
-    public ToewijzingsAanvraag(int nummer, String rnstudent) {
+    public ToewijzingsAanvraag(int nummer, String rnstudent, String rnouder) {
         this.toewijzingsAanvraagNummer = nummer;
         this.rijksregisterNummerStudent = rnstudent;
+        this.rijksregisterNummerOuder = rnouder;
         this.aanmeldingsTijdstip = LocalDateTime.now();
         this.broersOfZussen = 0;
         this.status = Status.ONTWERP;
@@ -34,12 +36,13 @@ public class ToewijzingsAanvraag implements Serializable {
         this.afgewezenScholen = new ArrayList<>();
     }
     
-    public ToewijzingsAanvraag(int nummer, String rnstudent,
+    public ToewijzingsAanvraag(int nummer, String rnstudent, String rnouder,
                                 LocalDateTime tijdstip,
                                 int broersOfZussen, Status status, 
                                 int voorkeur, ArrayList<String> afgewezenScholen){
         this.toewijzingsAanvraagNummer = nummer;
         this.rijksregisterNummerStudent = rnstudent;
+        this.rijksregisterNummerOuder = rnouder;
         this.aanmeldingsTijdstip = tijdstip;
         this.broersOfZussen = broersOfZussen;
         this.status = status;
@@ -78,6 +81,9 @@ public class ToewijzingsAanvraag implements Serializable {
         return rijksregisterNummerStudent;
     }
 
+    public String getRijksregisterNummerOuder() {
+      return rijksregisterNummerOuder;
+    }
     public LocalDateTime getAanmeldingsTijdstip() {
         return aanmeldingsTijdstip;
     }
