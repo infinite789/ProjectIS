@@ -61,6 +61,43 @@ public class DBToewijzingsAanvraag {
     }
   }
   
+  public static HashMap<Integer, ToewijzingsAanvraag> getToewijzingsAanvragen(Status s) throws DBException {
+    HashMap<Integer, ToewijzingsAanvraag> aanvragenHashMap = new HashMap<>();
+    Connection con = null;
+    try {
+      con = DBConnect.getConnection();
+      Statement st = con.createStatement();
+      ResultSet rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
+                                   + "WHERE status = '" + s + "';");
+      while (rs.next()) {
+        int aanvraagnummer = rs.getInt("toewijzingsaanvraagnummer");
+        Status status = Status.valueOf(rs.getString("status"));
+        String rijksregisterNummerStudent = rs.getString("student_rijksregisternummer");
+        String rijksregisterNummerOuder = rs.getString("ouder_rijksregisternummer");
+        Timestamp ts = rs.getTimestamp("aanmeldingstijdstip");
+        LocalDateTime aanmeldingstijdstip = ts.toLocalDateTime();
+        int broersOfZussen = rs.getInt("broer_zus");
+        int voorkeur = rs.getInt("voorkeurschool");
+        ArrayList<String> afgScholen = afgScholenCsvOmzetten(rs.getString("afgewezen_scholen"));
+        aanvragenHashMap.put(aanvraagnummer,
+            new ToewijzingsAanvraag(aanvraagnummer, rijksregisterNummerStudent, 
+                                    rijksregisterNummerOuder, aanmeldingstijdstip, 
+                                    broersOfZussen, status, voorkeur, afgScholen)
+        );
+      }
+      DBConnect.closeConnection(con);
+      return aanvragenHashMap;
+    } catch (DBException dbe) {
+      dbe.printStackTrace();
+      DBConnect.closeConnection(con);
+      throw dbe;
+    } catch (Exception e) {
+      e.printStackTrace();
+      DBConnect.closeConnection(con);
+      throw new DBException(e);
+    }
+  }
+  
   public static ArrayList<String> afgScholenCsvOmzetten(String csv) {
     String[] afgSchArray = csv.split(";");
     ArrayList<String> als = new ArrayList<>();
@@ -315,7 +352,6 @@ public class DBToewijzingsAanvraag {
                                                   + "WHERE toewijzingsaanvraagnummer = " + aanvraagnummer);
         ps.executeUpdate();
         veranderd = true;
-        ps.executeUpdate();
       }
       DBConnect.closeConnection(con);
       return veranderd;
@@ -329,4 +365,24 @@ public class DBToewijzingsAanvraag {
       throw new DBException(e);
     }
   }
+  
+  public static void updateStatus(Status s)throws DBException {
+    Connection con = null;
+      try {
+        con = DBConnect.getConnection();
+        PreparedStatement ps = con.prepareStatement("UPDATE toewijzingsaanvragen "
+                                                  + "SET status = '" + s + "';");
+        ps.executeUpdate();
+        DBConnect.closeConnection(con);
+      } catch (DBException dbe) {
+        dbe.printStackTrace();
+        DBConnect.closeConnection(con);
+        throw dbe;
+      } catch (Exception e) {
+        e.printStackTrace();
+        DBConnect.closeConnection(con);
+        throw new DBException(e);
+      }
+  }
+ 
 }

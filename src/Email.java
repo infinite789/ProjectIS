@@ -29,17 +29,16 @@ import javax.mail.internet.MimeMultipart;
 public class Email {
     private final String host = "smtp.gmail.com"; 
     private final String port = "587";
-    private final String verzender;
-    private final String pass;
     private final String ontvanger;
     private String subject;
     private StringBuffer body;
     private Map<String, String> mapInlineImages;
+    
+    private final String EMAIL_KLANTENDIENST = "klantendienstsct@gmail.com";
+    private final String PASS_EMAIL = "centraletoewijzing";
   
-    public Email(String voornaam, String gebrnaam, String wachtwoord, String verzender, String pass, String ontvangers, TypeBericht t) {
-      this.verzender = verzender;
-      this.pass = pass;
-      this.ontvanger = ontvangers;
+    public Email(String voornaam, String gebrnaam, String wachtwoord, String ontvanger, TypeBericht t) {
+      this.ontvanger = ontvanger;
       if(t == TypeBericht.ACTIVATIE) {
         this.subject = "Inloggegevens voor de dienst centrale toewijzing";
         this.body = new StringBuffer("<html>Beste " + voornaam + ", <br>"
@@ -65,13 +64,13 @@ public class Email {
         properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.user", verzender);
-        properties.put("mail.password", pass);
+        properties.put("mail.user", EMAIL_KLANTENDIENST);
+        properties.put("mail.password", PASS_EMAIL);
  
         // creates a new session with an authenticator
         Authenticator auth = new Authenticator() {
             public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(verzender, pass);
+                return new PasswordAuthentication(EMAIL_KLANTENDIENST, PASS_EMAIL);
             }
         };
         Session session = Session.getInstance(properties, auth);
@@ -79,7 +78,7 @@ public class Email {
         // creates a new e-mail message
         Message msg = new MimeMessage(session);
  
-        msg.setFrom(new InternetAddress(verzender));
+        msg.setFrom(new InternetAddress(EMAIL_KLANTENDIENST));
         InternetAddress[] toAddresses = { new InternetAddress(ontvanger) };
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
         msg.setSubject(subject);

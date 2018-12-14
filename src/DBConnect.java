@@ -19,7 +19,7 @@ public class DBConnect  {
       try {
           Class.forName("com.mysql.jdbc.Driver");
           con = (Connection)DriverManager.getConnection(
-                    "jdbc:mysql://157.193.43.67:3306/" + DB_NAME, 
+                    "jdbc:mysql://mysqlha2.ugent.be:3306/" + DB_NAME, 
                     DB_NAME, DB_PASS);
       } catch (ClassNotFoundException | SQLException ex) {
           ex.printStackTrace();

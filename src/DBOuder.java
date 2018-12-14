@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
@@ -21,8 +22,8 @@ public class DBOuder {
    */
   public static HashMap<String, Ouder> getOuders() throws DBException {
     Connection con = null;
+    HashMap<String, Ouder> oudersHashMap = new HashMap<>();
     try {
-      HashMap<String, Ouder> oudersHashMap = new HashMap<>();
       con = DBConnect.getConnection();
       Statement st = con.createStatement();
       ResultSet rs = st.executeQuery("SELECT * FROM ouders");
@@ -88,12 +89,12 @@ public class DBOuder {
    */
   public static Ouder getOuder(String rnouder) throws DBException {
     Connection con = null;
+    Ouder o = null;
     try {
       con = DBConnect.getConnection();
       Statement st = con.createStatement();
       ResultSet rs = st.executeQuery("SELECT * FROM ouders "
 				   + "WHERE ouder_rijksregisternummer = '" + rnouder + "';");
-      Ouder o = null;
       if(rs.next()) {
 	String rijksregisterNummerOuder = rs.getString("ouder_rijksregisternummer");
 	String naam = rs.getString("ouder_naam");
@@ -117,5 +118,37 @@ public class DBOuder {
       DBConnect.closeConnection(con);
       throw new DBException(e);
     }  
+  }
+  
+  public static ArrayList<Student> getStudentenVanOuder(String rnouder) throws DBException {
+    Connection con = null;
+    ArrayList<Student> studentenVanOuder = new ArrayList<>();
+    try {
+      con = DBConnect.getConnection();
+      Statement st = con.createStatement();
+      ResultSet rs = st.executeQuery("SELECT * FROM studenten "
+				   + "WHERE ouder_rijksregisternummer = '" + rnouder + "';");
+      while(rs.next()) {
+        String rijksregisterNummerOuder = rs.getString("ouder_rijksregisternummer");
+        String rijksregisterNummerStudent = rs.getString("student_rijksregisternummer");
+        String naam = rs.getString("student_naam");
+        String voornaam = rs.getString("student_voornaam");
+        String telefoonnummer = rs.getString("student_telefoonnummer");
+        Integer huidigeSchool = rs.getInt("huidige_school");
+        studentenVanOuder.add(new Student(rijksregisterNummerStudent,
+                              rijksregisterNummerOuder, naam, voornaam,
+                              telefoonnummer, huidigeSchool));
+      }
+      DBConnect.closeConnection(con);
+      return studentenVanOuder;
+    } catch (DBException dbe) {
+      dbe.printStackTrace();
+      DBConnect.closeConnection(con);
+      throw dbe;
+    } catch (Exception e) {
+      e.printStackTrace();
+      DBConnect.closeConnection(con);
+      throw new DBException(e);
+    } 
   }
 }

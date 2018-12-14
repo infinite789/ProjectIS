@@ -2,14 +2,12 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -38,9 +36,6 @@ public class Main {
 
   private final String ADMIN_ACCOUNT = "admin";
   private final String ADMIN_PASS = "admin";
-  private final int DEFAULT_KEY = 6001; //default key toewijzingsaanvragen
-  private final String EMAIL_KLANTENDIENST = "klantendienstsct@gmail.com";
-  private final String PASS_EMAIL = "centraletoewijzing";
   private final LocalDateTime START_DATUM = LocalDateTime.of(
           2018, Month.DECEMBER, 1, 0, 0, 0);//start inschrijvingen 
   private LocalDateTime huidigeDeadline = LocalDateTime.of(
@@ -53,17 +48,11 @@ public class Main {
       scholen = DBSchool.getScholen();
       toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
     } catch(DBException dbe) {
-      if(studenten == null)
-	studenten = new HashMap<>();
-      if(ouders == null)
-	ouders = new HashMap<>();
-      if(scholen == null)
-	scholen = new HashMap<>();
-      if(toewijzingsaanvragen == null)
-	toewijzingsaanvragen = new HashMap<>();
+      
+    } finally {
+      this.typeGebruiker = TypeGebruiker.NULL;
+      this.ingelogdeOuder = null;
     }
-    this.typeGebruiker = TypeGebruiker.NULL;
-    this.ingelogdeOuder = null;
   }
 
   public static void main(String[] args) throws Exception {
@@ -104,22 +93,19 @@ public class Main {
   public boolean activeren(String rnouder) {
     boolean geactiveerd = false;
     String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            + "abcdefghijklmnopqrstuvwxyz"
-            + "0123456789";
+                 + "abcdefghijklmnopqrstuvwxyz"
+                 + "0123456789";
     String wachtwoord = new Random().ints(8, 0, chars.length())
-            .mapToObj(i -> "" + chars.charAt(i))
-            .collect(Collectors.joining());
+                .mapToObj(i -> "" + chars.charAt(i))
+                .collect(Collectors.joining());
     try {
       Ouder ouder = DBOuder.getOuder(rnouder);
       ouders.put(ouder.getRijksregisterNummer(), ouder);
       if (ouder.getWachtwoord().equals("")) {
-        ingelogdeOuder = ouder;
-        ingelogdeOuder.setWachtwoord(wachtwoord);
-        String[] ontvangers = {ingelogdeOuder.getEmail()};
-        Email email = new Email(
-                ingelogdeOuder.getVoornaam(), ingelogdeOuder.getGebruikersnaam(),
-                ingelogdeOuder.getWachtwoord(), EMAIL_KLANTENDIENST,
-                PASS_EMAIL, ontvangers[0], TypeBericht.ACTIVATIE
+        ouder.setWachtwoord(wachtwoord);
+        String[] ontvangers = {ouder.getEmail()};
+        Email email = new Email(ouder.getVoornaam(), ouder.getGebruikersnaam(),
+                                ouder.getWachtwoord(), ontvangers[0], TypeBericht.ACTIVATIE
         );
         ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
         executor.execute(() -> {
@@ -185,19 +171,13 @@ public class Main {
     }
   }
 
-  /*
-     * Methode voor het ophalen van de ouder van een gegeven student
-   */
-  public Ouder getOuderVanStudent(String rnstudent) {
-    String rnouder = studenten.get(rnstudent).getRijksregisterNummerOuder();
-    return ouders.get(rnouder);
-  }
+ 
 
   /*
      * Methode voor het ophalen van een ouder op basis van 
      * zijn inloggegevens
    */
-  public Ouder getOuder(String gebrnaam, char[] pass) {
+  public Ouder ophalenOuder(String gebrnaam, char[] pass) {
     Ouder o = null;
     String wachtwoord = "";
     for (char c : pass) {
@@ -212,7 +192,7 @@ public class Main {
     return o;
   }
 
-  public Ouder getOuder(String rnouder) {
+  public Ouder ophalenOuder(String rnouder) {
     try {
       return DBOuder.getOuder(rnouder);
     } catch (DBException dbe) {
@@ -224,47 +204,64 @@ public class Main {
      * Methode voor het ophalen van een student op basis van 
      * zijn rijksregisternummer
    */
-  public Student getStudent(String rnstudent) {
-    return studenten.get(rnstudent);
+  public Student ophalenStudent(String rnstudent) {
+    Student s;
+    try {
+      s = DBStudent.getStudent(rnstudent);
+      return s;
+    } catch (DBException dbe) {
+      dbe.getMessage();
+      return null;
+    }
   }
 
   /*
      * Methode voor het ophalen van de studenten die bij een ouder 
      * horen en niet op een school zitten op basis van zijn rijksregisternummer
    */
-  public ArrayList<Student> getStudentenVanOuder(String rnouder) {
-    ArrayList<Student> studentenVanOuder = new ArrayList<>();
-    studenten.values().stream().filter((s) -> (s.getRijksregisterNummerOuder().equals(rnouder)
-            && s.getHuidigeSchool() == 0)).forEachOrdered((s) -> {
-      studentenVanOuder.add(s);
-    });
-    return studentenVanOuder;
+  public ArrayList<Student> ophalenKinderen(String rnouder) {
+    ArrayList<Student> studentenVanOuder;
+    try {
+      studentenVanOuder = DBOuder.getStudentenVanOuder(rnouder);
+      return studentenVanOuder;
+    } catch (DBException dbe) {
+      dbe.getMessage();
+      return null;
+    }
   }
   
   /*
    * Methode voor het ophalen van een school op basis van
    * zijn ID
    */
-  public School getSchool(int ID) {
-    for (School s : scholen.values()) {
-      if (s.getID() == ID) {
-        return s;
+  public School ophalenSchool(int ID) {
+    School s = null;
+    try {
+      s = DBSchool.getSchool(ID);
+      return s;
+    } catch (DBException dbe) {
+      dbe.getMessage();
+      return s;     
+    }
+  }
+  
+  public School[] ophalenScholen() {
+    try {
+      scholen = DBSchool.getScholen();
+      School[] scholenArray = new School[scholen.size()];
+      int i = 0;
+      for (School s : scholen.values()) {
+        scholenArray[i] = s;
+        i++;
       }
+      return scholenArray;
+    } catch (DBException dbe) {
+      dbe.getMessage();
+      return null;
     }
-    return null;
   }
   
-  public School[] getScholenArray() {
-    School[] scholenArray = new School[scholen.size()];
-    int i = 0;
-    for (School s : scholen.values()) {
-      scholenArray[i] = s;
-      i++;
-    }
-    return scholenArray;
-  }
-  
-  public ToewijzingsAanvraag getToewijzingsAanvraag(String rnstudent) {
+  public ToewijzingsAanvraag ophalenAanvraag(String rnstudent) {
     try {
       return DBToewijzingsAanvraag.getAanvraag(rnstudent);
     } catch (DBException dbe) {
@@ -273,16 +270,12 @@ public class Main {
     return null;
   }
   
-  public void setIngelogdeOuder(Ouder ouder) {
-    this.ingelogdeOuder = ouder;
-  }
-  
   /*
      * Methode voor het indienen of aanpassen van een voorkeur
      * De methode past zijn gedrag door de datum te vergelelijken
      * met de deadlines voor het indienen 
    */
-  public boolean indienenVoorkeur(int aanvraagnummer, Student student, int schoolID)
+   public boolean indienenVoorkeur(int aanvraagnummer, Student student, int schoolID)
           throws DBException {
     try {
       ToewijzingsAanvraag ta = DBToewijzingsAanvraag.getAanvraag(student.getRijksregisterNummer());
@@ -290,78 +283,25 @@ public class Main {
       if(DBToewijzingsAanvraag.bewaarVoorkeur(aanvraagnummer, schoolID)) {
         toewijzingsaanvragen.get(aanvraagnummer).setVoorkeur(schoolID);
         toewijzingsaanvragen.get(aanvraagnummer).setStatus(Status.INGEDIEND);
-        if(vorigVoorkeur != 0) {
+        scholen.get(schoolID).getWachtLijst().add(ta);
+        if(vorigVoorkeur != 0) 
           scholen.get(vorigVoorkeur).getWachtLijst().remove(ta);
-          scholen.get(schoolID).getWachtLijst().add(ta);
-        } else {
-          scholen.get(schoolID).getWachtLijst().add(ta);
-        }
-        
-        ta.setStatus(Status.INGEDIEND);
-        ta.setBroersOfZussen(DBStudent.getBroersEnZussen(aanvraagnummer, student, schoolID));
+        toewijzingsaanvragen.get(aanvraagnummer).setBroersOfZussen(DBStudent.getBroersEnZussen(aanvraagnummer, student, schoolID));
       }
     } catch (DBException dbe) {
       dbe.getMessage();
+    } catch (Exception e) {
+      e.getMessage();
     }
     return true;
   }
-
   /*
-   * Methode voor het controleren of de student een broer of een zus
-   * heeft op de gekozen school
-   */
-  public int heeftBroerOfZus(int aanvraagnummer, String rnstudent, int voorkeurschool) {
-    String ouderEersteStudent;
-    String ouderTweedeStudent;
-    int schoolBroerOfZus;
-    int aantal = 0;
-    ouderEersteStudent = studenten.get(rnstudent).getRijksregisterNummerOuder();
-    for (Student s : studenten.values()) {
-      ouderTweedeStudent = s.getRijksregisterNummerOuder();
-      schoolBroerOfZus = s.getHuidigeSchool();
-      ToewijzingsAanvraag taBroerOfZus = null;
-      if (ouderEersteStudent.equals(ouderTweedeStudent)
-	      && !rnstudent.equals(s.getRijksregisterNummer())
-	      && taBroerOfZus != null && (schoolBroerOfZus == voorkeurschool 
-				      || taBroerOfZus.getVoorkeur() == voorkeurschool)) {
-	aantal++;      
-	taBroerOfZus = toewijzingsaanvragen.get(aanvraagnummer);
-	if(schoolBroerOfZus == 0)
-	  taBroerOfZus.setVoorkeur(voorkeurschool);
-      }
-    }
-    return aantal;
+  public ArrayList<ToewijzingsAanvraag> laadAfgewezenStudenten() throws Exception {
+      
   }
-
-
-  public ArrayList<ToewijzingsAanvraag> wachtLijstLaden(School s) {
-      ArrayList<ToewijzingsAanvraag> wachtLijst = null;
-      try {
-	  String bestandPath = "./lijsten/s" + s.getNaam().substring(0, 5)
-		  .replaceAll(" ", "").toLowerCase() + s.getID();
-	  ObjectInputStream input;
-	  input = new ObjectInputStream(new FileInputStream(bestandPath));
-	  wachtLijst = (ArrayList) input.readObject();
-	  input.close();
-      } catch (Exception ex) {
-	  System.out.println("Error: " + ex);
-      }
-      return wachtLijst;
-  }
-
-  public void wachtLijstOpslaan(ArrayList<ToewijzingsAanvraag> lijst, String path) {
-      ObjectOutputStream output;
-      try {
-	  output = new ObjectOutputStream(new FileOutputStream(
-		  path
-	  ));
-	  output.writeObject(lijst);
-	  output.close();
-      } catch (Exception e) {
-	  System.out.println("Error: " + e);
-      }
-  }
-
+  */
+  
+  
   public void sorteerWachtLijst(ArrayList<ToewijzingsAanvraag> wachtLijst) {
       for (int i = 0; i < wachtLijst.size(); i++) {
 	  ToewijzingsAanvraag lagerePref = wachtLijst.get(i);
@@ -386,47 +326,42 @@ public class Main {
 	  }
       }
   }
-
-  public ArrayList<ToewijzingsAanvraag> laadAfgewezenStudenten() throws Exception {
-      ArrayList<ToewijzingsAanvraag> afgewezenStudenten;
-      File afgStBestand = new File("./lijsten/afgewezenStudenten");
-      if (afgStBestand.exists()) {
-	  ObjectInputStream input = new ObjectInputStream(
-		  new FileInputStream(
-			  "./lijsten/afgewezenStudenten"
-		  ));
-	  afgewezenStudenten = (ArrayList) input.readObject();
-	  input.close();
-      } else {
-	  afgewezenStudenten = new ArrayList<>();
-      }
-      return afgewezenStudenten;
-  }
-
+  
   public void sorteerAlgoritme() {
     int afgewezenStudenten = 0;
+    try {
+      toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
+      scholen = DBSchool.getScholen();
       for (School s : scholen.values()) {
 	ArrayList<ToewijzingsAanvraag> wachtLijst = s.getWachtLijst();
 	sorteerWachtLijst(wachtLijst);
 	//studenten afwijzen indien de school vol zit
 	while (wachtLijst.size() > s.getPlaatsen()) {
-	    ToewijzingsAanvraag ta = wachtLijst.get(wachtLijst.size() - 1);
-	    wachtLijst.remove(ta);
-	    ta.getAfgewezenScholen().add(String.valueOf(s.getID()));
-	    ta.setStatus(Status.ONTWERP);
-	    afgewezenStudenten++;
+          ToewijzingsAanvraag ta = wachtLijst.get(wachtLijst.size() - 1);
+          wachtLijst.remove(ta);
+          ta.getAfgewezenScholen().add(String.valueOf(s.getID()));
+          ta.setStatus(Status.ONTWERP);
+          afgewezenStudenten++;
 	}
-      }
-      try {
-        if(afgewezenStudenten > 0)
-          updateStatus(Status.VOORLOPIG);
-        else
-          updateStatus(Status.DEFINITIEF);
-      } catch(DBException dbe) {
-        dbe.getMessage();
-      }
+      } 
+      if(afgewezenStudenten > 0)
+        updateStatus(Status.VOORLOPIG);
+      else
+        updateStatus(Status.DEFINITIEF);
+      DBToewijzingsAanvraag.bewaarToewijzingsAanvragen(toewijzingsaanvragen);
+    } catch(DBException dbe) {
+      dbe.getMessage();
+    }
   }
 
+  public void updateStatus(Status s) {
+    for (ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
+	  if (!ta.getStatus().equals(Status.ONTWERP)){
+	    ta.setStatus(s);
+	  }
+    }
+  }
+  
   public long getPreferentie(ToewijzingsAanvraag ta) {
       long preferentie = huidigeDeadline.toEpochSecond(ZoneOffset.UTC)
 	      - ta.getAanmeldingsTijdstip().toEpochSecond(ZoneOffset.UTC);
@@ -439,30 +374,17 @@ public class Main {
 
   }
 
-  public void updateStatus(Status s) throws DBException {
-      for (ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
-	  if (!ta.getStatus().equals(Status.ONTWERP)){
-	    ta.setStatus(s);
-	  }
-      }
-      DBToewijzingsAanvraag.bewaarToewijzingsAanvragen(toewijzingsaanvragen);
-  }
-
-  public boolean schoolIsAfgewezen(int schoolID, int aanvraagnummer) {
+  public boolean schoolIsAfgewezen(int schoolID, int nummer) {
       try {
-	  ArrayList<ToewijzingsAanvraag> afgewezenStudenten
-		  = laadAfgewezenStudenten();
-	  for (ToewijzingsAanvraag ta : afgewezenStudenten) {
-	      if (ta.getVoorkeur() == schoolID
-		      && ta.getToewijzingsAanvraagNummer() == aanvraagnummer) {
-		  return true;
-	      }
-	  }
-	  return false;
+        toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
+        ArrayList<String> afgScholen = toewijzingsaanvragen.get(nummer).getAfgewezenScholen();
+        if(afgScholen.contains(schoolID))
+          return true;
       } catch (Exception ex) {
-	  System.out.println("Error: " + ex);
-	  return false;
+        System.out.println("Error: " + ex);
+        return false;
       }
+      return false;
   }
 
   public LocalDateTime getHuidigeDeadline() {

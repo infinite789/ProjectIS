@@ -6,7 +6,6 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
@@ -40,7 +39,7 @@ public class UI extends javax.swing.JFrame  {
       InlogScherm.getRootPane().setDefaultButton(inlogKnopIS);
 
 
-      scholenData = main.getScholenArray();
+      scholenData = main.ophalenScholen();
 
       /*
        * Scholen toevoegen aan de tabel onder de 'Voorkeurformulier'-tab
@@ -63,7 +62,7 @@ public class UI extends javax.swing.JFrame  {
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 	  if(scholenTabel.getSelectedRow() > -1) {
-	      selectieBoodschapLabel.setForeground(Color.green);
+	      selectieBoodschapLabel.setForeground(Color.BLACK);
 	      selectieBoodschapLabel.setText("U heeft een school "
 		      + "geselecteerd.");
 	  } else {
@@ -1110,16 +1109,16 @@ public class UI extends javax.swing.JFrame  {
         if(studentenDropBoxVFT.getSelectedItem() == null 
            || scholenTabel.getSelectedRow() < 0
            || aanvraagnummerVeldVFT.getText().equals("")) {
-            boodschapLabelVFT.setForeground(Color.red);
-            boodschapLabelVFT.setText("Maak een selectie!");
+                    boodschapLabelVFT.setForeground(Color.red);
+                    boodschapLabelVFT.setText("Maak een selectie!");
         } else {
             int aanvraagnummer = Integer.parseInt(aanvraagnummerVeldVFT.getText());
-            Student student = main.getStudent(studentenDropBoxVFT.getSelectedItem().toString());
+            Student student = main.ophalenStudent(studentenDropBoxVFT.getSelectedItem().toString());
             int schoolID = (int)scholenTabel.getValueAt(scholenTabel.getSelectedRow(), 3);
             if (main.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
-                boodschapLabelVFT.setForeground(Color.red);
-                boodschapLabelVFT.setText("<html>U werd al afgewezen voor deze school! "
-                               + "<br/>Gelieve een andere school te selecteren.</html>");
+                    boodschapLabelVFT.setForeground(Color.red);
+                    boodschapLabelVFT.setText("<html>U werd al afgewezen voor deze school! "
+                                   + "<br/>Gelieve een andere school te selecteren.</html>");
             } else try {
                 if(main.indienenVoorkeur(aanvraagnummer, student, schoolID)
                         && !main.schoolIsAfgewezen(schoolID, aanvraagnummer)) {
@@ -1147,7 +1146,7 @@ public class UI extends javax.swing.JFrame  {
         boodschapLabelAFT.setForeground(Color.red);
       }
       else {
-        Student s = main.getStudent(studentenDropBoxAFT.getSelectedItem().toString());
+        Student s = main.ophalenStudent(studentenDropBoxAFT.getSelectedItem().toString());
         ToewijzingsAanvraag ta = new ToewijzingsAanvraag(main.keyNieuweAanvraag(), 
                                                          s.getRijksregisterNummer(), 
                                                          s.getRijksregisterNummerOuder());
@@ -1286,7 +1285,7 @@ public class UI extends javax.swing.JFrame  {
 		       * Gegevens van ouder automatisch aanvullen in de 
 		       * 'Aanmeldingsformulier'-tab
 		       */
-		      gebruiker = main.getOuder(gebrnaam, passArray);
+		      gebruiker = main.ophalenOuder(gebrnaam, passArray);
 		      naamOuderVeldAFT.setText(gebruiker.getNaam());
 		      voornaamOuderVeldAFT.setText(gebruiker.getVoornaam());
 		      emailVeldAFT.setText(gebruiker.getEmail());
@@ -1300,7 +1299,7 @@ public class UI extends javax.swing.JFrame  {
 		      studentenDropBoxAFT.insertItemAt("", 0);
 		      studentenDropBoxART.insertItemAt("", 0);
 		      studentenDropBoxVFT.insertItemAt("", 0);           
-		      main.getStudentenVanOuder(gebruiker.getRijksregisterNummer()).stream().map((s) -> {
+		      main.ophalenKinderen(gebruiker.getRijksregisterNummer()).stream().map((s) -> {
 			  studentenDropBoxAFT.addItem(s.getRijksregisterNummer());
 			  return s;
 		      }).map((s) -> {
@@ -1350,7 +1349,7 @@ public class UI extends javax.swing.JFrame  {
      */
     private void rijksnumVeldASKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rijksnumVeldASKeyReleased
         String rnouder = rijksnumVeldAS.getText();
-        Ouder o = main.getOuder(rnouder);
+        Ouder o = main.ophalenOuder(rnouder);
         if(o != null) {
             naamVeldAS.setText(o.getVoornaam());
             voornaamVeldAS.setText(o.getNaam());
@@ -1371,7 +1370,7 @@ public class UI extends javax.swing.JFrame  {
     private void studentenDropBoxAFTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentenDropBoxAFTItemStateChanged
         Student s = null;
         if(studentenDropBoxAFT.getItemCount() > 0) {
-            s = main.getStudent(
+            s = main.ophalenStudent(
                     studentenDropBoxAFT.getSelectedItem().toString()
             );
         }
@@ -1394,7 +1393,7 @@ public class UI extends javax.swing.JFrame  {
     private void studentenDropBoxARTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentenDropBoxARTItemStateChanged
         ToewijzingsAanvraag ta = null;
         if(studentenDropBoxART.getItemCount() > 0)
-            ta = main.getToewijzingsAanvraag(studentenDropBoxART.getSelectedItem().toString());
+            ta = main.ophalenAanvraag(studentenDropBoxART.getSelectedItem().toString());
         if(ta == null && studentenDropBoxART.getSelectedIndex() > 0) {
             aanvraagnummerLabelOut.setText("");
             statusLabelOut.setText("");
@@ -1421,7 +1420,7 @@ public class UI extends javax.swing.JFrame  {
                 eersteVoorkeurLabelOut.setText("Je kan je voorkeur "
                                          + "aanpassen vóór " + main.getHuidigeDeadline());
             else
-                eersteVoorkeurLabelOut.setText(main.getSchool(voorkeur).toString());
+                eersteVoorkeurLabelOut.setText(main.ophalenSchool(voorkeur).toString());
         }
         
     }//GEN-LAST:event_studentenDropBoxARTItemStateChanged
@@ -1433,7 +1432,7 @@ public class UI extends javax.swing.JFrame  {
     private void studentenDropBoxVFTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_studentenDropBoxVFTItemStateChanged
         ToewijzingsAanvraag ta = null;
         if(studentenDropBoxVFT.getItemCount() > 0) {
-            ta = main.getToewijzingsAanvraag(
+            ta = main.ophalenAanvraag(
                 studentenDropBoxVFT.getSelectedItem().toString()
             );
         } 
@@ -1521,7 +1520,7 @@ public class UI extends javax.swing.JFrame  {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int schoolID = Integer.parseInt(jTextField1.getText());
-        School s = main.getSchool(schoolID);
+        School s = main.ophalenSchool(schoolID);
         DefaultListModel dlm = new DefaultListModel();
         int i = 1;
         for(ToewijzingsAanvraag ta : s.getWachtLijst()) {
