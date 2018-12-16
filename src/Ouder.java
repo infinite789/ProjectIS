@@ -1,25 +1,44 @@
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Boris Dragnev, Victor Masscho, Jean Janssens, Edith Lust, Job van Lambalgen
  */
-public class Ouder extends Persoon {
+public class Ouder implements Serializable {
+    private static final long serialVersionUID = 503;
+    private final String rijksregisterNummer;
+    private final String naam;
+    private final String voornaam;
     private final String email;
     private final String straat;
     private final String gemeente;
     private final String gebruikersnaam;
     private String wachtwoord;
     
-    public Ouder(String rijksregisternummer, String naam, String voornaam, 
+    public Ouder(String rijksregisterNummer, String naam, String voornaam, 
                  String email, String straat, String gemeente,
                  String gebruikersnaam, String wachtwoord) {
-        super(rijksregisternummer, naam, voornaam);
+        this.rijksregisterNummer = rijksregisterNummer;
+        this.naam = naam;
+        this.voornaam = voornaam;
         this.email = email;
         this.straat = straat;
         this.gemeente = gemeente;
         this.gebruikersnaam = gebruikersnaam;
         this.wachtwoord = wachtwoord;
+    }
+
+    public String getRijksregisterNummer() {
+      return rijksregisterNummer;
+    }
+
+    public String getNaam() {
+      return naam;
+    }
+
+    public String getVoornaam() {
+      return voornaam;
     }
 
     public String getStraat() {
@@ -51,7 +70,7 @@ public class Ouder extends Persoon {
         if (obj == null) return false;
         if (obj.getClass() != this.getClass()) return false;
         Ouder o = (Ouder)obj;
-        return(o.getNaam().equals(this.getNaam()) 
+        return (o.getNaam().equals(this.getNaam())
                 && o.getVoornaam().equals(this.getVoornaam())
                 && o.getEmail().equals(this.getEmail())
                 && o.getStraat().equals(this.getStraat())
@@ -61,6 +80,6 @@ public class Ouder extends Persoon {
         
     @Override
     public int hashCode() {
-        return super.hashCode() + Objects.hash(email,straat,gemeente,gebruikersnaam,wachtwoord);
+        return Objects.hash(rijksregisterNummer,naam,voornaam,email,straat,gemeente,gebruikersnaam,wachtwoord);
     }
 }

@@ -135,9 +135,11 @@ public class DBOuder {
         String voornaam = rs.getString("student_voornaam");
         String telefoonnummer = rs.getString("student_telefoonnummer");
         Integer huidigeSchool = rs.getInt("huidige_school");
-        studentenVanOuder.add(new Student(rijksregisterNummerStudent,
-                              rijksregisterNummerOuder, naam, voornaam,
-                              telefoonnummer, huidigeSchool));
+        if(huidigeSchool == 0) {
+          studentenVanOuder.add(new Student(rijksregisterNummerStudent,
+                                rijksregisterNummerOuder, naam, voornaam,
+                                telefoonnummer, huidigeSchool));
+        }
       }
       DBConnect.closeConnection(con);
       return studentenVanOuder;

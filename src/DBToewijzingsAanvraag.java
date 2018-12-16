@@ -41,12 +41,36 @@ public class DBToewijzingsAanvraag {
         LocalDateTime aanmeldingstijdstip = ts.toLocalDateTime();
         int broersOfZussen = rs.getInt("broer_zus");
         int voorkeur = rs.getInt("voorkeurschool");
-        ArrayList<String> afgScholen = afgScholenCsvOmzetten(rs.getString("afgewezen_scholen"));
+        long preferentie = rs.getLong("preferentie");
+        String csvAfgScholen = rs.getString("afgewezen_scholen");
+        ArrayList<String>   afgScholen = new ArrayList();
+        if(csvAfgScholen != null)
+          afgScholen = CSV.toList(rs.getString("afgewezen_scholen"));
         aanvragenHashMap.put(aanvraagnummer,
             new ToewijzingsAanvraag(aanvraagnummer, rijksregisterNummerStudent, 
                                     rijksregisterNummerOuder, aanmeldingstijdstip, 
-                                    broersOfZussen, status, voorkeur, afgScholen)
+                                    broersOfZussen, status, voorkeur, preferentie, afgScholen)
         );
+      }
+      for(ToewijzingsAanvraag ta : aanvragenHashMap.values()) {
+      int broersOfZussen = 0;
+      st = con.createStatement();
+      rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
+              + "WHERE ouder_rijksregisternummer = '" + ta.getRijksregisterNummerOuder() + "' "
+              + "AND student_rijksregisternummer <> '" + ta.getRijksregisterNummerStudent() + "' "
+              + "AND voorkeurschool = " + ta.getVoorkeur() + ";");
+      while(rs.next()) {
+        broersOfZussen++;
+      }
+      st = con.createStatement();
+      rs = st.executeQuery("SELECT * FROM studenten "
+              + "WHERE (ouder_rijksregisternummer = '" + ta.getRijksregisterNummerOuder() + "' "
+              + "AND student_rijksregisternummer <> '" + ta.getRijksregisterNummerStudent() + "' "
+              + "AND huidige_school = " + ta.getVoorkeur() + ");");
+      while(rs.next()) {
+        broersOfZussen++;
+      }
+      aanvragenHashMap.get(ta.getToewijzingsAanvraagNummer()).setBroersOfZussen(broersOfZussen);
       }
       DBConnect.closeConnection(con);
       return aanvragenHashMap;
@@ -78,11 +102,15 @@ public class DBToewijzingsAanvraag {
         LocalDateTime aanmeldingstijdstip = ts.toLocalDateTime();
         int broersOfZussen = rs.getInt("broer_zus");
         int voorkeur = rs.getInt("voorkeurschool");
-        ArrayList<String> afgScholen = afgScholenCsvOmzetten(rs.getString("afgewezen_scholen"));
+        long preferentie = rs.getLong("preferentie");
+        String csvAfgScholen = rs.getString("afgewezen_scholen");
+        ArrayList<String>   afgScholen = new ArrayList();
+        if(csvAfgScholen != null)
+          afgScholen = CSV.toList(rs.getString("afgewezen_scholen"));
         aanvragenHashMap.put(aanvraagnummer,
             new ToewijzingsAanvraag(aanvraagnummer, rijksregisterNummerStudent, 
                                     rijksregisterNummerOuder, aanmeldingstijdstip, 
-                                    broersOfZussen, status, voorkeur, afgScholen)
+                                    broersOfZussen, status, voorkeur, preferentie, afgScholen)
         );
       }
       DBConnect.closeConnection(con);
@@ -96,15 +124,6 @@ public class DBToewijzingsAanvraag {
       DBConnect.closeConnection(con);
       throw new DBException(e);
     }
-  }
-  
-  public static ArrayList<String> afgScholenCsvOmzetten(String csv) {
-    String[] afgSchArray = csv.split(";");
-    ArrayList<String> als = new ArrayList<>();
-    for(String str : afgSchArray)
-	if(!str.equals(""))
-	    als.add(str);
-    return als;
   }
   
   public static ToewijzingsAanvraag getAanvraag(String rnstudent) throws DBException {
@@ -125,10 +144,14 @@ public class DBToewijzingsAanvraag {
         aanmeldingstijdstip = ts.toLocalDateTime();
         broersOfZussen = rs.getInt("broer_zus");
         voorkeur = rs.getInt("voorkeurschool");
-        afgScholen = afgScholenCsvOmzetten(rs.getString("afgewezen_scholen"));
+        long preferentie = rs.getLong("preferentie");
+        String csvAfgScholen = rs.getString("afgewezen_scholen");
+        afgScholen = new ArrayList();
+        if(csvAfgScholen != null)
+          afgScholen = CSV.toList(rs.getString("afgewezen_scholen"));
         ta = new ToewijzingsAanvraag(nummer,
 	     rijksnumStudent, rijksnumOuder, aanmeldingstijdstip, 
-	      broersOfZussen, status, voorkeur, afgScholen);
+	      broersOfZussen, status, voorkeur, preferentie, afgScholen);
       }
       DBConnect.closeConnection(con);
       return ta;
@@ -157,12 +180,12 @@ public class DBToewijzingsAanvraag {
       for (ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
           PreparedStatement ps
           = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
-          + "toewijzingsaanvraagnummer, status, "
-          + "student_rijksregisternummer, ouder_rijksregisternummer, "
-          + "aanmeldingstijdstip, broer_zus, voorkeurschool, afgewezen_scholen) "
-          + "VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
+          + "toewijzingsaanvraagnummer, status, student_rijksregisternummer, "
+          + "ouder_rijksregisternummer, aanmeldingstijdstip, broer_zus, "
+          + "voorkeurschool, preferentie, afgewezen_scholen) "
+          + "VALUES(?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
           + "status = VALUES(status), broer_zus = VALUES(broer_zus), "
-          + "voorkeurschool = VALUES(voorkeurschool), "
+          + "voorkeurschool = VALUES(voorkeurschool), preferentie = VALUES(preferentie), "
           + "afgewezen_scholen = VALUES(afgewezen_scholen)");
           ps.setInt(1, ta.getToewijzingsAanvraagNummer());
           ps.setString(2, ta.getStatus().toString());
@@ -175,10 +198,37 @@ public class DBToewijzingsAanvraag {
 	    ps.setNull(7, java.sql.Types.INTEGER);
 	  else
 	    ps.setInt(7, ta.getVoorkeur());
-          ps.setString(8, ta.csvFormatLijst());
+          ps.setLong(8, ta.getPreferentie());
+          ps.setString(9, ta.csvFormatLijst());
           ps.execute();
+    }
+    for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
+      int broersOfZussen = 0;
+      Statement st = con.createStatement();
+      ResultSet rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
+              + "WHERE ouder_rijksregisternummer = '" + ta.getRijksregisterNummerOuder() + "' "
+              + "AND student_rijksregisternummer != '" + ta.getRijksregisterNummerStudent() + "' "
+              + "AND voorkeurschool = " + ta.getVoorkeur() + ";");
+      while(rs.next()) {
+        broersOfZussen++;
       }
-      DBConnect.closeConnection(con);
+      
+      rs = st.executeQuery("SELECT * FROM studenten "
+              + "WHERE ouder_rijksregisternummer = '" + ta.getRijksregisterNummerOuder() + "' "
+              + "AND student_rijksregisternummer != '" + ta.getRijksregisterNummerStudent() + "' "
+              + "AND huidige_school = " + ta.getVoorkeur() + ";");
+      while(rs.next()) {
+        broersOfZussen++;
+      }
+      
+      PreparedStatement ps
+      = con.prepareStatement("UPDATE toewijzingsaanvragen "
+                           + "SET broer_zus = " + broersOfZussen + " "
+                           + "WHERE toewijzingsaanvraagnummer = " 
+                           + ta.getToewijzingsAanvraagNummer() + ";");
+      ps.executeUpdate();
+    }
+    DBConnect.closeConnection(con);
     } catch (DBException dbe) {
       dbe.printStackTrace();
       DBConnect.closeConnection(con);
@@ -190,43 +240,7 @@ public class DBToewijzingsAanvraag {
     }
   }
   
-  public static void bewaarToewijzingsAanvraag(ToewijzingsAanvraag ta) throws DBException {
-    Connection con = null;
-    try {
-      con = DBConnect.getConnection();
-      PreparedStatement ps
-      = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
-          + "toewijzingsaanvraagnummer, status, "
-          + "student_rijksregisternummer, ouder_rijksregisternummer, "
-          + "aanmeldingstijdstip, broer_zus, voorkeurschool, afgewezen_scholen) "
-          + "VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
-          + "status = VALUES(status), broer_zus = VALUES(broer_zus), "
-          + "voorkeurschool = VALUES(voorkeurschool), "
-          + "afgewezen_scholen = VALUES(afgewezen_scholen)");
-      ps.setInt(1, ta.getToewijzingsAanvraagNummer());
-      ps.setString(2, ta.getStatus().toString());
-      ps.setString(3, ta.getRijksregisterNummerStudent());
-      ps.setString(4, ta.getRijksregisterNummerOuder());
-      DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-      ps.setString(5, df.format(ta.getAanmeldingsTijdstip()));
-      ps.setInt(6, ta.getBroersOfZussen());
-      if(ta.getVoorkeur() == 0)
-        ps.setNull(7, java.sql.Types.INTEGER);
-      else
-        ps.setInt(7, ta.getVoorkeur());
-      ps.setString(8, ta.csvFormatLijst());
-      ps.execute();
-      DBConnect.closeConnection(con);
-    } catch (DBException dbe) {
-      dbe.printStackTrace();
-      DBConnect.closeConnection(con);
-      throw dbe;
-    } catch (Exception e) {
-      e.printStackTrace();
-      DBConnect.closeConnection(con);
-      throw new DBException(e);
-    }
-  }
+  
     
   public static boolean voegNieuweAanvraagToe(ToewijzingsAanvraag ta) throws DBException {
     Connection con = null;
@@ -245,14 +259,13 @@ public class DBToewijzingsAanvraag {
                            + "toewijzingsaanvraagnummer, status, "
                            + "student_rijksregisternummer, "
                            + "ouder_rijksregisternummer, aanmeldingstijdstip, "
-                           + "broer_zus, afgewezen_scholen) "
+                           + "broer_zus) "
                            + "VALUES('" + ta.getToewijzingsAanvraagNummer() + "',"
                            + "'" + ta.getStatus() + "',"
                            + "'" + ta.getRijksregisterNummerStudent() + "',"
                            + "'" + ta.getRijksregisterNummerOuder() + "',"
                            + "'" + ta.getAanmeldingsTijdstip() + "',"
-                           + "'" + ta.getBroersOfZussen() + "',"
-                           + "'" + ta.getAfgewezenScholen() + "')");
+                           + "'" + ta.getBroersOfZussen() + "')");
         ps.executeUpdate();
       }
       DBConnect.closeConnection(con);
@@ -288,12 +301,12 @@ public class DBToewijzingsAanvraag {
     }
   }
   
-  public static void setAantalBroersOfZussen(int aanvraagnummer, int aantal) throws DBException {
+  public static void bewaarAantalBroersOfZussen(int aanvraagnummer, int aantal) throws DBException {
     Connection con = null;
     try {
       con = DBConnect.getConnection();
       PreparedStatement ps 
-      = con.prepareStatement("UPDATE toewijzingsaanvragen SET broer_zus = " + aantal
+      = con.prepareStatement("UPDATE toewijzingsaanvragen SET broer_zus = " + aantal + " "
 			   + "WHERE toewijzingsaanvraagnummer = " + aanvraagnummer);
       ps.executeUpdate();
       DBConnect.closeConnection(con);
@@ -333,7 +346,7 @@ public class DBToewijzingsAanvraag {
     }
   }
   
-  public static boolean bewaarVoorkeur(int aanvraagnummer, int voorkeurschool) throws DBException {
+  public static boolean bewaarVoorkeur(int aanvraagnummer, int voorkeurschool, long preferentie) throws DBException {
     boolean veranderd = false;
     Connection con = null;
     try {
@@ -348,7 +361,8 @@ public class DBToewijzingsAanvraag {
       if(voorkeur != voorkeurschool) {
         PreparedStatement ps = con.prepareStatement("UPDATE toewijzingsaanvragen "
                                                   + "SET voorkeurschool = " + voorkeurschool + ", "
-                                                  + "status = '" + Status.INGEDIEND + "' "
+                                                  + "status = '" + Status.INGEDIEND  + ", "
+                                                  + "preferentie = " + preferentie + " "
                                                   + "WHERE toewijzingsaanvraagnummer = " + aanvraagnummer);
         ps.executeUpdate();
         veranderd = true;

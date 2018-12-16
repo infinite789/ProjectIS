@@ -117,7 +117,7 @@ public class UI extends javax.swing.JFrame  {
     jPanel4 = new javax.swing.JPanel();
     AlgemeneTekstOuders = new javax.swing.JLabel();
     PersoonlijkeJlabel = new javax.swing.JLabel();
-    jButton1 = new javax.swing.JButton();
+    volgendeTabKnop = new javax.swing.JButton();
     AanmeldingsFormulierTab = new javax.swing.JPanel();
     indienenKnopAFT = new javax.swing.JButton();
     gegevensStudentAFT = new javax.swing.JPanel();
@@ -177,11 +177,11 @@ public class UI extends javax.swing.JFrame  {
     exporteerKnopAdmin = new javax.swing.JButton();
     sorteerKnopAdmin = new javax.swing.JButton();
     jPanel3 = new javax.swing.JPanel();
-    jScrollPane1 = new javax.swing.JScrollPane();
+    wachtlijstScrollPane = new javax.swing.JScrollPane();
     jList1 = new javax.swing.JList<>();
-    jButton2 = new javax.swing.JButton();
-    jTextField1 = new javax.swing.JTextField();
-    jLabel1 = new javax.swing.JLabel();
+    wachtlijstLadenKnop = new javax.swing.JButton();
+    wachtLijstNaamVeld = new javax.swing.JTextField();
+    wachtLijstNaamLabel = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Centrale toewijzing leerlingen");
@@ -202,11 +202,9 @@ public class UI extends javax.swing.JFrame  {
     InlogScherm.setBackground(new java.awt.Color(255, 255, 255));
     InlogScherm.setPreferredSize(new java.awt.Dimension(800, 800));
 
-    gebrLabelAS.setForeground(new java.awt.Color(0, 0, 0));
     gebrLabelAS.setText("Gebruikersnaam:");
 
     passLabelIS.setBackground(new java.awt.Color(0, 0, 0));
-    passLabelIS.setForeground(new java.awt.Color(0, 0, 0));
     passLabelIS.setText("Wachtwoord:");
 
     inlogKnopIS.setText("Inloggen");
@@ -457,10 +455,10 @@ public class UI extends javax.swing.JFrame  {
     PersoonlijkeJlabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
     PersoonlijkeJlabel.setText("jLabel4");
 
-    jButton1.setText("Volgende");
-    jButton1.addActionListener(new java.awt.event.ActionListener() {
+    volgendeTabKnop.setText("Volgende");
+    volgendeTabKnop.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton1ActionPerformed(evt);
+        volgendeTabKnopActionPerformed(evt);
       }
     });
 
@@ -471,7 +469,7 @@ public class UI extends javax.swing.JFrame  {
       .addGroup(jPanel4Layout.createSequentialGroup()
         .addGap(40, 40, 40)
         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-          .addComponent(jButton1)
+          .addComponent(volgendeTabKnop)
           .addGroup(jPanel4Layout.createSequentialGroup()
             .addComponent(PersoonlijkeJlabel)
             .addGap(316, 316, 316))
@@ -486,7 +484,7 @@ public class UI extends javax.swing.JFrame  {
         .addGap(18, 18, 18)
         .addComponent(AlgemeneTekstOuders, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
-        .addComponent(jButton1)
+        .addComponent(volgendeTabKnop)
         .addContainerGap(889, Short.MAX_VALUE))
     );
 
@@ -703,11 +701,6 @@ public class UI extends javax.swing.JFrame  {
 
     zoekwoordLabel.setText("Zoekwoord:");
 
-    zoekwoordVeld.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        zoekwoordVeldActionPerformed(evt);
-      }
-    });
     zoekwoordVeld.addKeyListener(new java.awt.event.KeyAdapter() {
       public void keyReleased(java.awt.event.KeyEvent evt) {
         zoekwoordVeldKeyReleased(evt);
@@ -821,7 +814,7 @@ public class UI extends javax.swing.JFrame  {
         .addGroup(VoorkeurFormulierTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(boodschapLabelVFT, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(indienenKnopVFT))
-        .addContainerGap(838, Short.MAX_VALUE))
+        .addContainerGap(835, Short.MAX_VALUE))
     );
 
     FormulierScherm.addTab("Voorkeurformulier", VoorkeurFormulierTab);
@@ -946,7 +939,7 @@ public class UI extends javax.swing.JFrame  {
         .addComponent(verwijderLinkLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(boodschapLabelART, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(883, Short.MAX_VALUE))
+        .addContainerGap(890, Short.MAX_VALUE))
     );
 
     FormulierScherm.addTab("Aanvragen raadplegen", ZoekAanvraagTab);
@@ -981,7 +974,7 @@ public class UI extends javax.swing.JFrame  {
       .addGroup(UitloggenTabLayout.createSequentialGroup()
         .addGap(26, 26, 26)
         .addComponent(uitloggenLinkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(1178, Short.MAX_VALUE))
+        .addContainerGap(1176, Short.MAX_VALUE))
     );
 
     FormulierScherm.addTab("Uitloggen", UitloggenTab);
@@ -1026,17 +1019,17 @@ public class UI extends javax.swing.JFrame  {
         .addContainerGap(60, Short.MAX_VALUE))
     );
 
-    jScrollPane1.setViewportView(jList1);
+    wachtlijstScrollPane.setViewportView(jList1);
 
-    jButton2.setText("Laden");
-    jButton2.addActionListener(new java.awt.event.ActionListener() {
+    wachtlijstLadenKnop.setText("Laden");
+    wachtlijstLadenKnop.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton2ActionPerformed(evt);
+        wachtlijstLadenKnopActionPerformed(evt);
       }
     });
 
-    jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-    jLabel1.setText("Bestandsnaam:");
+    wachtLijstNaamLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+    wachtLijstNaamLabel.setText("Bestandsnaam:");
 
     javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     jPanel3.setLayout(jPanel3Layout);
@@ -1046,12 +1039,12 @@ public class UI extends javax.swing.JFrame  {
         .addContainerGap()
         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanel3Layout.createSequentialGroup()
-            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(wachtLijstNaamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING))
+            .addComponent(wachtLijstNaamVeld, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addComponent(wachtlijstLadenKnop, javax.swing.GroupLayout.Alignment.TRAILING))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(wachtlijstScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addContainerGap(27, Short.MAX_VALUE))
     );
     jPanel3Layout.setVerticalGroup(
@@ -1061,11 +1054,11 @@ public class UI extends javax.swing.JFrame  {
         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanel3Layout.createSequentialGroup()
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jLabel1))
+              .addComponent(wachtLijstNaamVeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addComponent(wachtLijstNaamLabel))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jButton2))
-          .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(wachtlijstLadenKnop))
+          .addComponent(wachtlijstScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addContainerGap(53, Short.MAX_VALUE))
     );
 
@@ -1518,8 +1511,8 @@ public class UI extends javax.swing.JFrame  {
         main.sorteerAlgoritme();
     }//GEN-LAST:event_sorteerKnopAdminActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int schoolID = Integer.parseInt(jTextField1.getText());
+    private void wachtlijstLadenKnopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wachtlijstLadenKnopActionPerformed
+        int schoolID = Integer.parseInt(wachtLijstNaamVeld.getText());
         School s = main.ophalenSchool(schoolID);
         DefaultListModel dlm = new DefaultListModel();
         int i = 1;
@@ -1528,59 +1521,13 @@ public class UI extends javax.swing.JFrame  {
             i++;
         }
         jList1.setModel(dlm);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_wachtlijstLadenKnopActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void volgendeTabKnopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volgendeTabKnopActionPerformed
         FormulierScherm.setSelectedComponent(AanmeldingsFormulierTab);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_volgendeTabKnopActionPerformed
 
-  private void zoekwoordVeldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoekwoordVeldActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_zoekwoordVeldActionPerformed
-
-    /**
-     * @param args the command line arguments
-     
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-           
-        /* Create and display the form 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    new UI().setVisible(true);
-                } catch (Exception e) {
-                    System.out.println("Error: " + e);
-                }
-            }
-        });
-    }
-    */
+    
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JPanel AanmeldingsFormulierTab;
@@ -1629,16 +1576,11 @@ public class UI extends javax.swing.JFrame  {
   private javax.swing.JLabel infoLabelART;
   private javax.swing.JLabel infoLabelVFT;
   private javax.swing.JButton inlogKnopIS;
-  private javax.swing.JButton jButton1;
-  private javax.swing.JButton jButton2;
-  private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel2;
   private javax.swing.JList<String> jList1;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JPanel jPanel3;
   private javax.swing.JPanel jPanel4;
-  private javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JTextField jTextField1;
   private javax.swing.JLabel logoLabel;
   private javax.swing.JLabel logoLabel1;
   private javax.swing.JLabel naamLabelAS;
@@ -1672,6 +1614,7 @@ public class UI extends javax.swing.JFrame  {
   private javax.swing.JLabel tijdstipLabelOut;
   private javax.swing.JLabel uitloggenLinkLabel;
   private javax.swing.JLabel verwijderLinkLabelART;
+  private javax.swing.JButton volgendeTabKnop;
   private javax.swing.JLabel voornaamLabelAS;
   private javax.swing.JLabel voornaamOuderLabelAFT;
   private javax.swing.JTextField voornaamOuderVeldAFT;
@@ -1679,6 +1622,10 @@ public class UI extends javax.swing.JFrame  {
   private javax.swing.JTextField voornaamStudentVeldAFT;
   private javax.swing.JTextField voornaamVeldAS;
   private javax.swing.JLabel waarschuwingLabelAFT;
+  private javax.swing.JLabel wachtLijstNaamLabel;
+  private javax.swing.JTextField wachtLijstNaamVeld;
+  private javax.swing.JButton wachtlijstLadenKnop;
+  private javax.swing.JScrollPane wachtlijstScrollPane;
   private javax.swing.JLabel zoekwoordLabel;
   private javax.swing.JTextField zoekwoordVeld;
   // End of variables declaration//GEN-END:variables

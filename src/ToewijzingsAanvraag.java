@@ -23,7 +23,8 @@ public class ToewijzingsAanvraag implements Serializable {
     private int broersOfZussen;
     private Status status;
     private int voorkeur;
-    private final ArrayList<String> afgewezenScholen;
+    private long preferentie;
+    private ArrayList<String> afgewezenScholen;
     
     public ToewijzingsAanvraag(int nummer, String rnstudent, String rnouder) {
         this.toewijzingsAanvraagNummer = nummer;
@@ -33,13 +34,14 @@ public class ToewijzingsAanvraag implements Serializable {
         this.broersOfZussen = 0;
         this.status = Status.ONTWERP;
         this.voorkeur = 0;
+        this.preferentie = 0;
         this.afgewezenScholen = new ArrayList<>();
     }
     
     public ToewijzingsAanvraag(int nummer, String rnstudent, String rnouder,
-                                LocalDateTime tijdstip,
-                                int broersOfZussen, Status status, 
-                                int voorkeur, ArrayList<String> afgewezenScholen){
+                                LocalDateTime tijdstip, int broersOfZussen, 
+                                Status status, int voorkeur, long preferentie,
+                                ArrayList<String> afgewezenScholen){
         this.toewijzingsAanvraagNummer = nummer;
         this.rijksregisterNummerStudent = rnstudent;
         this.rijksregisterNummerOuder = rnouder;
@@ -47,8 +49,17 @@ public class ToewijzingsAanvraag implements Serializable {
         this.broersOfZussen = broersOfZussen;
         this.status = status;
         this.voorkeur = voorkeur;
+        this.preferentie = preferentie;
         this.afgewezenScholen = afgewezenScholen;
     }
+
+  public long getPreferentie() {
+    return preferentie;
+  }
+
+  public void setPreferentie(long preferentie) {
+    this.preferentie = preferentie;
+  }
 
     public ArrayList<String> getAfgewezenScholen() {
         return afgewezenScholen;
@@ -62,7 +73,7 @@ public class ToewijzingsAanvraag implements Serializable {
         if(csvLijst.equals(""))
             return csvLijst;
         else
-            return csvLijst.substring(0, csvLijst.length()-1);
+            return csvLijst.substring(0, csvLijst.length()-1).replace("[()]", "");
     }
     
     public Integer getVoorkeur() {
