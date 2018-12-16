@@ -23,12 +23,12 @@ public class School implements Serializable {
     private ArrayList<ToewijzingsAanvraag> wachtLijst;
     
     public School(int ID, String naam, String adres,
-                  int plaatsen, ArrayList<ToewijzingsAanvraag> wachtLijst){
+                  int plaatsen){
         this.ID = ID;
          this.naam = naam;
         this.adres = adres;
         this.plaatsen = plaatsen;
-        this.wachtLijst = wachtLijst;
+        this.wachtLijst = new ArrayList();
     }
 
     public int getID() {

@@ -30,9 +30,8 @@ public class DBSchool {
         String naam = rs.getString("school_naam");
         String adres = rs.getString("school_adres");
         int capaciteit = rs.getInt("capaciteit");
-        ArrayList<ToewijzingsAanvraag> wachtLijst = new ArrayList();
         scholenHashMap.put(id, new School(id, naam,
-                adres, capaciteit, wachtLijst));
+                adres, capaciteit));
       }
       for(School s : scholenHashMap.values()) {
 	rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
@@ -80,7 +79,7 @@ public class DBSchool {
         String adres = rs.getString("school_adres");
         int capaciteit = rs.getInt("capaciteit");
         ArrayList<ToewijzingsAanvraag> wachtLijst = new ArrayList<>();
-        school = new School(schoolID, naam, adres, capaciteit, wachtLijst);
+        school = new School(schoolID, naam, adres, capaciteit);
         rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
                            + "WHERE voorkeurschool = " + school.getID());
         while (rs.next()) {
