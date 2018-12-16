@@ -380,23 +380,5 @@ public class DBToewijzingsAanvraag {
     }
   }
   
-  public static void updateStatus(Status s)throws DBException {
-    Connection con = null;
-      try {
-        con = DBConnect.getConnection();
-        PreparedStatement ps = con.prepareStatement("UPDATE toewijzingsaanvragen "
-                                                  + "SET status = '" + s + "';");
-        ps.executeUpdate();
-        DBConnect.closeConnection(con);
-      } catch (DBException dbe) {
-        dbe.printStackTrace();
-        DBConnect.closeConnection(con);
-        throw dbe;
-      } catch (Exception e) {
-        e.printStackTrace();
-        DBConnect.closeConnection(con);
-        throw new DBException(e);
-      }
-  }
  
 }
