@@ -390,5 +390,14 @@ public class Main {
   public LocalDateTime getHuidigeDeadline() {
       return this.huidigeDeadline;
   }
+  
+  public void veranderCapaciteit(int ID, int nieuweCap){
+      try {
+          DBSchool.setCapaciteit(ID, nieuweCap);
+      }
+      catch (DBException dbe){
+          dbe.getMessage();
+      }
+  }
 }
 
