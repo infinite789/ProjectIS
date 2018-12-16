@@ -183,13 +183,15 @@ public class UI extends javax.swing.JFrame  {
         jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        TerugKnop2 = new javax.swing.JButton();
         CapaciteitVeranderPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        ScholenTabel = new javax.swing.JTable();
+        NieuweCapaciteitTextField = new javax.swing.JTextField();
+        VeranderCapaciteitKnop = new javax.swing.JButton();
+        SchoolIDTextField = new javax.swing.JTextField();
+        TerugKnop = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Centrale toewijzing leerlingen");
@@ -393,11 +395,11 @@ public class UI extends javax.swing.JFrame  {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 terugLinkLabelASMouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                terugLinkLabelASMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 terugLinkLabelASMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                terugLinkLabelASMouseEntered(evt);
             }
         });
 
@@ -1054,6 +1056,13 @@ public class UI extends javax.swing.JFrame  {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Bestandsnaam:");
 
+        TerugKnop2.setText("Terug");
+        TerugKnop2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TerugKnop2Clicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1069,6 +1078,9 @@ public class UI extends javax.swing.JFrame  {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(27, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(TerugKnop2))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1082,7 +1094,8 @@ public class UI extends javax.swing.JFrame  {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(TerugKnop2))
         );
 
         javax.swing.GroupLayout AdminSchermLayout = new javax.swing.GroupLayout(AdminScherm);
@@ -1110,30 +1123,29 @@ public class UI extends javax.swing.JFrame  {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel3.setText("Scholen:");
+        jLabel3.setText("School ID:");
 
         jLabel4.setText("Nieuwe Capaciteit:");
 
-        jTextField2.setText("jTextField2");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+        VeranderCapaciteitKnop.setText("Verander");
+        VeranderCapaciteitKnop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                VeranderCapaciteitKnopClick(evt);
             }
         });
 
-        ScholenTabel.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Naam", "Adres", "Capaciteit", "ID"
+        SchoolIDTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SchoolIDTextFieldActionPerformed(evt);
             }
-        ));
-        jScrollPane2.setViewportView(ScholenTabel);
-        ScholenTabel.getAccessibleContext().setAccessibleParent(scholenScrollPane);
+        });
+
+        TerugKnop.setText("Terug");
+        TerugKnop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TerugKnopClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1141,29 +1153,36 @@ public class UI extends javax.swing.JFrame  {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TerugKnop)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(NieuweCapaciteitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(VeranderCapaciteitKnop))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(59, 59, 59)
+                            .addComponent(SchoolIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(424, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(SchoolIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(79, 79, 79))
+                    .addComponent(NieuweCapaciteitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(VeranderCapaciteitKnop))
+                .addGap(18, 18, 18)
+                .addComponent(TerugKnop)
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout CapaciteitVeranderPanelLayout = new javax.swing.GroupLayout(CapaciteitVeranderPanel);
@@ -1179,7 +1198,7 @@ public class UI extends javax.swing.JFrame  {
             CapaciteitVeranderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CapaciteitVeranderPanelLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 594, Short.MAX_VALUE))
+                .addGap(0, 571, Short.MAX_VALUE))
         );
 
         MainPanel.add(CapaciteitVeranderPanel, "card6");
@@ -1635,11 +1654,28 @@ public class UI extends javax.swing.JFrame  {
         CapaciteitVeranderPanel.setVisible(true);
     }//GEN-LAST:event_VeraderCapaciteitKnopActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        String capaciteit = "";
-        capaciteit = jTextField2.getText();
-        int capaciteitInt = Integer.parseInt(capaciteit);
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    private void SchoolIDTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SchoolIDTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SchoolIDTextFieldActionPerformed
+
+    private void VeranderCapaciteitKnopClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VeranderCapaciteitKnopClick
+       main.veranderCapaciteit(Integer.parseInt(SchoolIDTextField.getText()), Integer.parseInt(NieuweCapaciteitTextField.getText()));
+    }//GEN-LAST:event_VeranderCapaciteitKnopClick
+
+    private void TerugKnopClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TerugKnopClicked
+    CapaciteitVeranderPanel.setVisible(false);
+    AdminScherm.setVisible(true);
+    }//GEN-LAST:event_TerugKnopClicked
+
+    private void TerugKnop2Clicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TerugKnop2Clicked
+        AdminScherm.setVisible(false);
+        InlogScherm.setVisible(true);
+        gebrVeldIS.setText("");
+        passVeldIS.setText("");
+        boodschapLabelIS.setText("");
+        doorgaanKnopIS.setEnabled(false);
+        InlogScherm.getRootPane().setDefaultButton(inlogKnopIS);
+    }//GEN-LAST:event_TerugKnop2Clicked
 
     /**
      * @param args the command line arguments
@@ -1695,10 +1731,14 @@ public class UI extends javax.swing.JFrame  {
     private javax.swing.JPanel HomeTab;
     private javax.swing.JPanel InlogScherm;
     private javax.swing.JPanel MainPanel;
+    private javax.swing.JTextField NieuweCapaciteitTextField;
     private javax.swing.JLabel PersoonlijkeJlabel;
-    private javax.swing.JTable ScholenTabel;
+    private javax.swing.JTextField SchoolIDTextField;
+    private javax.swing.JButton TerugKnop;
+    private javax.swing.JButton TerugKnop2;
     private javax.swing.JPanel UitloggenTab;
     private javax.swing.JButton VeraderCapaciteitKnop;
+    private javax.swing.JButton VeranderCapaciteitKnop;
     private javax.swing.JPanel VoorkeurFormulierTab;
     private javax.swing.JPanel ZoekAanvraagTab;
     private javax.swing.JLabel aanvraagNummerLabelVFT;
@@ -1747,9 +1787,7 @@ public class UI extends javax.swing.JFrame  {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JLabel logoLabel1;
     private javax.swing.JLabel naamLabelAS;
