@@ -161,4 +161,27 @@ public class DBSchool {
       
     }
   }
+  
+  public static void setCapaciteit(int ID, int nieuwAantal) throws DBException{
+      Connection con = null;
+      try{
+          con = DBConnect.getConnection();
+          PreparedStatement ps = con.prepareStatement("UPDATE scholen SET capaciteit = ? WHERE ID = ?");
+          ps.setInt(1,nieuwAantal);
+          ps.setInt(2, ID);
+          ps.execute();
+          DBConnect.closeConnection(con);
+      }
+      catch (DBException dbe) {
+        dbe.printStackTrace();
+        DBConnect.closeConnection(con);
+        throw dbe;
+        }
+      catch (Exception e) {
+        e.printStackTrace();
+        DBConnect.closeConnection(con);
+        throw new DBException(e);
+        }  
+    }
 }
+
