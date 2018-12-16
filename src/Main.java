@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneOffset;
@@ -275,19 +278,36 @@ public class Main {
      * De methode past zijn gedrag door de datum te vergelelijken
      * met de deadlines voor het indienen 
    */
-   public boolean indienenVoorkeur(int aanvraagnummer, Student student, int schoolID)
+   public boolean indienenVoorkeur(int nummer, Student student, int schoolID)
           throws DBException {
     try {
-      ToewijzingsAanvraag ta = DBToewijzingsAanvraag.getAanvraag(student.getRijksregisterNummer());
+      toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
+      scholen = DBSchool.getScholen();
+      ToewijzingsAanvraag ta = toewijzingsaanvragen.get(nummer);
       int vorigVoorkeur = ta.getVoorkeur();
-      if(DBToewijzingsAanvraag.bewaarVoorkeur(aanvraagnummer, schoolID)) {
-        toewijzingsaanvragen.get(aanvraagnummer).setVoorkeur(schoolID);
-        toewijzingsaanvragen.get(aanvraagnummer).setStatus(Status.INGEDIEND);
+      if(vorigVoorkeur != schoolID) {
+        ta.setVoorkeur(schoolID);
+        ta.setStatus(Status.INGEDIEND);
         scholen.get(schoolID).getWachtLijst().add(ta);
         if(vorigVoorkeur != 0) 
           scholen.get(vorigVoorkeur).getWachtLijst().remove(ta);
-        toewijzingsaanvragen.get(aanvraagnummer).setBroersOfZussen(DBStudent.getBroersEnZussen(aanvraagnummer, student, schoolID));
+        int aantal = getBroersEnZussen(nummer, student, schoolID);
+        ta.setBroersOfZussen(aantal);
+        long preferentie = bepaalPreferentie(ta);
+        ta.setPreferentie(preferentie);
+        for(ToewijzingsAanvraag twa : toewijzingsaanvragen.values()) {
+          if(twa.getRijksregisterNummerOuder().equals(student.getRijksregisterNummerOuder())
+             && !twa.getRijksregisterNummerStudent().equals(student.getRijksregisterNummer())
+             && twa.getVoorkeur() == schoolID) {
+            twa.setBroersOfZussen(twa.getBroersOfZussen()+1);
+            long pref = bepaalPreferentie(twa);
+            twa.setPreferentie(preferentie);
+          }
+        }
+      } else {
+        return false;
       }
+      DBToewijzingsAanvraag.bewaarToewijzingsAanvragen(toewijzingsaanvragen);
     } catch (DBException dbe) {
       dbe.getMessage();
     } catch (Exception e) {
@@ -300,7 +320,25 @@ public class Main {
       
   }
   */
-  
+  public int getBroersEnZussen(int aanvraagnummer, Student student, int voorkeurschool) throws DBException {
+    int aantal = 0;
+      //hashmaps zijn al geladen in methode indienenVoorkeur()
+      for(Student s : studenten.values()) {
+        if(!s.getRijksregisterNummer().equals(student.getRijksregisterNummer())
+          && s.getRijksregisterNummerOuder().equals(student.getRijksregisterNummerOuder())
+          && s.getHuidigeSchool() == voorkeurschool) {
+              aantal++;
+        }
+      }
+      for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
+        if(!ta.getRijksregisterNummerStudent().equals(student.getRijksregisterNummer())
+           && ta.getRijksregisterNummerOuder().equals(student.getRijksregisterNummerOuder())
+           && ta.getVoorkeur() == voorkeurschool) {
+              aantal++;
+        }
+      }
+      return aantal;
+  }
   
   public void sorteerWachtLijst(ArrayList<ToewijzingsAanvraag> wachtLijst) {
       for (int i = 0; i < wachtLijst.size(); i++) {
@@ -310,11 +348,11 @@ public class Main {
 	  for (int j = i + 1; j < wachtLijst.size(); j++) {
 	      long preferentie;
 	      if (hogerePref == null) {
-		  preferentie = getPreferentie(wachtLijst.get(i));
+		  preferentie = bepaalPreferentie(wachtLijst.get(i));
 	      } else {
-		  preferentie = getPreferentie(hogerePref);
+		  preferentie = bepaalPreferentie(hogerePref);
 	      }
-	      long preferentie2 = getPreferentie(wachtLijst.get(j));
+	      long preferentie2 = bepaalPreferentie(wachtLijst.get(j));
 	      if (preferentie < preferentie2) {
 		  hogerePref = wachtLijst.get(j);
 		  lagePrefIndex = j;
@@ -332,18 +370,34 @@ public class Main {
     try {
       toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
       scholen = DBSchool.getScholen();
+      for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
+          if(ta.getVoorkeur() == 0) {
+            Random r = new Random();
+            ArrayList<Integer> keys = new ArrayList(scholen.keySet());
+            int i = keys.get(r.nextInt(scholen.size()));
+            ta.setVoorkeur(i);
+            ta.setStatus(Status.INGEDIEND);
+          }
+      }
       for (School s : scholen.values()) {
-	ArrayList<ToewijzingsAanvraag> wachtLijst = s.getWachtLijst();
+	ArrayList<ToewijzingsAanvraag> wachtLijst = new ArrayList();
+        for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
+          if(ta.getVoorkeur() == s.getID()) {
+            wachtLijst.add(ta);
+          }
+        }
 	sorteerWachtLijst(wachtLijst);
 	//studenten afwijzen indien de school vol zit
 	while (wachtLijst.size() > s.getPlaatsen()) {
-          ToewijzingsAanvraag ta = wachtLijst.get(wachtLijst.size() - 1);
-          wachtLijst.remove(ta);
-          ta.getAfgewezenScholen().add(String.valueOf(s.getID()));
-          ta.setStatus(Status.ONTWERP);
+          ToewijzingsAanvraag twa = wachtLijst.get(wachtLijst.size() - 1);
+          wachtLijst.remove(twa);
+          twa.getAfgewezenScholen().add(String.valueOf(s.getID()));
+          twa.setStatus(Status.ONTWERP);
+          twa.setVoorkeur(0);
           afgewezenStudenten++;
 	}
-      } 
+        s.setWachtLijst(wachtLijst);
+      }
       if(afgewezenStudenten > 0)
         updateStatus(Status.VOORLOPIG);
       else
@@ -362,7 +416,7 @@ public class Main {
     }
   }
   
-  public long getPreferentie(ToewijzingsAanvraag ta) {
+  public long bepaalPreferentie(ToewijzingsAanvraag ta) {
       long preferentie = huidigeDeadline.toEpochSecond(ZoneOffset.UTC)
 	      - ta.getAanmeldingsTijdstip().toEpochSecond(ZoneOffset.UTC);
       long bonusPunten = huidigeDeadline.toEpochSecond(ZoneOffset.UTC)
@@ -370,7 +424,7 @@ public class Main {
       if (ta.getBroersOfZussen() > 0) {
 	  preferentie += bonusPunten*ta.getBroersOfZussen();
       }
-      return preferentie;
+      return preferentie/100000;
 
   }
 
@@ -378,7 +432,7 @@ public class Main {
       try {
         toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
         ArrayList<String> afgScholen = toewijzingsaanvragen.get(nummer).getAfgewezenScholen();
-        if(afgScholen.contains(schoolID))
+        if(afgScholen.contains(String.valueOf(schoolID)))
           return true;
       } catch (Exception ex) {
         System.out.println("Error: " + ex);
