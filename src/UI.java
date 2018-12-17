@@ -1,11 +1,14 @@
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -13,6 +16,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.DateFormatter;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 /*
  * User Interface Klasse
@@ -37,9 +44,19 @@ public class UI extends javax.swing.JFrame  {
     
     public UI(Main main) {
       this.main = main; 
+      UtilDateModel model = new UtilDateModel();
+      Properties p = new Properties();
+      p.put("text.today", "today");
+      p.put("text.month", "month");
+      p.put("text.year", "year");
+      JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+      JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+      model.
       initComponents(); //componenten van NetBeans GuiBuilder initializeren
+      jButton3.add((JComponent)datePicker);
       getContentPane().setBackground(Color.white); //wit achtergrond van de Pane
       InlogScherm.getRootPane().setDefaultButton(inlogKnopIS);
+      
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -181,6 +198,14 @@ public class UI extends javax.swing.JFrame  {
     jLabel9 = new javax.swing.JLabel();
     jLabel11 = new javax.swing.JLabel();
     tijdSchemaTab = new javax.swing.JPanel();
+    jLabel12 = new javax.swing.JLabel();
+    jLabel13 = new javax.swing.JLabel();
+    jLabel14 = new javax.swing.JLabel();
+    jLabel16 = new javax.swing.JLabel();
+    jButton3 = new javax.swing.JButton();
+    jButton4 = new javax.swing.JButton();
+    jButton5 = new javax.swing.JButton();
+    jButton6 = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Centrale toewijzing leerlingen");
@@ -1136,7 +1161,7 @@ public class UI extends javax.swing.JFrame  {
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
-    JTPAdmin.addTab("BeheerWachtlijstenTab", wachtLijstenTab);
+    JTPAdmin.addTab("Beheer Wachtlijsten", wachtLijstenTab);
 
     scholenTab.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1302,12 +1327,11 @@ public class UI extends javax.swing.JFrame  {
             .addComponent(zoekwoordLabelAdmin)
             .addGap(43, 43, 43)
             .addComponent(zoekwoordVeldAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-              .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addGap(5, 5, 5)
-              .addComponent(jButton2)))
+          .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(5, 5, 5)
+            .addComponent(jButton2))
           .addGroup(jPanel2Layout.createSequentialGroup()
             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGap(18, 18, 18)
@@ -1367,22 +1391,73 @@ public class UI extends javax.swing.JFrame  {
         .addGap(88, 88, 88))
     );
 
-    JTPAdmin.addTab("BeheerScholenTab", scholenTab);
+    JTPAdmin.addTab("Beheer Scholen", scholenTab);
 
     tijdSchemaTab.setBackground(new java.awt.Color(255, 255, 255));
+
+    jLabel12.setText("Startdatum:");
+
+    jLabel13.setText("Deadline inschrijvingen:");
+
+    jLabel14.setText("Deadline capaciteitsuitbreiding:");
+
+    jLabel16.setText("Einddatum:");
+
+    jButton3.setText("DatePicker");
+
+    jButton4.setText("DatePicker");
+
+    jButton5.setText("DatePicker");
+
+    jButton6.setText("DatePicker");
+    jButton6.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton6ActionPerformed(evt);
+      }
+    });
 
     javax.swing.GroupLayout tijdSchemaTabLayout = new javax.swing.GroupLayout(tijdSchemaTab);
     tijdSchemaTab.setLayout(tijdSchemaTabLayout);
     tijdSchemaTabLayout.setHorizontalGroup(
       tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 1858, Short.MAX_VALUE)
+      .addGroup(tijdSchemaTabLayout.createSequentialGroup()
+        .addGap(37, 37, 37)
+        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jLabel14)
+          .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+          .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
+          .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+          .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+          .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addContainerGap(444, Short.MAX_VALUE))
     );
     tijdSchemaTabLayout.setVerticalGroup(
       tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 472, Short.MAX_VALUE)
+      .addGroup(tijdSchemaTabLayout.createSequentialGroup()
+        .addGap(41, 41, 41)
+        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabel12)
+          .addComponent(jButton3))
+        .addGap(18, 18, 18)
+        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabel13)
+          .addComponent(jButton4))
+        .addGap(18, 18, 18)
+        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabel14)
+          .addComponent(jButton5))
+        .addGap(18, 18, 18)
+        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabel16)
+          .addComponent(jButton6))
+        .addContainerGap(196, Short.MAX_VALUE))
     );
 
-    JTPAdmin.addTab("BeheerDataTab", tijdSchemaTab);
+    JTPAdmin.addTab("Beheer Data", tijdSchemaTab);
 
     javax.swing.GroupLayout AdminSchermLayout = new javax.swing.GroupLayout(AdminScherm);
     AdminScherm.setLayout(AdminSchermLayout);
@@ -1987,6 +2062,11 @@ public class UI extends javax.swing.JFrame  {
       }
   }//GEN-LAST:event_jButton2ActionPerformed
 
+  private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_jButton6ActionPerformed
+
+  
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JPanel AanmeldingsFormulierTab;
   private javax.swing.JPanel ActiveerScherm;
@@ -2043,9 +2123,17 @@ public class UI extends javax.swing.JFrame  {
   private javax.swing.JLabel instructieLabelAdminScholenTab;
   private javax.swing.JButton jButton1;
   private javax.swing.JButton jButton2;
+  private javax.swing.JButton jButton3;
+  private javax.swing.JButton jButton4;
+  private javax.swing.JButton jButton5;
+  private javax.swing.JButton jButton6;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel10;
   private javax.swing.JLabel jLabel11;
+  private javax.swing.JLabel jLabel12;
+  private javax.swing.JLabel jLabel13;
+  private javax.swing.JLabel jLabel14;
+  private javax.swing.JLabel jLabel16;
   private javax.swing.JLabel jLabel2;
   private javax.swing.JLabel jLabel3;
   private javax.swing.JLabel jLabel4;
