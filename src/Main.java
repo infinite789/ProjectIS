@@ -26,7 +26,7 @@ public class Main {
   private HashMap<String, Student> studenten;
   private HashMap<Integer, School> scholen;
   private HashMap<Integer, ToewijzingsAanvraag> toewijzingsaanvragen;
-  private Tijdschema tijdschema;
+  private TijdSchema tijdschema;
   private TypeGebruiker typeGebruiker;
 
   private final String ADMIN_ACCOUNT = "admin";

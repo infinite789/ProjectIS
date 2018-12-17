@@ -44,20 +44,38 @@ public class UI extends javax.swing.JFrame  {
     
     public UI(Main main) {
       this.main = main; 
-      UtilDateModel model = new UtilDateModel();
+      initComponents(); //componenten van NetBeans GuiBuilder initializeren
+      
+      
       Properties p = new Properties();
       p.put("text.today", "today");
       p.put("text.month", "month");
       p.put("text.year", "year");
-      JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-      JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-      
-      initComponents(); //componenten van NetBeans GuiBuilder initializeren
-      jButton3.add((JComponent)datePicker);
+      //datumPicker voor de startDatum
+      UtilDateModel model1 = new UtilDateModel();
+      JDatePanelImpl datePanel1 = new JDatePanelImpl(model1, p);
+      JDatePickerImpl startDatumPicker = new JDatePickerImpl(datePanel1, new DateLabelFormatter());
+      datePickerSD.add((JComponent)startDatumPicker);
+      //datumPicker voor de inschrijvingen
+      UtilDateModel model2 = new UtilDateModel();
+      JDatePanelImpl datePanel2 = new JDatePanelImpl(model2, p);
+      JDatePickerImpl inschrijvingenDL = new JDatePickerImpl(datePanel2, new DateLabelFormatter());
+      datePickerIDL.add((JComponent)inschrijvingenDL);
+      //datumPicker voor de capaciteit 
+      UtilDateModel model3 = new UtilDateModel();
+      JDatePanelImpl datePanel3 = new JDatePanelImpl(model3, p);  
+      JDatePickerImpl capaciteitDL = new JDatePickerImpl(datePanel3, new DateLabelFormatter());
+      datePickerCDL.add((JComponent)capaciteitDL);
+      //datumPicker voor de einddatum
+      UtilDateModel model4 = new UtilDateModel();
+      JDatePanelImpl datePanel4 = new JDatePanelImpl(model4, p);
+      JDatePickerImpl eindDatumPicker = new JDatePickerImpl(datePanel4, new DateLabelFormatter());
+      datePickerED.add((JComponent)eindDatumPicker);
       getContentPane().setBackground(Color.white); //wit achtergrond van de Pane
       InlogScherm.getRootPane().setDefaultButton(inlogKnopIS);
       
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -202,10 +220,10 @@ public class UI extends javax.swing.JFrame  {
     jLabel13 = new javax.swing.JLabel();
     jLabel14 = new javax.swing.JLabel();
     jLabel16 = new javax.swing.JLabel();
-    jButton3 = new javax.swing.JButton();
-    jButton4 = new javax.swing.JButton();
-    jButton5 = new javax.swing.JButton();
-    jButton6 = new javax.swing.JButton();
+    datePickerSD = new javax.swing.JButton();
+    datePickerIDL = new javax.swing.JButton();
+    datePickerCDL = new javax.swing.JButton();
+    datePickerED = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Centrale toewijzing leerlingen");
@@ -1403,16 +1421,16 @@ public class UI extends javax.swing.JFrame  {
 
     jLabel16.setText("Einddatum:");
 
-    jButton3.setText("DatePicker");
+    datePickerSD.setText("DatePicker");
 
-    jButton4.setText("DatePicker");
+    datePickerIDL.setText("DatePicker");
 
-    jButton5.setText("DatePicker");
+    datePickerCDL.setText("DatePicker");
 
-    jButton6.setText("DatePicker");
-    jButton6.addActionListener(new java.awt.event.ActionListener() {
+    datePickerED.setText("DatePicker");
+    datePickerED.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton6ActionPerformed(evt);
+        datePickerEDActionPerformed(evt);
       }
     });
 
@@ -1429,10 +1447,10 @@ public class UI extends javax.swing.JFrame  {
           .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-          .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-          .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+          .addComponent(datePickerSD, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+          .addComponent(datePickerIDL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(datePickerCDL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(datePickerED, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         .addContainerGap(444, Short.MAX_VALUE))
     );
     tijdSchemaTabLayout.setVerticalGroup(
@@ -1441,19 +1459,19 @@ public class UI extends javax.swing.JFrame  {
         .addGap(41, 41, 41)
         .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel12)
-          .addComponent(jButton3))
+          .addComponent(datePickerSD))
         .addGap(18, 18, 18)
         .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel13)
-          .addComponent(jButton4))
+          .addComponent(datePickerIDL))
         .addGap(18, 18, 18)
         .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel14)
-          .addComponent(jButton5))
+          .addComponent(datePickerCDL))
         .addGap(18, 18, 18)
         .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel16)
-          .addComponent(jButton6))
+          .addComponent(datePickerED))
         .addContainerGap(196, Short.MAX_VALUE))
     );
 
@@ -2062,9 +2080,9 @@ public class UI extends javax.swing.JFrame  {
       }
   }//GEN-LAST:event_jButton2ActionPerformed
 
-  private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+  private void datePickerEDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datePickerEDActionPerformed
     // TODO add your handling code here:
-  }//GEN-LAST:event_jButton6ActionPerformed
+  }//GEN-LAST:event_datePickerEDActionPerformed
 
   
   // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2100,6 +2118,10 @@ public class UI extends javax.swing.JFrame  {
   private javax.swing.JLabel boodschapLabelAdminWTab;
   private javax.swing.JLabel boodschapLabelIS;
   private javax.swing.JLabel boodschapLabelVFT;
+  private javax.swing.JButton datePickerCDL;
+  private javax.swing.JButton datePickerED;
+  private javax.swing.JButton datePickerIDL;
+  private javax.swing.JButton datePickerSD;
   private javax.swing.JButton doorgaanKnopIS;
   private javax.swing.JPanel editPanel;
   private javax.swing.JLabel eersteVoorkeurLabel;
@@ -2123,10 +2145,6 @@ public class UI extends javax.swing.JFrame  {
   private javax.swing.JLabel instructieLabelAdminScholenTab;
   private javax.swing.JButton jButton1;
   private javax.swing.JButton jButton2;
-  private javax.swing.JButton jButton3;
-  private javax.swing.JButton jButton4;
-  private javax.swing.JButton jButton5;
-  private javax.swing.JButton jButton6;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel10;
   private javax.swing.JLabel jLabel11;
