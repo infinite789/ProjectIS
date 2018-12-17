@@ -51,7 +51,7 @@ public class UI extends javax.swing.JFrame  {
       p.put("text.year", "year");
       JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
       JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-      model.
+      
       initComponents(); //componenten van NetBeans GuiBuilder initializeren
       jButton3.add((JComponent)datePicker);
       getContentPane().setBackground(Color.white); //wit achtergrond van de Pane
