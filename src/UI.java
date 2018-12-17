@@ -225,8 +225,6 @@ public class UI extends javax.swing.JFrame  {
         datePickerCDL = new javax.swing.JButton();
         datePickerED = new javax.swing.JButton();
         VeranderDatumKnop = new javax.swing.JButton();
-        datePickerDLV = new javax.swing.JButton();
-        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Centrale toewijzing leerlingen");
@@ -1449,10 +1447,6 @@ public class UI extends javax.swing.JFrame  {
             }
         });
 
-        datePickerDLV.setText("DatePicker");
-
-        jLabel15.setText("Deadline Voorkeur:");
-
         javax.swing.GroupLayout tijdSchemaTabLayout = new javax.swing.GroupLayout(tijdSchemaTab);
         tijdSchemaTab.setLayout(tijdSchemaTabLayout);
         tijdSchemaTabLayout.setHorizontalGroup(
@@ -1461,53 +1455,44 @@ public class UI extends javax.swing.JFrame  {
                 .addGap(37, 37, 37)
                 .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(tijdSchemaTabLayout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(datePickerED, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(tijdSchemaTabLayout.createSequentialGroup()
                         .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(VeranderDatumKnop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(VeranderDatumKnop, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                             .addComponent(datePickerSD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(datePickerIDL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(datePickerCDL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(datePickerDLV, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(375, Short.MAX_VALUE))
-                    .addGroup(tijdSchemaTabLayout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(datePickerED, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(375, 375, 375))))
+                            .addComponent(datePickerCDL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(375, Short.MAX_VALUE))
         );
         tijdSchemaTabLayout.setVerticalGroup(
             tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tijdSchemaTabLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(tijdSchemaTabLayout.createSequentialGroup()
-                        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(datePickerSD))
-                        .addGap(18, 18, 18)
-                        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(datePickerIDL))
-                        .addGap(18, 18, 18)
-                        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(datePickerCDL))
-                        .addGap(18, 18, 18)
-                        .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(datePickerDLV)
-                            .addComponent(jLabel15))
-                        .addGap(47, 47, 47))
-                    .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel16)
-                        .addComponent(datePickerED)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(datePickerSD))
+                .addGap(18, 18, 18)
+                .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(datePickerIDL))
+                .addGap(18, 18, 18)
+                .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(datePickerCDL))
+                .addGap(18, 18, 18)
+                .addGroup(tijdSchemaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(datePickerED)
+                    .addComponent(jLabel16))
+                .addGap(18, 18, 18)
                 .addComponent(VeranderDatumKnop)
-                .addGap(43, 43, 43))
+                .addContainerGap(188, Short.MAX_VALUE))
         );
 
         JTPAdmin.addTab("Beheer Data", tijdSchemaTab);
@@ -1521,8 +1506,8 @@ public class UI extends javax.swing.JFrame  {
         AdminSchermLayout.setVerticalGroup(
             AdminSchermLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminSchermLayout.createSequentialGroup()
-                .addComponent(JTPAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(JTPAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 308, Short.MAX_VALUE))
         );
 
         MainPanel.add(AdminScherm, "card5");
@@ -2124,16 +2109,16 @@ public class UI extends javax.swing.JFrame  {
         String SD = datePickerSD.getText();
         String IDL = datePickerIDL.getText();
         String CDL = datePickerCDL.getText();
-        String DLV = datePickerDLV.getText();
+        
         String ED = datePickerED.getText();
         
         LocalDateTime parseSD = LocalDateTime.parse(SD);
         LocalDateTime parseIDL = LocalDateTime.parse(IDL);
         LocalDateTime parseCDL = LocalDateTime.parse(CDL);
-        LocalDateTime parseDLV = LocalDateTime.parse(DLV);
+        
         LocalDateTime parseED = LocalDateTime.parse(ED);
         
-        TijdSchema ts = new TijdSchema(jaar, parseSD, parseIDL, parseCDL, parseDLV, parseED);
+        TijdSchema ts = new TijdSchema(jaar, parseSD, parseIDL, parseCDL, null, parseED);
         ts.veranderTijd();
     }//GEN-LAST:event_VeranderDatumKnopClicked
 
@@ -2177,7 +2162,6 @@ public class UI extends javax.swing.JFrame  {
     private javax.swing.JLabel boodschapLabelIS;
     private javax.swing.JLabel boodschapLabelVFT;
     private javax.swing.JButton datePickerCDL;
-    private javax.swing.JButton datePickerDLV;
     private javax.swing.JButton datePickerED;
     private javax.swing.JButton datePickerIDL;
     private javax.swing.JButton datePickerSD;
@@ -2210,7 +2194,6 @@ public class UI extends javax.swing.JFrame  {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
