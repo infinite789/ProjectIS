@@ -1,4 +1,6 @@
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneOffset;
@@ -8,6 +10,8 @@ import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 
@@ -26,17 +30,19 @@ public class Main {
   private HashMap<String, Student> studenten;
   private HashMap<Integer, School> scholen;
   private HashMap<Integer, ToewijzingsAanvraag> toewijzingsaanvragen;
-  private Ouder ingelogdeOuder;
+  private Tijdschema tijdschema;
   private TypeGebruiker typeGebruiker;
 
   private final String ADMIN_ACCOUNT = "admin";
   private final String ADMIN_PASS = "admin";
   private final LocalDateTime START_DATUM = LocalDateTime.of(
-          2018, Month.DECEMBER, 1, 0, 0, 0);//start inschrijvingen 
+          2018, Month.DECEMBER, 1, 0, 0, 0);//start inschrijvingen
+  private final LocalDateTime CAPACITEIT_DEADLINE = LocalDateTime.of(
+          2018, Month.DECEMBER, 20, 0, 0, 0);//start inschrijvingen
   private LocalDateTime huidigeDeadline = LocalDateTime.of(
           2018, Month.DECEMBER, 30, 0, 0, 0);//dynamische deadline, die na elke 'sorteerronde' een andere waarde aanneemt 
   private final LocalDateTime EIND_DATUM = LocalDateTime.of(
-          2018, Month.JANUARY, 30, 0, 0, 0);//einde periode 
+          2019, Month.JANUARY, 30, 0, 0, 0);//einde periode 
 
   public Main() {
     try {
@@ -48,7 +54,6 @@ public class Main {
       
     } finally {
       this.typeGebruiker = TypeGebruiker.NULL;
-      this.ingelogdeOuder = null;
     }
   }
 
@@ -58,20 +63,21 @@ public class Main {
   }  
     
   public TypeGebruiker inloggen(String gebrnaam, char[] wachtwoord) {
-    Ouder ouder = null;
     String wwoord = "";
     for(char c : wachtwoord) {
       wwoord += c;
     }
+    
+    try {
+    ouders = DBOuder.getOuders();
+    Ouder ouder = null;
     for(Ouder o : ouders.values()) {
       if(o.getGebruikersnaam().equals(gebrnaam) && o.getWachtwoord().equals(wwoord)) {
         ouder = o;
         break;
       }
     }
-    try {
       if(ouder != null) {
-        ingelogdeOuder = DBOuder.getOuder(ouder.getRijksregisterNummer());
         typeGebruiker = TypeGebruiker.OUDER;
       }
       if(gebrnaam.equals(ADMIN_ACCOUNT) && wwoord.equals(ADMIN_PASS)) 
@@ -101,9 +107,7 @@ public class Main {
       if (ouder.getWachtwoord().equals("")) {
         ouder.setWachtwoord(wachtwoord);
         String[] ontvangers = {ouder.getEmail()};
-        Email email = new Email(ouder.getVoornaam(), ouder.getGebruikersnaam(),
-                                ouder.getWachtwoord(), ontvangers[0], TypeBericht.ACTIVATIE
-        );
+        Email email = new Email(ouder, TypeBericht.ACTIVATIE);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
         executor.execute(() -> {
           try {
@@ -167,6 +171,38 @@ public class Main {
     }
   }
 
+  public int controleerCapaciteit() {
+    
+    try {
+      if(LocalDateTime.now().isBefore(CAPACITEIT_DEADLINE)) {
+        toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
+        scholen = DBSchool.getScholen();
+        int globaleCapaciteit = 0;
+        for(School s : scholen.values()) {
+          globaleCapaciteit += s.getPlaatsen();
+        }
+        if(toewijzingsaanvragen.size() > globaleCapaciteit) {
+          String emails = "";
+          for(School s : scholen.values()) {
+            emails += s.getEmail();
+          }
+          Email email = new Email(emails, TypeBericht.AANBODUITBREIDING);
+          email.send();
+          return 1;
+        } else {
+          return 2;
+        }
+      } else {
+        return 3;
+      }
+    } catch(DBException dbe) {
+      dbe.getMessage();
+      return 0;
+    } catch (MessagingException ex) {
+      ex.getMessage();
+      return 0;
+    }
+  }
   /*
      * Methode voor het ophalen van een ouder op basis van 
      * zijn inloggegevens
@@ -270,14 +306,17 @@ public class Main {
    * De methode past zijn gedrag door de datum te vergelelijken
    * met de deadlines voor het indienen 
    */
-   public boolean indienenVoorkeur(int nummer, Student student, int schoolID)
-          throws DBException {
+   public int indienenVoorkeur(int nummer, Student student, int schoolID) {
     try {
       toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
       scholen = DBSchool.getScholen();
       ToewijzingsAanvraag ta = toewijzingsaanvragen.get(nummer);
       int vorigVoorkeur = ta.getVoorkeur();
-      if(vorigVoorkeur != schoolID) {
+      if(ta.getStatus() == Status.VOORLOPIG) {
+        return -1;
+      } else if (ta.schoolIsAfgewezen(schoolID)) {
+        return 0;
+      } else if(vorigVoorkeur != schoolID) {
         ta.setVoorkeur(schoolID);
         ta.setStatus(Status.INGEDIEND);
         scholen.get(schoolID).getWachtLijst().add(ta);
@@ -293,19 +332,22 @@ public class Main {
              && twa.getVoorkeur() == schoolID) {
             twa.setBroersOfZussen(twa.getBroersOfZussen()+1);
             long pref = bepaalPreferentie(twa);
-            twa.setPreferentie(preferentie);
+            twa.setPreferentie(pref);
           }
         }
-      } else {
-        return false;
+        DBToewijzingsAanvraag.bewaarToewijzingsAanvragen(toewijzingsaanvragen);
+        return 1;
+      } else if (vorigVoorkeur == schoolID) {
+        return 2;
+      } else if (ta.getStatus() == Status.DEFINITIEF) {
+        return 3;
       }
-      DBToewijzingsAanvraag.bewaarToewijzingsAanvragen(toewijzingsaanvragen);
     } catch (DBException dbe) {
       dbe.getMessage();
     } catch (Exception e) {
       e.getMessage();
-    }
-    return true;
+    } 
+    return -2;
   }
    
   /*
@@ -314,7 +356,7 @@ public class Main {
   }
   */
    
-  public int getBroersEnZussen(int aanvraagnummer, Student student, int voorkeurschool) throws DBException {
+  public int getBroersEnZussen(int aanvraagnummer, Student student, int voorkeurschool) {
     int aantal = 0;
       //hashmaps zijn al geladen in methode indienenVoorkeur()
       for(Student s : studenten.values()) {
@@ -334,6 +376,8 @@ public class Main {
       return aantal;
   }
   
+  
+  
   public boolean exporteerWachtlijst() {
     try {
       if(LocalDateTime.now().isAfter(EIND_DATUM)) {
@@ -341,6 +385,9 @@ public class Main {
         scholen = DBSchool.getScholen();
         for (School s : scholen.values()) {
           String path = ".lijsten/school" + s.getID();
+          File file = new File(".lijsten/school" + s.getID());
+          if(!file.exists())
+            file.createNewFile();
           DataBestand.opslaanWachtLijst(path, s.getWachtLijst());
         }
         return true;
@@ -349,6 +396,9 @@ public class Main {
       }
     } catch (DBException dbe) {
       dbe.getMessage();
+      return false;
+    } catch (IOException ex) {
+      ex.getMessage();
       return false;
     }
   }
@@ -379,44 +429,71 @@ public class Main {
   }
   
   public void toewijzen() {
-    int afgewezenStudenten = 0;
-    try {
-      toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
-      scholen = DBSchool.getScholen();
-      for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
-          if(ta.getVoorkeur() == 0) {
-            Random r = new Random();
-            ArrayList<Integer> keys = new ArrayList(scholen.keySet());
-            int i = keys.get(r.nextInt(scholen.size()));
-            ta.setVoorkeur(i);
-            ta.setStatus(Status.INGEDIEND);
-            long preferentie = bepaalPreferentie(ta);
-            ta.setPreferentie(preferentie);
-            scholen.get(ta.getVoorkeur()).getWachtLijst().add(ta);
+    if(LocalDateTime.now().isBefore(EIND_DATUM)) {
+      int afgewezenStudenten = 0;
+      try {
+        toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
+        scholen = DBSchool.getScholen();
+        for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
+            if(ta.getVoorkeur() == 0) {
+              Random r = new Random();
+              ArrayList<Integer> keys = new ArrayList(scholen.keySet());
+              int i = keys.get(r.nextInt(scholen.size()));
+              ta.setVoorkeur(i);
+              ta.setStatus(Status.INGEDIEND);
+              long preferentie = bepaalPreferentie(ta);
+              ta.setPreferentie(preferentie);
+              scholen.get(ta.getVoorkeur()).getWachtLijst().add(ta);
+            }
+        }
+        for (School s : scholen.values()) {
+          ArrayList<ToewijzingsAanvraag> wachtLijst = s.getWachtLijst();
+          sorteerWachtLijst(wachtLijst);
+          //studenten afwijzen indien de school vol zit en emails sturen
+          while (wachtLijst.size() > s.getPlaatsen()) {
+            ToewijzingsAanvraag twa = wachtLijst.get(wachtLijst.size() - 1); 
+            twa = toewijzingsaanvragen.get(twa.getToewijzingsAanvraagNummer());
+            Ouder ouder = ouders.get(twa.getRijksregisterNummerOuder());
+            wachtLijst.remove(twa);
+            twa.setAfgewezenScholen(twa.getAfgewezenScholen()+twa.getVoorkeur());
+            twa.setStatus(Status.ONTWERP);
+            twa.setVoorkeur(0);
+            twa.setPreferentie(0);
+            afgewezenStudenten++;
+            Email email = new Email(ouder, TypeBericht.VOORKEUR);
+            ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+            executor.execute(() -> {
+              try {
+                email.send();
+              } catch (MessagingException e) {
+                e.getMessage();
+              }
+            });
           }
+          s.setWachtLijst(wachtLijst);
+        }
+        if(afgewezenStudenten > 0)
+          updateStatus(Status.VOORLOPIG);
+        else {
+          updateStatus(Status.DEFINITIEF);
+          String emails = "";
+          for(Ouder o : ouders.values()) {
+            emails += o.getEmail() + ";";
+          }
+            Email email = new Email(emails, TypeBericht.EINDE);
+        }
+
+        DBToewijzingsAanvraag.bewaarToewijzingsAanvragen(toewijzingsaanvragen);
+      } catch(DBException dbe) {
+        dbe.getMessage();
       }
-      for (School s : scholen.values()) {
-	ArrayList<ToewijzingsAanvraag> wachtLijst = s.getWachtLijst();
-	sorteerWachtLijst(wachtLijst);
-	//studenten afwijzen indien de school vol zit
-	while (wachtLijst.size() > s.getPlaatsen()) {
-          ToewijzingsAanvraag twa = wachtLijst.get(wachtLijst.size() - 1);
-          wachtLijst.remove(twa);
-          twa.getAfgewezenScholen().add(String.valueOf(s.getID()));
-          twa.setStatus(Status.ONTWERP);
-          twa.setVoorkeur(0);
-          twa.setPreferentie(0);
-          afgewezenStudenten++;
-	}
-        s.setWachtLijst(wachtLijst);
+    } else {
+      updateStatus(Status.DEFINITIEF);
+      String emails = "";
+      for(Ouder o : ouders.values()) {
+        emails += o.getEmail() + ";";
       }
-      if(afgewezenStudenten > 0)
-        updateStatus(Status.VOORLOPIG);
-      else
-        updateStatus(Status.DEFINITIEF);
-      DBToewijzingsAanvraag.bewaarToewijzingsAanvragen(toewijzingsaanvragen);
-    } catch(DBException dbe) {
-      dbe.getMessage();
+        Email email = new Email(emails, TypeBericht.EINDE);
     }
   }
 
@@ -443,7 +520,8 @@ public class Main {
   public boolean schoolIsAfgewezen(int schoolID, int nummer) {
       try {
         toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
-        ArrayList<String> afgScholen = toewijzingsaanvragen.get(nummer).getAfgewezenScholen();
+        String afgScholen = toewijzingsaanvragen.get(nummer).getAfgewezenScholen();
+        String[] afgewezenScholen = afgScholen.split(";");
         if(afgScholen.contains(String.valueOf(schoolID)))
           return true;
       } catch (Exception ex) {

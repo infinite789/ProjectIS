@@ -29,7 +29,7 @@ import javax.mail.internet.MimeMultipart;
 public class Email {
     private final String host = "smtp.gmail.com"; 
     private final String port = "587";
-    private final String ontvanger;
+    private final String ontvangers;
     private String subject;
     private StringBuffer body;
     private Map<String, String> mapInlineImages;
@@ -37,25 +37,61 @@ public class Email {
     private final String EMAIL_KLANTENDIENST = "klantendienstsct@gmail.com";
     private final String PASS_EMAIL = "centraletoewijzing";
   
-    public Email(String voornaam, String gebrnaam, String wachtwoord, String ontvanger, TypeBericht t) {
-      this.ontvanger = ontvanger;
+    public Email(Ouder o, TypeBericht t) {
+      this.ontvangers = o.getEmail();
       if(t == TypeBericht.ACTIVATIE) {
         this.subject = "Inloggegevens voor de dienst centrale toewijzing";
-        this.body = new StringBuffer("<html>Beste " + voornaam + ", <br>"
-                                + "<br>Je kan vanaf nu inloggen op onze website met de volgende gegevens:<br>"
-                                + "<br>Gebruikersnaam: " + gebrnaam 
-                                + "<br>Wachtwoord: " + wachtwoord + "<br>"
-                                        + "<br>Met vriendelijke groeten,<br><br>"
-                                        + "<br>Systeem Centrale Toewijzing"
-                                        + "<br>Klantendienst</html>");
-        
-        body.append("<img src=\"cid:image1\" width=\"30%\" height=\"30%\" /><br>");
-        // inline images
-        this.mapInlineImages = new HashMap<>();
-        mapInlineImages.put("image1", "./logo.png"); 
+        this.body = new StringBuffer("<html>Beste " + o.getVoornaam() + ", <br>"
+                                   + "<br>Je kan vanaf nu inloggen op onze website "
+                                   + "met de volgende gegevens:<br>"
+                                   + "<br>Gebruikersnaam: " + o.getGebruikersnaam()
+                                   + "<br>Wachtwoord: " + o.getWachtwoord() + "<br>"
+                                   + "<br>Met vriendelijke groeten,<br><br>"
+                                   + "<br>Systeem Centrale Toewijzing"
+                                   + "<br>Klantendienst</html>");
+      } else if (t == TypeBericht.VOORKEUR) {
+        this.subject = "Nieuwe voorkeur ingeven";
+        this.body = new StringBuffer("<html>Beste " + o.getVoornaam() + ", <br>"
+                                   + "<br>Je werd afgewezen van de school waarvoor u gekozen heeft.<br>"
+                                   + "<br>Ga naar onze website om uw volgende voorkeur in te geven.<br> " 
+                                   + "<br>Met vriendelijke groeten,<br><br>"
+                                   + "<br>Systeem Centrale Toewijzing"
+                                   + "<br>Klantendienst</html>");
       }
-      
+      this.body.append("<img src=\"cid:image1\" width=\"30%\" height=\"30%\" /><br>");
+      // inline images
+      this.mapInlineImages = new HashMap<>();
+      mapInlineImages.put("image1", "./logo.png"); 
     }
+    
+    public Email(String emails, TypeBericht t) {
+      this.ontvangers = emails;
+      if(t == TypeBericht.EINDE)
+        this.subject = "De toewijzingsperiode is afgelopen";
+        this.body = new StringBuffer("<html>Beste ouder, <br>"
+                                   + "<br>Bedankt om gebruik te maken van onze dienst!<br>"
+                                   + "<br>Je kan je aanvraag online bekijken. Indien u vragen heeft " 
+                                   + "<br>i.v.m. de beslissing kan je ze mailen naar klantendienstsct@gmail.com."
+                                   + "<br>Vermeld het aanvraagnummer a.u.b. <br>"
+                                   + "<br>Met vriendelijke groeten,<br><br>"
+                                   + "<br>Systeem Centrale Toewijzing"
+                                   + "<br>Klantendienst</html>");
+      if(t == TypeBericht.AANBODUITBREIDING)
+        this.subject = "Globaal aanbodtekort";
+        this.body = new StringBuffer("<html>Beste school, <br>"
+                                   + "<br>Dit jaar stellen we een aanbodtekort vast!<br>"
+                                   + "<br>Indien u bereid bent om meer studenten op te nemen, gelieve ons" 
+                                   + "<br>uw capaciteit te mailen naar klantendienstsct@gmail.com."
+                                   + "<br>Vemeld a.u.b uw id. <br>"
+                                   + "<br>Met vriendelijke groeten,<br><br>"
+                                   + "<br>Systeem Centrale Toewijzing"
+                                   + "<br>Klantendienst</html>");
+      this.body.append("<img src=\"cid:image1\" width=\"30%\" height=\"30%\" /><br>");
+      // inline images
+      this.mapInlineImages = new HashMap<>();
+      mapInlineImages.put("image1", "./logo.png"); 
+    }
+    
     
     public void send() throws AddressException, MessagingException {
         // sets SMTP server properties
@@ -79,8 +115,8 @@ public class Email {
         Message msg = new MimeMessage(session);
  
         msg.setFrom(new InternetAddress(EMAIL_KLANTENDIENST));
-        InternetAddress[] toAddresses = { new InternetAddress(ontvanger) };
-        msg.setRecipients(Message.RecipientType.TO, toAddresses);
+        InternetAddress[] toAddresses = { new InternetAddress(ontvangers) };
+        msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ontvangers));
         msg.setSubject(subject);
         msg.setSentDate(new Date());
  

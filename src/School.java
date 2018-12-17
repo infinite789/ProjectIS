@@ -20,14 +20,16 @@ public class School implements Serializable {
     private final String naam;
     private final String adres;
     private int plaatsen;
+    private final String email;
     private ArrayList<ToewijzingsAanvraag> wachtLijst;
     
     public School(int ID, String naam, String adres,
-                  int plaatsen){
+                  int plaatsen, String email){
         this.ID = ID;
          this.naam = naam;
         this.adres = adres;
         this.plaatsen = plaatsen;
+        this.email = email;
         this.wachtLijst = new ArrayList();
     }
 
@@ -49,6 +51,10 @@ public class School implements Serializable {
 
     public void setPlaatsen(int plaatsen) {
         this.plaatsen = plaatsen;
+    }
+
+    public String getEmail() {
+        return email;
     }
     
     public ArrayList<ToewijzingsAanvraag> getWachtLijst() {

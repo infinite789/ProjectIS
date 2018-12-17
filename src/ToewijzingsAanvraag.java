@@ -24,7 +24,7 @@ public class ToewijzingsAanvraag implements Serializable {
     private Status status;
     private int voorkeur;
     private long preferentie;
-    private ArrayList<String> afgewezenScholen;
+    private String afgewezenScholen;
     
     public ToewijzingsAanvraag(int nummer, String rnstudent, String rnouder) {
         this.toewijzingsAanvraagNummer = nummer;
@@ -35,13 +35,13 @@ public class ToewijzingsAanvraag implements Serializable {
         this.status = Status.ONTWERP;
         this.voorkeur = 0;
         this.preferentie = 0;
-        this.afgewezenScholen = new ArrayList<>();
+        this.afgewezenScholen = "";
     }
     
     public ToewijzingsAanvraag(int nummer, String rnstudent, String rnouder,
                                 LocalDateTime tijdstip, int broersOfZussen, 
                                 Status status, int voorkeur, long preferentie,
-                                ArrayList<String> afgewezenScholen){
+                                String afgewezenScholen){
         this.toewijzingsAanvraagNummer = nummer;
         this.rijksregisterNummerStudent = rnstudent;
         this.rijksregisterNummerOuder = rnouder;
@@ -61,19 +61,22 @@ public class ToewijzingsAanvraag implements Serializable {
     this.preferentie = preferentie;
   }
 
-    public ArrayList<String> getAfgewezenScholen() {
+    public String getAfgewezenScholen() {
         return afgewezenScholen;
     }
 
-    public String csvFormatLijst() {
-        String csvLijst = "";
-        for(String str : afgewezenScholen) {
-            csvLijst += str + ";";
-        }
-        if(csvLijst.equals(""))
-            return csvLijst;
-        else
-            return csvLijst.substring(0, csvLijst.length()-1).replace("[()]", "");
+  public void setAfgewezenScholen(String afgewezenScholen) {
+    this.afgewezenScholen = afgewezenScholen;
+  }
+    
+    public boolean schoolIsAfgewezen(int schoolID) {
+      boolean found = false;
+      String[] strArr = afgewezenScholen.split(";");
+      for(String str : strArr) {
+        if(str.equals(String.valueOf(schoolID)))
+          found = true;
+      }
+      return found;
     }
     
     public Integer getVoorkeur() {

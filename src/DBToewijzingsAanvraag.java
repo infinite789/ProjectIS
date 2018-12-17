@@ -43,13 +43,12 @@ public class DBToewijzingsAanvraag {
         int voorkeur = rs.getInt("voorkeurschool");
         long preferentie = rs.getLong("preferentie");
         String csvAfgScholen = rs.getString("afgewezen_scholen");
-        ArrayList<String>   afgScholen = new ArrayList();
-        if(csvAfgScholen != null)
-          afgScholen = CSV.toList(rs.getString("afgewezen_scholen"));
+        if(csvAfgScholen == null)
+          csvAfgScholen = "";
         aanvragenHashMap.put(aanvraagnummer,
             new ToewijzingsAanvraag(aanvraagnummer, rijksregisterNummerStudent, 
                                     rijksregisterNummerOuder, aanmeldingstijdstip, 
-                                    broersOfZussen, status, voorkeur, preferentie, afgScholen)
+                                    broersOfZussen, status, voorkeur, preferentie, csvAfgScholen)
         );
       }
       for(ToewijzingsAanvraag ta : aanvragenHashMap.values()) {
@@ -104,13 +103,12 @@ public class DBToewijzingsAanvraag {
         int voorkeur = rs.getInt("voorkeurschool");
         long preferentie = rs.getLong("preferentie");
         String csvAfgScholen = rs.getString("afgewezen_scholen");
-        ArrayList<String>   afgScholen = new ArrayList();
-        if(csvAfgScholen != null)
-          afgScholen = CSV.toList(rs.getString("afgewezen_scholen"));
+        if(csvAfgScholen == null)
+          csvAfgScholen = "";
         aanvragenHashMap.put(aanvraagnummer,
             new ToewijzingsAanvraag(aanvraagnummer, rijksregisterNummerStudent, 
                                     rijksregisterNummerOuder, aanmeldingstijdstip, 
-                                    broersOfZussen, status, voorkeur, preferentie, afgScholen)
+                                    broersOfZussen, status, voorkeur, preferentie, csvAfgScholen)
         );
       }
       DBConnect.closeConnection(con);
@@ -146,12 +144,11 @@ public class DBToewijzingsAanvraag {
         voorkeur = rs.getInt("voorkeurschool");
         long preferentie = rs.getLong("preferentie");
         String csvAfgScholen = rs.getString("afgewezen_scholen");
-        afgScholen = new ArrayList();
-        if(csvAfgScholen != null)
-          afgScholen = CSV.toList(rs.getString("afgewezen_scholen"));
+        if(csvAfgScholen == null)
+          csvAfgScholen = "";
         ta = new ToewijzingsAanvraag(nummer,
 	     rijksnumStudent, rijksnumOuder, aanmeldingstijdstip, 
-	      broersOfZussen, status, voorkeur, preferentie, afgScholen);
+	      broersOfZussen, status, voorkeur, preferentie, csvAfgScholen);
       }
       DBConnect.closeConnection(con);
       return ta;
@@ -199,7 +196,7 @@ public class DBToewijzingsAanvraag {
 	  else
 	    ps.setInt(7, ta.getVoorkeur());
           ps.setLong(8, ta.getPreferentie());
-          ps.setString(9, ta.csvFormatLijst());
+          ps.setString(9, ta.getAfgewezenScholen());
           ps.execute();
     }
     for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
@@ -228,11 +225,6 @@ public class DBToewijzingsAanvraag {
                            + ta.getToewijzingsAanvraagNummer() + ";");
       ps.executeUpdate();
     }
-    
-    Statement st = con.createStatement();
-    PreparedStatement ps = con.prepareStatement("ALTER TABLE toewijzingsaanvragen ORDER BY preferentie DESC");
-    ps.execute();
-    
     
     DBConnect.closeConnection(con);
     } catch (DBException dbe) {

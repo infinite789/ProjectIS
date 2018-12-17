@@ -30,8 +30,9 @@ public class DBSchool {
         String naam = rs.getString("school_naam");
         String adres = rs.getString("school_adres");
         int capaciteit = rs.getInt("capaciteit");
+        String email = rs.getString("school_email");
         scholenHashMap.put(id, new School(id, naam,
-                adres, capaciteit));
+                adres, capaciteit, email));
       }
       for(School s : scholenHashMap.values()) {
 	rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
@@ -47,10 +48,9 @@ public class DBSchool {
 	  int voorkeur = rs.getInt("voorkeurschool");
 	  long preferentie = rs.getLong("preferentie");
 	  String afgewezenScholenCsv = rs.getString("afgewezen_scholen");
-	  ArrayList<String> als = CSV.toList(afgewezenScholenCsv);
 	  s.getWachtLijst().add(new ToewijzingsAanvraag(aanvraagnummer,
 		  rijksregisterNummerStudent, rijksregisterNummerOuder, aanmeldingstijdstip,
-		  broersOfZussen, status, voorkeur, preferentie, als));
+		  broersOfZussen, status, voorkeur, preferentie, afgewezenScholenCsv));
 	}
       }
       DBConnect.closeConnection(con);
@@ -78,8 +78,9 @@ public class DBSchool {
         String naam = rs.getString("school_naam");
         String adres = rs.getString("school_adres");
         int capaciteit = rs.getInt("capaciteit");
+        String email = rs.getString("school_email");
         ArrayList<ToewijzingsAanvraag> wachtLijst = new ArrayList<>();
-        school = new School(schoolID, naam, adres, capaciteit);
+        school = new School(schoolID, naam, adres, capaciteit, email);
         rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen "
                            + "WHERE voorkeurschool = " + school.getID());
         while (rs.next()) {
@@ -93,10 +94,9 @@ public class DBSchool {
 	  int voorkeur = rs.getInt("voorkeurschool");
           long preferentie = rs.getLong("preferentie");
 	  String afgewezenScholenCsv = rs.getString("afgewezen_scholen");
-	  ArrayList<String> als = CSV.toList(afgewezenScholenCsv);
 	  school.getWachtLijst().add(new ToewijzingsAanvraag(aanvraagnummer,
 		  rijksregisterNummerStudent, rijksregisterNummerOuder, aanmeldingstijdstip,
-		  broersOfZussen, status, voorkeur, preferentie, als));
+		  broersOfZussen, status, voorkeur, preferentie, afgewezenScholenCsv));
 	}
       }
       DBConnect.closeConnection(con);
