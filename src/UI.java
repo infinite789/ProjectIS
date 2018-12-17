@@ -1655,7 +1655,7 @@ public class UI extends javax.swing.JFrame  {
     }//GEN-LAST:event_uitloggenLinkLabelMouseClicked
 
     private void sorteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sorteerKnopAdminActionPerformed
-        main.sorteerAlgoritme();
+        main.toewijzen();
     }//GEN-LAST:event_sorteerKnopAdminActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

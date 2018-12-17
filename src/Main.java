@@ -1,12 +1,4 @@
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneOffset;
@@ -43,6 +35,8 @@ public class Main {
           2018, Month.DECEMBER, 1, 0, 0, 0);//start inschrijvingen 
   private LocalDateTime huidigeDeadline = LocalDateTime.of(
           2018, Month.DECEMBER, 30, 0, 0, 0);//dynamische deadline, die na elke 'sorteerronde' een andere waarde aanneemt 
+  private final LocalDateTime EIND_DATUM = LocalDateTime.of(
+          2018, Month.JANUARY, 30, 0, 0, 0);//einde periode 
 
   public Main() {
     try {
@@ -160,7 +154,6 @@ public class Main {
     }
     return ta != null;
   }
-
   
   /*
    * Methode voor het berekenen van de key van een nieuwe aanvraag
@@ -173,8 +166,6 @@ public class Main {
       return 0;
     }
   }
-
- 
 
   /*
      * Methode voor het ophalen van een ouder op basis van 
@@ -203,6 +194,7 @@ public class Main {
       return null;
     }
   }
+  
   /*
      * Methode voor het ophalen van een student op basis van 
      * zijn rijksregisternummer
@@ -274,9 +266,9 @@ public class Main {
   }
   
   /*
-     * Methode voor het indienen of aanpassen van een voorkeur
-     * De methode past zijn gedrag door de datum te vergelelijken
-     * met de deadlines voor het indienen 
+   * Methode voor het indienen of aanpassen van een voorkeur
+   * De methode past zijn gedrag door de datum te vergelelijken
+   * met de deadlines voor het indienen 
    */
    public boolean indienenVoorkeur(int nummer, Student student, int schoolID)
           throws DBException {
@@ -315,11 +307,13 @@ public class Main {
     }
     return true;
   }
+   
   /*
   public ArrayList<ToewijzingsAanvraag> laadAfgewezenStudenten() throws Exception {
       
   }
   */
+   
   public int getBroersEnZussen(int aanvraagnummer, Student student, int voorkeurschool) throws DBException {
     int aantal = 0;
       //hashmaps zijn al geladen in methode indienenVoorkeur()
@@ -338,6 +332,25 @@ public class Main {
         }
       }
       return aantal;
+  }
+  
+  public boolean exporteerWachtlijst() {
+    try {
+      if(LocalDateTime.now().isAfter(EIND_DATUM)) {
+        toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
+        scholen = DBSchool.getScholen();
+        for (School s : scholen.values()) {
+          String path = ".lijsten/school" + s.getID();
+          DataBestand.opslaanWachtLijst(path, s.getWachtLijst());
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } catch (DBException dbe) {
+      dbe.getMessage();
+      return false;
+    }
   }
   
   public void sorteerWachtLijst(ArrayList<ToewijzingsAanvraag> wachtLijst) {
@@ -365,7 +378,7 @@ public class Main {
       }
   }
   
-  public void sorteerAlgoritme() {
+  public void toewijzen() {
     int afgewezenStudenten = 0;
     try {
       toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
@@ -377,15 +390,13 @@ public class Main {
             int i = keys.get(r.nextInt(scholen.size()));
             ta.setVoorkeur(i);
             ta.setStatus(Status.INGEDIEND);
+            long preferentie = bepaalPreferentie(ta);
+            ta.setPreferentie(preferentie);
+            scholen.get(ta.getVoorkeur()).getWachtLijst().add(ta);
           }
       }
       for (School s : scholen.values()) {
-	ArrayList<ToewijzingsAanvraag> wachtLijst = new ArrayList();
-        for(ToewijzingsAanvraag ta : toewijzingsaanvragen.values()) {
-          if(ta.getVoorkeur() == s.getID()) {
-            wachtLijst.add(ta);
-          }
-        }
+	ArrayList<ToewijzingsAanvraag> wachtLijst = s.getWachtLijst();
 	sorteerWachtLijst(wachtLijst);
 	//studenten afwijzen indien de school vol zit
 	while (wachtLijst.size() > s.getPlaatsen()) {
@@ -394,6 +405,7 @@ public class Main {
           twa.getAfgewezenScholen().add(String.valueOf(s.getID()));
           twa.setStatus(Status.ONTWERP);
           twa.setVoorkeur(0);
+          twa.setPreferentie(0);
           afgewezenStudenten++;
 	}
         s.setWachtLijst(wachtLijst);

@@ -31,7 +31,7 @@ public class DBToewijzingsAanvraag {
     try {
       con = DBConnect.getConnection();
       Statement st = con.createStatement();
-      ResultSet rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen");
+      ResultSet rs = st.executeQuery("SELECT * FROM toewijzingsaanvragen ORDER BY preferentie DESC");
       while (rs.next()) {
         int aanvraagnummer = rs.getInt("toewijzingsaanvraagnummer");
         Status status = Status.valueOf(rs.getString("status"));
@@ -228,6 +228,12 @@ public class DBToewijzingsAanvraag {
                            + ta.getToewijzingsAanvraagNummer() + ";");
       ps.executeUpdate();
     }
+    
+    Statement st = con.createStatement();
+    PreparedStatement ps = con.prepareStatement("ALTER TABLE toewijzingsaanvragen ORDER BY preferentie DESC");
+    ps.execute();
+    
+    
     DBConnect.closeConnection(con);
     } catch (DBException dbe) {
       dbe.printStackTrace();

@@ -124,42 +124,6 @@ public class DBSchool {
     }
   }
   
-  public static ArrayList<ToewijzingsAanvraag> getWachtLijst(School s) throws DBException {
-    Connection con = null;
-    try {
-      con = DBConnect.getConnection();
-      Statement st = con.createStatement();
-      ResultSet rs= st.executeQuery("SELECT * FROM toewijzingsaanvragen "
-                                  + "WHERE voorkeurschool = " + s.getID());
-      ArrayList<ToewijzingsAanvraag> wachtLijst = new ArrayList();
-      while(rs.next()) {
-        int aanvraagnummer = rs.getInt("toewijzingsaanvraagnummer");
-        Status status = Status.valueOf(rs.getString("status"));
-        String rijksregisterNummerStudent = rs.getString("student_rijksregisternummer");
-        String rijksregisterNummerOuder = rs.getString("ouder_rijksregisternummer");
-        Timestamp ts = rs.getTimestamp("aanmeldingstijdstip");
-        LocalDateTime aanmeldingstijdstip = ts.toLocalDateTime();
-        int broersOfZussen = rs.getInt("broer_zus");
-        int voorkeur = rs.getInt("voorkeurschool");
-        long preferentie = rs.getLong("preferentie");
-        ArrayList<String> afgScholen = CSV.toList(rs.getString("afgewezen_scholen"));
-        wachtLijst.add(new ToewijzingsAanvraag(aanvraagnummer, rijksregisterNummerStudent, 
-                                    rijksregisterNummerOuder, aanmeldingstijdstip, 
-                                    broersOfZussen, status, voorkeur, preferentie, afgScholen)
-        );
-      }
-      DBConnect.closeConnection(con);
-      return wachtLijst;
-    } catch (DBException dbe) {
-      dbe.printStackTrace();
-      DBConnect.closeConnection(con);
-      throw dbe;
-    } catch (Exception e) {
-      e.printStackTrace();
-      DBConnect.closeConnection(con);
-      throw new DBException(e);
-    }
-  }
   
   public static void setCapaciteit(int ID, int nieuwAantal) throws DBException{
       Connection con = null;
