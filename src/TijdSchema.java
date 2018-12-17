@@ -19,16 +19,16 @@ public class TijdSchema {
   private LocalDateTime startDatum;
   private LocalDateTime inschrijvingenDeadline;
   private LocalDateTime capaciteitDeadline;
-  private LocalDateTime voorkeurDeadline;
+  private LocalDateTime huidigDL;
   private LocalDateTime eindDatum;
   
   public TijdSchema(Year jaar, LocalDateTime startDatum, LocalDateTime inschrijvingenDL, 
-                    LocalDateTime capaciteitDL, LocalDateTime voorkeurDL, LocalDateTime eindDatum) {
+                    LocalDateTime capaciteitDL, LocalDateTime huidigDL, LocalDateTime eindDatum) {
     this.jaar = jaar;
     this.startDatum = startDatum;
     this.inschrijvingenDeadline = inschrijvingenDL;
     this.capaciteitDeadline = capaciteitDL;
-    this.voorkeurDeadline = voorkeurDL;
+    this.huidigDL = huidigDL;
     this.eindDatum = eindDatum;
   }
 
