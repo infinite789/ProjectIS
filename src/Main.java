@@ -1,6 +1,4 @@
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneOffset;
@@ -10,8 +8,6 @@ import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 
@@ -378,17 +374,13 @@ public class Main {
   
   
   
-  public boolean exporteerWachtlijst() {
+  public boolean exporteerWachtlijsten() {
     try {
       if(LocalDateTime.now().isAfter(EIND_DATUM)) {
         toewijzingsaanvragen = DBToewijzingsAanvraag.getToewijzingsAanvragen();
         scholen = DBSchool.getScholen();
         for (School s : scholen.values()) {
-          String path = ".lijsten/school" + s.getID();
-          File file = new File(".lijsten/school" + s.getID());
-          if(!file.exists())
-            file.createNewFile();
-          DataBestand.opslaanWachtLijst(path, s.getWachtLijst());
+          DataBestand.opslaanWachtLijst(s, s.getWachtLijst());
         }
         return true;
       } else {
@@ -397,10 +389,7 @@ public class Main {
     } catch (DBException dbe) {
       dbe.getMessage();
       return false;
-    } catch (IOException ex) {
-      ex.getMessage();
-      return false;
-    }
+    } 
   }
   
   public void sorteerWachtLijst(ArrayList<ToewijzingsAanvraag> wachtLijst) {

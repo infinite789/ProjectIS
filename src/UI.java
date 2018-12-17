@@ -1854,7 +1854,7 @@ public class UI extends javax.swing.JFrame  {
     }//GEN-LAST:event_verwijderLinkLabelARTMouseClicked
 
     private void exporteerKnopAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exporteerKnopAdminActionPerformed
-      if(main.exporteerWachtlijst())
+      if(main.exporteerWachtlijsten())
         boodschapLabelAdminWTab.setText("Exporteren gelukt!");
       else {
         JOptionPane optionPane = new JOptionPane("<html>Het exporteren is mislukt.. "
