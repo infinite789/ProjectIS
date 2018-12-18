@@ -1,6 +1,7 @@
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.Year;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class Main {
           2018, Month.DECEMBER, 1, 0, 0, 0);//start inschrijvingen
   private final LocalDateTime CAPACITEIT_DEADLINE = LocalDateTime.of(
           2018, Month.DECEMBER, 20, 0, 0, 0);//start inschrijvingen
-  private LocalDateTime huidigeDeadline = LocalDateTime.of(
+  private LocalDateTime huidigDeadline = LocalDateTime.of(
           2018, Month.DECEMBER, 30, 0, 0, 0);//dynamische deadline, die na elke 'sorteerronde' een andere waarde aanneemt 
   private final LocalDateTime EIND_DATUM = LocalDateTime.of(
           2019, Month.JANUARY, 30, 0, 0, 0);//einde periode 
@@ -297,6 +298,32 @@ public class Main {
     return null;
   }
   
+  public TijdSchema ophalenTijdSchema(int jaar) {
+    try {
+      TijdSchema ts = DBTijdSchema.getTijdSchema(Year.of(jaar));
+      return ts;
+    } catch (DBException dbe) {
+      dbe.getMessage();
+    }
+    return null;
+  }
+  
+  public void veranderTijdSchema(TijdSchema ts) {
+    try {
+      DBTijdSchema.setTijdSchema(ts);
+    } catch (DBException dbe) {
+      dbe.getMessage();
+    }
+  }
+  public void veranderCapaciteit(int ID, int nieuweCap){
+      try {
+          DBSchool.setCapaciteit(ID, nieuweCap);
+      }
+      catch (DBException dbe){
+          dbe.getMessage();
+      }
+  }
+  
   /*
    * Methode voor het indienen of aanpassen van een voorkeur
    * De methode past zijn gedrag door de datum te vergelelijken
@@ -345,12 +372,6 @@ public class Main {
     } 
     return -2;
   }
-   
-  /*
-  public ArrayList<ToewijzingsAanvraag> laadAfgewezenStudenten() throws Exception {
-      
-  }
-  */
    
   public int getBroersEnZussen(int aanvraagnummer, Student student, int voorkeurschool) {
     int aantal = 0;
@@ -495,9 +516,9 @@ public class Main {
   }
   
   public long bepaalPreferentie(ToewijzingsAanvraag ta) {
-      long preferentie = huidigeDeadline.toEpochSecond(ZoneOffset.UTC)
+      long preferentie = huidigDeadline.toEpochSecond(ZoneOffset.UTC)
 	      - ta.getAanmeldingsTijdstip().toEpochSecond(ZoneOffset.UTC);
-      long bonusPunten = huidigeDeadline.toEpochSecond(ZoneOffset.UTC)
+      long bonusPunten = huidigDeadline.toEpochSecond(ZoneOffset.UTC)
 	      - START_DATUM.toEpochSecond(ZoneOffset.UTC);
       if (ta.getBroersOfZussen() > 0) {
 	  preferentie += bonusPunten*ta.getBroersOfZussen();
@@ -520,17 +541,33 @@ public class Main {
       return false;
   }
 
-  public LocalDateTime getHuidigeDeadline() {
-      return this.huidigeDeadline;
+  public Periode huidigePeriode() {
+    try {
+      TijdSchema ts = DBTijdSchema.getTijdSchema(Year.of(LocalDateTime.now().getYear()));
+      LocalDateTime now = LocalDateTime.now();
+      LocalDateTime sd = ts.getStartDatum();
+      LocalDateTime idl = ts.getInschrijvingenDeadline();
+      LocalDateTime cpd = ts.getCapaciteitDeadline();
+      LocalDateTime ed = ts.getEindDatum();
+      if(now.isAfter(sd) && now.isBefore(idl))
+        return Periode.INSCHR;
+      else if (now.isAfter(idl) && now.isBefore(cpd))
+        return Periode.CAP;
+      else if (now.isAfter(cpd) && now.isBefore(ed))
+        return Periode.VOORKEUR;
+      else
+        return Periode.NULL;
+    } catch (DBException dbe) {
+      dbe.getMessage();
+    } catch (Exception e) {
+      return Periode.NULL;
+    }
+    return Periode.NULL;
   }
   
-  public void veranderCapaciteit(int ID, int nieuweCap){
-      try {
-          DBSchool.setCapaciteit(ID, nieuweCap);
-      }
-      catch (DBException dbe){
-          dbe.getMessage();
-      }
+  public LocalDateTime getHuidigDeadline() {
+      return this.huidigDeadline;
   }
+  
 }
 

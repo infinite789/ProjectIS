@@ -19,16 +19,16 @@ public class TijdSchema {
   private LocalDateTime startDatum;
   private LocalDateTime inschrijvingenDeadline;
   private LocalDateTime capaciteitDeadline;
-  private LocalDateTime huidigDL;
+  private LocalDateTime huidigDeadline;
   private LocalDateTime eindDatum;
   
   public TijdSchema(Year jaar, LocalDateTime startDatum, LocalDateTime inschrijvingenDL, 
-                    LocalDateTime capaciteitDL, LocalDateTime huidigDL, LocalDateTime eindDatum) {
+                    LocalDateTime capaciteitDL, LocalDateTime huidigDeadline, LocalDateTime eindDatum) {
     this.jaar = jaar;
     this.startDatum = startDatum;
     this.inschrijvingenDeadline = inschrijvingenDL;
     this.capaciteitDeadline = capaciteitDL;
-    this.huidigDL = huidigDL;
+    this.huidigDeadline = huidigDeadline;
     this.eindDatum = eindDatum;
   }
 
@@ -60,14 +60,14 @@ public class TijdSchema {
     this.capaciteitDeadline = capaciteitDeadline;
   }
 
-  public LocalDateTime getVoorkeurDeadline() {
-    return voorkeurDeadline;
+  public LocalDateTime getHuidigDeadline() {
+    return huidigDeadline;
   }
 
-  public void setVoorkeurDeadline(LocalDateTime voorkeurDeadline) {
-    this.voorkeurDeadline = voorkeurDeadline;
+  public void setHuidigDeadline(LocalDateTime huidigDeadline) {
+    this.huidigDeadline = huidigDeadline;
   }
-
+  
   public LocalDateTime getEindDatum() {
     return eindDatum;
   }
@@ -75,13 +75,4 @@ public class TijdSchema {
   public void setEindDatum(LocalDateTime eindDatum) {
     this.eindDatum = eindDatum;
   }
-  
-  public void veranderTijd(){
-      try {
-          DBTijdschema.setDatum(jaar,startDatum,inschrijvingenDeadline, capaciteitDeadline, voorkeurDeadline, eindDatum);
-      } catch (DBException ex) {
-          ex.getMessage();
-      }
-  }
-  
 }
