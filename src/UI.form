@@ -1956,7 +1956,7 @@
                               <Component id="jPanel3" max="32767" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1986,7 +1986,7 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
@@ -1996,10 +1996,6 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          <Component id="VeranderDatumKnop" min="-2" pref="103" max="-2" attributes="0"/>
-                                      </Group>
                                       <Group type="102" alignment="1" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" attributes="0">
@@ -2015,7 +2011,7 @@
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="datePickerLabel1" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                                                  <Component id="datePickerSD" max="32767" attributes="0"/>
+                                                  <Component id="datePickerSD" pref="156" max="32767" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="datePickerLabel2" min="-2" max="-2" attributes="0"/>
@@ -2023,17 +2019,21 @@
                                                   <Component id="datePickerIDL" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="timeCDL" min="-2" pref="58" max="-2" attributes="0"/>
+                                              <Component id="timeED" min="-2" pref="58" max="-2" attributes="0"/>
                                               <Component id="timeIDL" alignment="1" min="-2" pref="58" max="-2" attributes="0"/>
-                                              <Component id="timeSD" alignment="1" min="-2" pref="58" max="-2" attributes="0"/>
-                                              <Component id="timeCDL" alignment="1" min="-2" pref="58" max="-2" attributes="0"/>
-                                              <Component id="timeED" alignment="1" min="-2" pref="58" max="-2" attributes="0"/>
+                                              <Component id="timeSD" min="-2" pref="58" max="-2" attributes="0"/>
                                           </Group>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <Component id="VeranderDatumKnop" min="-2" pref="103" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="deadlinesBoodschap2" alignment="1" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="183" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
