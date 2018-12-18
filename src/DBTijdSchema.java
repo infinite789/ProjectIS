@@ -1,5 +1,4 @@
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +7,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
-
-
-
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,8 +28,7 @@ public class DBTijdSchema{
             ResultSet rs = st.executeQuery("SELECT * FROM tijdschema WHERE jaar = " + jaar);
             DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             DateTimeFormatter dfy = DateTimeFormatter.ofPattern("yyyy");
-            LocalDateTime startDatum = null, inschrDL = null, capDL = null, huidigDL = null, eindDatum = null;
-            TijdSchema ts = null;
+            LocalDateTime startDatum = null, inschrDL = null, capDL = null, huidigeDL = null, eindDatum = null;
             if(rs.next()) {
               Timestamp start = rs.getTimestamp("startdatum");
               Timestamp inschr = rs.getTimestamp("inschrijvingen_deadline");
@@ -43,12 +38,11 @@ public class DBTijdSchema{
               startDatum = start.toLocalDateTime();
               inschrDL = inschr.toLocalDateTime();
               capDL = cap.toLocalDateTime();
-              huidigDL = huid.toLocalDateTime();
+              huidigeDL = huid.toLocalDateTime();
               eindDatum = eind.toLocalDateTime();
-              ts = new TijdSchema(jaar, startDatum, inschrDL, capDL, huidigDL, eindDatum);
             }
             DBConnect.closeConnection(con);
-            return ts;
+            return new TijdSchema(jaar, startDatum, inschrDL, capDL, huidigeDL, eindDatum);
         }
        catch (DBException dbe) {
         dbe.printStackTrace();
@@ -66,7 +60,7 @@ public class DBTijdSchema{
         Connection con = null;
         try{
             con = DBConnect.getConnection();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO tijdschema ("
+            PreparedStatement ps = con.prepareStatement("INSERT INTO toewijzingsaanvragen ("
           + "jaar, startdatum, inschrijvingen_deadline, "
           + "capaciteit_deadline, huidig_deadline, einddatum) "
           + "VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " 
